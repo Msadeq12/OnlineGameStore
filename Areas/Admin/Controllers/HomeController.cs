@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PROG3050_HMJJ.Models;
+using PROG3050_HMJJ.Areas.Admin.Models;
 using System.Diagnostics;
 
-namespace PROG3050_HMJJ.Controllers
+namespace PROG3050_HMJJ.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -13,7 +14,7 @@ namespace PROG3050_HMJJ.Controllers
             _logger = logger;
         }
 
-      
+        [Route("[area]/")]
         public IActionResult Index()
         {
             return View();
