@@ -7,13 +7,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
     [Area("Admin")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
+        
         [Route("[area]/")]
         public IActionResult Index()
         {
