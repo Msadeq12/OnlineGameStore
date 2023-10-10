@@ -16,3 +16,20 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.form-group {
+    margin-bottom: 1rem;
+}    height: 100%;
+}
+.carousel-inner {
+    /* Set a fixed height for the carousel container */
+    height: 800px; /* Adjust the height as needed */
+}
+/* Position the arrow icons outside the carousel images */
+.carousel-control-prev {
+    left: 10px; /* Adjust the left position as needed */
+}
+
+.carousel-control-next {
+    right: 10px; /* Adjust the right position as needed */
+}
