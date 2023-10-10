@@ -140,9 +140,24 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete()
+        public IActionResult Delete(int id)
         {
-            return View();
+            string url = $"https://localhost:7108/api/game/{id}";
+            
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            Game? game;
+
+            if (response.IsSuccessStatusCode)
+            {
+                game = response.Content.ReadFromJsonAsync<Game>().Result;
+            }
+
+            else
+            {
+                game = null;
+            }
+
+            return View(game);
         }
     }
 }
