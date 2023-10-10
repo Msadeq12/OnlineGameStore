@@ -1,0 +1,29 @@
+﻿@model PROG3050_HMJJ.Models.ViewModel.LoginSignUpViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout_Login.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-4 offset-4">
+            <form method="post" asp-action="Login">
+                <div class="form-group">
+                    <label asp-for="UserName"></label>
+                    <input type="text" asp-for="UserName" placeholder="Enter username" class="form-control" autocomplete="off" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input type="text" asp-for="Password" placeholder="Enter password" class="form-control" autocomplete="off" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary btn-lg mb-1 float-right" value="Login" />
+                </div>
+            </form>
+            <div class="text-center">
+                <a class="text-primary" asp-action="ForgotUsername"> Forgot Username?</a>
+                <a class="text-primary" asp-action="ForgotPassword"> Forgot Password?</a>
+            </div>
+        </div>
+    </div>
+</div>
+
