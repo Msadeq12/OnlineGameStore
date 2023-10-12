@@ -7,14 +7,11 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-action="Create">Add new Events</a>
+    <a asp-action="Add">Add new Events</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.eventID)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -25,7 +22,10 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                @Html.DisplayNameFor(model => model.Date.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date.TimeOfDay)
             </th>
             <th></th>
         </tr>
@@ -42,9 +42,6 @@
 
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.eventID)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
@@ -54,12 +51,15 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Date)
+                @Html.DisplayFor(modelItem => item.Date.Date)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.DisplayFor(modelItem => item.Date.TimeOfDay)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.eventID }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Delete", "Delete", new { id = item.eventID })
             </td>
         </tr>
 }
