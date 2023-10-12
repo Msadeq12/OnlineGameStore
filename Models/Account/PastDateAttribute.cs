@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PROG3050_HMJJ.Areas.Member.Models
+namespace PROG3050_HMJJ.Models.Account
 {
     public class PastDateAttribute : ValidationAttribute
     {
@@ -14,6 +14,10 @@ namespace PROG3050_HMJJ.Areas.Member.Models
                 {
                     return ValidationResult.Success;
                 }
+            }
+            else if(value is null)
+            {
+                return ValidationResult.Success;
             }
 
             string msg = ErrorMessage ?? $"{ctx.DisplayName} must be a valid past date";
