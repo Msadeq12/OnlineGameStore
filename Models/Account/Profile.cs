@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
-using PROG3050_HMJJ.Models;
+using PROG3050_HMJJ.Areas.Member.Models;
 
-namespace PROG3050_HMJJ.Areas.Member.Models
+namespace PROG3050_HMJJ.Models.Account
 {
     public class Profile
     {

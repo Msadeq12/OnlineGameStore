@@ -5,7 +5,7 @@ namespace PROG3050_HMJJ.Controllers.Account
 {
     public class AccountController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Profile()
         {
             return View();
         }
