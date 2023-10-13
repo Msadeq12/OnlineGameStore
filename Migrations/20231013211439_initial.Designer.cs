@@ -12,8 +12,8 @@ using PROG3050_HMJJ.Models.DataAccess;
 namespace PROG3050_HMJJ.Migrations
 {
     [DbContext(typeof(GameStoreDbContext))]
-    [Migration("20231013012829_Initial")]
-    partial class Initial
+    [Migration("20231013211439_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -242,6 +242,58 @@ namespace PROG3050_HMJJ.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Languages");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Name = "English"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Name = "French"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            Name = "German"
+                        },
+                        new
+                        {
+                            ID = 4,
+                            Name = "Swedish"
+                        },
+                        new
+                        {
+                            ID = 5,
+                            Name = "Spanish"
+                        },
+                        new
+                        {
+                            ID = 6,
+                            Name = "Hindi"
+                        },
+                        new
+                        {
+                            ID = 7,
+                            Name = "Bengali"
+                        },
+                        new
+                        {
+                            ID = 8,
+                            Name = "Persian"
+                        },
+                        new
+                        {
+                            ID = 9,
+                            Name = "Japanese"
+                        },
+                        new
+                        {
+                            ID = 10,
+                            Name = "Italian"
+                        });
                 });
 
             modelBuilder.Entity("PROG3050_HMJJ.Areas.Member.Models.Preferences", b =>
@@ -277,6 +329,39 @@ namespace PROG3050_HMJJ.Migrations
                     b.ToTable("Preferences");
                 });
 
+            modelBuilder.Entity("PROG3050_HMJJ.Areas.Member.Models.Profiles", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<DateTime?>("DOB")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IdentityUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("RecievePromotions")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("IdentityUserId");
+
+                    b.ToTable("Profiles");
+                });
+
             modelBuilder.Entity("PROG3050_HMJJ.Models.Genres", b =>
                 {
                     b.Property<int>("ID")
@@ -292,6 +377,53 @@ namespace PROG3050_HMJJ.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Genres");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Name = "Action"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Name = "Adventure"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            Name = "RPG"
+                        },
+                        new
+                        {
+                            ID = 4,
+                            Name = "Simulation"
+                        },
+                        new
+                        {
+                            ID = 5,
+                            Name = "Strategy"
+                        },
+                        new
+                        {
+                            ID = 6,
+                            Name = "Sports"
+                        },
+                        new
+                        {
+                            ID = 7,
+                            Name = "Puzzle"
+                        },
+                        new
+                        {
+                            ID = 8,
+                            Name = "Idle"
+                        },
+                        new
+                        {
+                            ID = 9,
+                            Name = "Casual"
+                        });
                 });
 
             modelBuilder.Entity("PROG3050_HMJJ.Models.Platforms", b =>
@@ -309,6 +441,33 @@ namespace PROG3050_HMJJ.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Platforms");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Name = "PS5"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Name = "Xbox"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            Name = "PC"
+                        },
+                        new
+                        {
+                            ID = 4,
+                            Name = "Android"
+                        },
+                        new
+                        {
+                            ID = 5,
+                            Name = "iOS"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -387,6 +546,15 @@ namespace PROG3050_HMJJ.Migrations
                     b.Navigation("Languages");
 
                     b.Navigation("Platforms");
+                });
+
+            modelBuilder.Entity("PROG3050_HMJJ.Areas.Member.Models.Profiles", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+
+                    b.Navigation("IdentityUser");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿/*using Microsoft.AspNetCore.Identity;
 using PROG3050_HMJJ.Models;
 using System.ComponentModel.DataAnnotations;
 
@@ -41,3 +41,4 @@ namespace PROG3050_HMJJ.Areas.Admin.Models
         public virtual Platforms Platforms { get; set; }
     }
 }
+*/

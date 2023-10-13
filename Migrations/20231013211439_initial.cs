@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace PROG3050_HMJJ.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -196,6 +198,29 @@ namespace PROG3050_HMJJ.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Profiles",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DOB = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RecievePromotions = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Profiles", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Profiles_AspNetUsers_IdentityUserId",
+                        column: x => x.IdentityUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Preferences",
                 columns: table => new
                 {
@@ -229,6 +254,51 @@ namespace PROG3050_HMJJ.Migrations
                         column: x => x.PlatformsID,
                         principalTable: "Platforms",
                         principalColumn: "ID");
+                });
+
+            migrationBuilder.InsertData(
+                table: "Genres",
+                columns: new[] { "ID", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Action" },
+                    { 2, "Adventure" },
+                    { 3, "RPG" },
+                    { 4, "Simulation" },
+                    { 5, "Strategy" },
+                    { 6, "Sports" },
+                    { 7, "Puzzle" },
+                    { 8, "Idle" },
+                    { 9, "Casual" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Languages",
+                columns: new[] { "ID", "Name" },
+                values: new object[,]
+                {
+                    { 1, "English" },
+                    { 2, "French" },
+                    { 3, "German" },
+                    { 4, "Swedish" },
+                    { 5, "Spanish" },
+                    { 6, "Hindi" },
+                    { 7, "Bengali" },
+                    { 8, "Persian" },
+                    { 9, "Japanese" },
+                    { 10, "Italian" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Platforms",
+                columns: new[] { "ID", "Name" },
+                values: new object[,]
+                {
+                    { 1, "PS5" },
+                    { 2, "Xbox" },
+                    { 3, "PC" },
+                    { 4, "Android" },
+                    { 5, "iOS" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -289,6 +359,11 @@ namespace PROG3050_HMJJ.Migrations
                 name: "IX_Preferences_PlatformsID",
                 table: "Preferences",
                 column: "PlatformsID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Profiles_IdentityUserId",
+                table: "Profiles",
+                column: "IdentityUserId");
         }
 
         /// <inheritdoc />
@@ -313,10 +388,10 @@ namespace PROG3050_HMJJ.Migrations
                 name: "Preferences");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "Profiles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Genres");
@@ -326,6 +401,9 @@ namespace PROG3050_HMJJ.Migrations
 
             migrationBuilder.DropTable(
                 name: "Platforms");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }
