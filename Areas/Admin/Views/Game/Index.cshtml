@@ -1,0 +1,47 @@
+﻿@model IEnumerable<PROG3050_HMJJ.Areas.Admin.Models.Game>
+
+@{
+    ViewData["Title"] = "CVGS Games";
+    
+}
+
+<h1>CVGS Collections</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Add">Add New Game</a>
+</p>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Price (CAD)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+      
+        
+        @foreach (var item in Model)
+        {
+            if(item == null)
+            {
+                <tr>No games in collection</tr>
+            }
+
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Description</td>
+                <td>@item.Price.ToString("C")</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.gameID}) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.gameID})
+                </td>
+            </tr>
+        
+        
+}
+    </tbody>
+</table>

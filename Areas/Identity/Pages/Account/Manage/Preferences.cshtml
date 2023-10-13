@@ -1,0 +1,97 @@
+﻿@page
+@using PROG3050_HMJJ.Areas.Member.Models;
+@using PROG3050_HMJJ.Models;
+@model PreferencesModel;
+
+@{
+    ViewData["Title"] = "Preferences";
+    ViewData["ActivePage"] = ManageNavPages.Preferences;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <form id="preferences-form" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.PlatformsID" class="control-label">Favourite Platform</label>
+                <select asp-for="Input.PlatformsID" class="form-control">
+                    @if (Model.Preferences.Platforms != null)
+                    {
+                        <option selected value="@Model.Preferences.Platforms.ID">@Model.Preferences.Platforms.Name</option>
+                        @foreach (Platforms p in Model.PlatformList)
+                        {
+                            @if (p.ID != Model.Preferences.Platforms.ID)
+                            {
+                                <option value="@p.ID">@p.Name</option>
+                            }
+                        }
+                    }
+                    else 
+                    {
+                        @foreach (Platforms p in Model.PlatformList)
+                        {
+                            <option value="@p.ID">@p.Name</option>
+                        }
+                    }
+                    
+                </select>
+                <span asp-validation-for="Input.PlatformsID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.GenresID" class="control-label">Favourite Genre</label>
+                <select asp-for="Input.GenresID" class="form-control">
+                    @if (Model.Preferences.Genres != null)
+                    {
+                        <option selected value="@Model.Preferences.Genres.ID">@Model.Preferences.Genres.Name</option>
+                        @foreach (Genres g in Model.GenreList)
+                        {
+                            @if (g.ID != Model.Preferences.Genres.ID)
+                            {
+                                <option value="@g.ID">@g.Name</option>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        @foreach (Genres g in Model.GenreList)
+                        {
+                            <option value="@g.ID">@g.Name</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="Input.GenresID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.LanguagesID" class="control-label"></label>
+                <select asp-for="Input.LanguagesID" class="form-control">
+                    @if (Model.Preferences.Languages != null)
+                    {
+                        <option selected value="@Model.Preferences.Languages.ID">@Model.Preferences.Languages.Name</option>
+                        @foreach (Languages l in Model.LanguageList)
+                                {
+                            @if (l.ID != Model.Preferences.Languages.ID)
+                            {
+                                <option value="@l.ID">@l.Name</option>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        @foreach (Languages l in Model.LanguageList)
+                                {
+                            <option value="@l.ID">@l.Name</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="Input.LanguagesID" class="text-danger"></span>
+            </div>
+            <button id="update-preferences-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

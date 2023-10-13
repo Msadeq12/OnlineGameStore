@@ -1,9 +1,18 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns;
+using PROG3050_HMJJ.Models.DataAccess;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<GameStoreDbContext>(options => 
+options.UseSqlServer(builder.Configuration.GetConnectionString("GameStoreCNN")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<GameStoreDbContext>();
 
 var app = builder.Build();
 
@@ -19,9 +28,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();;
 
 app.UseAuthorization();
-
+app.MapRazorPages();    
 // area route for admin panel
 app.MapAreaControllerRoute(
     name: "admin",
