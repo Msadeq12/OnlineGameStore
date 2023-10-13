@@ -103,7 +103,7 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Preferences(int id, [Bind("ID,AccountID,FavouritePlatformID,FavouriteGenreID,Language")] Preferences preferences)
         {
-            if (id != preferences.IdentityUserId)
+            if (id != preferences.IdentityUser.Id)
             {
                 return NotFound();
             }
@@ -117,7 +117,7 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PreferencesExists(preferences.ID))
+                    if (!PreferencesExists(preferences.IdentityUser.Id))
                     {
                         return NotFound();
                     }

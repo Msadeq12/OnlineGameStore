@@ -8,7 +8,7 @@ namespace PROG3050_HMJJ.Areas.Member.Models
     public class Preferences
     {
         [Key]
-        public virtual IdentityUser? IdentityUser { get; set; }
+        public virtual IdentityUser IdentityUser { get; set; }
 
 
         public virtual Platforms? Platforms { get; set; }
