@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PROG3050_HMJJ.Areas.Admin.Models;
 using System.Text;
@@ -9,17 +10,32 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
     public class GameController : Controller
     {
         private static HttpClient client;
+        List<Genre>? genres;
 
         public GameController()
         {
-             client = new HttpClient();
+            string urlGenre = "https://localhost:7108/api/game/genres";
+            client = new HttpClient();
+
+            HttpResponseMessage responseGenre = client.GetAsync(urlGenre).Result;
+
+            if (responseGenre.IsSuccessStatusCode)
+            {
+                genres = responseGenre.Content.ReadFromJsonAsync<List<Genre>>().Result;
+            }
+
+            else
+            {
+                genres = null;
+            }
+
         }
 
         /// <summary>
         /// Calls GetAllGames() from the GameService API
         /// </summary>
         /// <returns>A List of Games from GameService DB</returns>
-        [Route("[area]/[controller]")]
+        
         public IActionResult Index()
         {
 
@@ -48,22 +64,8 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Add()
+        public ViewResult Add()
         {
-            string url = "https://localhost:7108/api/game/genres";
-            HttpResponseMessage response = client.GetAsync(url).Result;
-            List<Genre>? genres;
-
-            if (response.IsSuccessStatusCode)
-            {
-                genres = response.Content.ReadFromJsonAsync<List<Genre>>().Result;
-            }
-
-            else
-            {
-                genres = null;
-            }
-
             ViewBag.Genres = genres;
 
             return View();
@@ -72,12 +74,10 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Add(Game game)
         {
+
             string url = "https://localhost:7108/api/game";
-            var jsonObject = JsonConvert.SerializeObject(game);
 
-            var content = new StringContent(jsonObject, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            HttpResponseMessage response = client.PostAsJsonAsync(url, game).Result;
 
             if(response.IsSuccessStatusCode)
             {
@@ -97,11 +97,12 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
         /// </summary>
         /// <param name="id">id of the specific game from the Index table</param>
         /// <returns></returns>
+        
         [HttpGet]
-        public IActionResult Edit(int id)
+        public ViewResult Edit(int id)
         {
             string url = $"https://localhost:7108/api/game/{id}";
-            string urlGenre = "https://localhost:7108/api/game/genres";
+            
 
             //this is a response for getting a specific game through API
             //passed through the View 
@@ -120,27 +121,37 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
 
             // this is a response for getting all genres through API
             //response passed on through ViewBag
-            HttpResponseMessage responseGenre = client.GetAsync(urlGenre).Result;
-            List<Genre>? genres;
-
-            if (response.IsSuccessStatusCode)
-            {
-                genres = responseGenre.Content.ReadFromJsonAsync<List<Genre>>().Result;
-            }
-
-            else
-            {
-                genres = null;
-            }
-
             ViewBag.Genres = genres;
 
 
             return View(game);
         }
+        
+        [HttpPost]
+        public IActionResult Edit(int id, Game game)
+        {
 
+            string url = $"https://localhost:7108/api/game/{id}";
+            HttpResponseMessage response = client.PutAsJsonAsync(url, game).Result;
+
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+
+            else
+            {
+                ViewBag.Genres = genres;
+                return View(game);
+            }
+
+
+        }
+
+        
         [HttpGet]
-        public IActionResult Delete(int id)
+        public ViewResult Delete(int id)
         {
             string url = $"https://localhost:7108/api/game/{id}";
             
@@ -158,6 +169,26 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
             }
 
             return View(game);
+        }
+
+        
+        [HttpPost]
+        [ActionName("Delete")]
+        public IActionResult DeleteGame(int id)
+        {
+            string url = $"https://localhost:7108/api/game/{id}";
+
+            HttpResponseMessage response = client.DeleteAsync(url).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+
+            else
+            {
+                return View();
+            }
         }
     }
 }

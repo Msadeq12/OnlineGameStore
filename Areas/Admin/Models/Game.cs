@@ -23,7 +23,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Models
 
         public decimal Price { get; set; }
 
-        public Blob Icon { get; set; }
+        //public Blob Icon { get; set; }
 
 
     }
