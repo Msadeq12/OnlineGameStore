@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns;
 using PROG3050_HMJJ.Models.DataAccess;
 using Microsoft.AspNetCore.Identity;
+using GoogleReCaptcha.V3.Interface;
+using GoogleReCaptcha.V3;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,12 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("GameStoreCNN")))
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<GameStoreDbContext>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

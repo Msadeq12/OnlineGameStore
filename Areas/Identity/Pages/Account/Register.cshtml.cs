@@ -6,10 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using GoogleReCaptcha.V3.Interface;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +21,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using PROG3050_HMJJ.Recaptcha;
 
 namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
 {
@@ -29,6 +33,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ICaptchaValidator _captchaValidator;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -78,6 +83,9 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
+            [Required]
+            [Display(Name = "UserName")]
+            public string UserName { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -97,6 +105,9 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required(ErrorMessage = "Please complete the CAPTCHA.")]
+            public bool RecaptchaValue { get; set; }
         }
 
 
@@ -106,47 +117,51 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string captcha, string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if (ModelState.IsValid)
-            {
-                var user = CreateUser();
-
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                var result = await _userManager.CreateAsync(user, Input.Password);
-
-                if (result.Succeeded)
+            if(ReCaptchaValide(Request))
                 {
-                    _logger.LogInformation("User created a new account with password.");
-
-                    var userId = await _userManager.GetUserIdAsync(user);
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
-                }
-                foreach (var error in result.Errors)
+                if (ModelState.IsValid)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    var user = CreateUser();
+
+                    await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
+                    await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                    var result = await _userManager.CreateAsync(user, Input.Password);
+                    
+                        if (result.Succeeded)
+                        {
+                            _logger.LogInformation("User created a new account with password.");
+
+                            var userId = await _userManager.GetUserIdAsync(user);
+                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                            var callbackUrl = Url.Page(
+                                "/Account/ConfirmEmail",
+                                pageHandler: null,
+                                values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                                protocol: Request.Scheme);
+
+                            await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                            if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                            {
+                                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                            }
+                            else
+                            {
+                                await _signInManager.SignInAsync(user, isPersistent: false);
+                                return LocalRedirect(returnUrl);
+                            }
+                        
+                    }
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
             }
 
@@ -176,5 +191,50 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
         }
+
+        public bool ReCaptchaValide(HttpRequest request, string reCaptchaSecret = "6LcIS5koAAAAAMKWRYt3A-bjYPjmy3mbLLlA621e")
+        {
+           
+            var sb = new StringBuilder();
+            sb.Append("https://www.google.com/recaptcha/api/siteverify?secret=");
+            sb.Append(reCaptchaSecret);
+            sb.Append("&response=");
+            sb.Append(request.Form["g-recaptcha-response"]);
+
+            //make the api call and determine validity
+            using (var client = new WebClient())
+            {
+                var uri = sb.ToString();
+                var json = client.DownloadString(uri);
+                var serializer = new DataContractJsonSerializer(typeof(RecaptchaApiResponse));
+                var ms = new MemoryStream(Encoding.Unicode.GetBytes(json));
+                var result = serializer.ReadObject(ms) as RecaptchaApiResponse;
+
+                if (result.Success)
+                {
+                    return true;
+                }
+                else if (result == null)
+                {
+                    return false;
+                }
+                else if (result.ErrorCodes != null)
+                {
+                    
+                    ModelState.AddModelError("Input.RecaptchaValue", "Captcha validation failed.");
+                   
+                    return false;
+                }
+                else if (!result.Success)
+                {
+                    return false;
+                }
+                else 
+                {
+                    return false;
+                }
+            }
+        }
+
     }
 }
