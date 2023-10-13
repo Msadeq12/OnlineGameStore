@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PROG3050_HMJJ.Models.Account
+namespace PROG3050_HMJJ.Areas.Member.Models
 {
     public class PastDateAttribute : ValidationAttribute
     {
@@ -15,7 +15,7 @@ namespace PROG3050_HMJJ.Models.Account
                     return ValidationResult.Success;
                 }
             }
-            else if(value is null)
+            else if (value is null)
             {
                 return ValidationResult.Success;
             }
