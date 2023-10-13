@@ -78,5 +78,63 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
 
             return View(eves);
         }
+
+        [HttpPost]
+        public IActionResult Edit(int id, Event eves)
+        {
+            string url = $"https://localhost:7193/events/{id}";
+
+            HttpResponseMessage response = client.PutAsJsonAsync(url, eves).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+
+            else
+            {
+                return View(eves);
+            }
+        }
+
+        [HttpGet]
+        public ViewResult Delete(int id)
+        {
+            string url = $"https://localhost:7193/events/{id}";
+
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            Event? eves;
+
+            if (response.IsSuccessStatusCode)
+            {
+                eves = response.Content.ReadFromJsonAsync<Event>().Result;
+            }
+
+            else
+            {
+                eves = null;
+            }
+
+            return View(eves);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public IActionResult DeleteGame (int id)
+        {
+            string url = $"https://localhost:7193/events/{id}";
+
+            HttpResponseMessage response = client.DeleteAsync(url).Result;
+
+            if(response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+
+            else
+            {
+                return View();
+            }
+        }
     }
 }

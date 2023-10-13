@@ -180,9 +180,6 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
 
             HttpResponseMessage response = client.DeleteAsync(url).Result;
 
-            Console.WriteLine(JsonConvert.SerializeObject(response));
-            Console.WriteLine(response.StatusCode);
-
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
