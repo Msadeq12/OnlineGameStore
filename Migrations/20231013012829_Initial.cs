@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PROG3050_HMJJ.Migrations
 {
     /// <inheritdoc />
-    public partial class IdentityTables : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,6 +48,45 @@ namespace PROG3050_HMJJ.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Genres",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Genres", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Languages",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Languages", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Platforms",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Platforms", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -156,6 +195,42 @@ namespace PROG3050_HMJJ.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Preferences",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PlatformsID = table.Column<int>(type: "int", nullable: true),
+                    GenresID = table.Column<int>(type: "int", nullable: true),
+                    LanguagesID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Preferences", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Preferences_AspNetUsers_IdentityUserId",
+                        column: x => x.IdentityUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Preferences_Genres_GenresID",
+                        column: x => x.GenresID,
+                        principalTable: "Genres",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Preferences_Languages_LanguagesID",
+                        column: x => x.LanguagesID,
+                        principalTable: "Languages",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Preferences_Platforms_PlatformsID",
+                        column: x => x.PlatformsID,
+                        principalTable: "Platforms",
+                        principalColumn: "ID");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -194,6 +269,26 @@ namespace PROG3050_HMJJ.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Preferences_GenresID",
+                table: "Preferences",
+                column: "GenresID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Preferences_IdentityUserId",
+                table: "Preferences",
+                column: "IdentityUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Preferences_LanguagesID",
+                table: "Preferences",
+                column: "LanguagesID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Preferences_PlatformsID",
+                table: "Preferences",
+                column: "PlatformsID");
         }
 
         /// <inheritdoc />
@@ -215,10 +310,22 @@ namespace PROG3050_HMJJ.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Preferences");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Genres");
+
+            migrationBuilder.DropTable(
+                name: "Languages");
+
+            migrationBuilder.DropTable(
+                name: "Platforms");
         }
     }
 }
