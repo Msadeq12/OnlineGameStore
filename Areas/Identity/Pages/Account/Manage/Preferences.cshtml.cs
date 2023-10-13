@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using PROG3050_HMJJ.Areas.Member.Models;
 using PROG3050_HMJJ.Models;
 using PROG3050_HMJJ.Models.DataAccess;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 {
@@ -55,12 +55,15 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            [Required(ErrorMessage = "Platform is Required")]
             public int PlatformsID { get; set; }
 
 
+            [Required(ErrorMessage = "Genre is Required")]
             public int GenresID { get; set; }
 
 
+            [Required(ErrorMessage = "Language is Required")]
             public int LanguagesID { get; set; }
         }
 
@@ -89,9 +92,6 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             {
                 preferences = new Preferences();
                 preferences.IdentityUser = user;
-                preferences.Platforms = await _context.Platforms.FirstOrDefaultAsync();
-                preferences.Genres = await _context.Genres.FirstOrDefaultAsync();
-                preferences.Languages = await _context.Languages.FirstOrDefaultAsync();
                 Preferences = preferences;
                 _context.Add(preferences);
                 await _context.SaveChangesAsync();

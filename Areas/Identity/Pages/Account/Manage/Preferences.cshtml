@@ -30,6 +30,7 @@
                     }
                     else 
                     {
+                        <option selected value=""></option>
                         @foreach (Platforms p in Model.PlatformList)
                         {
                             <option value="@p.ID">@p.Name</option>
@@ -55,6 +56,7 @@
                     }
                     else
                     {
+                        <option selected value=""></option>
                         @foreach (Genres g in Model.GenreList)
                         {
                             <option value="@g.ID">@g.Name</option>
@@ -64,7 +66,7 @@
                 <span asp-validation-for="Input.GenresID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.LanguagesID" class="control-label"></label>
+                <label asp-for="Input.LanguagesID" class="control-label">Language</label>
                 <select asp-for="Input.LanguagesID" class="form-control">
                     @if (Model.Preferences.Languages != null)
                     {
@@ -79,6 +81,7 @@
                     }
                     else
                     {
+                        <option selected value=""></option>
                         @foreach (Languages l in Model.LanguageList)
                                 {
                             <option value="@l.ID">@l.Name</option>
