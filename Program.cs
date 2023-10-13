@@ -11,9 +11,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<GameStoreDbContext>(options => 
 options.UseSqlServer(builder.Configuration.GetConnectionString("GameStoreCNN")));
 
-builder.Services.AddDbContext<PreferencesContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("GameStoreCNN")));
-
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<GameStoreDbContext>();
 

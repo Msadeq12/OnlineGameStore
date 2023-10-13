@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace PROG3050_HMJJ.Areas.Member.Models
 {
-    public class Profile
+    public class Profiles
     {
         public int ID { get; set; }
 
