@@ -17,24 +17,45 @@
             <div class="form-group">
                 <label asp-for="Input.PlatformsID" class="control-label">Favourite Platform</label>
                 <select asp-for="Input.PlatformsID" class="form-control">
-                    <option selected value="@Model.Preferences.Platforms.ID">@Model.Preferences.Platforms.Name</option>
-                    @foreach (Platforms p in Model.PlatformList)
+                    @if (Model.Preferences.Platforms != null)
                     {
-                        @if (p.ID != Model.Preferences.Platforms.ID)
+                        <option selected value="@Model.Preferences.Platforms.ID">@Model.Preferences.Platforms.Name</option>
+                        @foreach (Platforms p in Model.PlatformList)
+                        {
+                            @if (p.ID != Model.Preferences.Platforms.ID)
+                            {
+                                <option value="@p.ID">@p.Name</option>
+                            }
+                        }
+                    }
+                    else 
+                    {
+                        @foreach (Platforms p in Model.PlatformList)
                         {
                             <option value="@p.ID">@p.Name</option>
                         }
                     }
+                    
                 </select>
                 <span asp-validation-for="Input.PlatformsID" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.GenresID" class="control-label">Favourite Genre</label>
                 <select asp-for="Input.GenresID" class="form-control">
-                    <option selected value="@Model.Preferences.Genres.ID">@Model.Preferences.Genres.Name</option>
-                    @foreach (Genres g in Model.GenreList)
+                    @if (Model.Preferences.Genres != null)
                     {
-                        @if (g.ID != Model.Preferences.Genres.ID)
+                        <option selected value="@Model.Preferences.Genres.ID">@Model.Preferences.Genres.Name</option>
+                        @foreach (Genres g in Model.GenreList)
+                        {
+                            @if (g.ID != Model.Preferences.Genres.ID)
+                            {
+                                <option value="@g.ID">@g.Name</option>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        @foreach (Genres g in Model.GenreList)
                         {
                             <option value="@g.ID">@g.Name</option>
                         }
@@ -45,11 +66,21 @@
             <div class="form-group">
                 <label asp-for="Input.LanguagesID" class="control-label"></label>
                 <select asp-for="Input.LanguagesID" class="form-control">
-                    <option selected value="@Model.Preferences.Languages.ID">@Model.Preferences.Languages.Name</option>
-                    @foreach (Languages l in Model.LanguageList)
+                    @if (Model.Preferences.Languages != null)
                     {
-                        @if (l.ID != Model.Preferences.Genres.ID)
-                        {
+                        <option selected value="@Model.Preferences.Languages.ID">@Model.Preferences.Languages.Name</option>
+                        @foreach (Languages l in Model.LanguageList)
+                                {
+                            @if (l.ID != Model.Preferences.Languages.ID)
+                            {
+                                <option value="@l.ID">@l.Name</option>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        @foreach (Languages l in Model.LanguageList)
+                                {
                             <option value="@l.ID">@l.Name</option>
                         }
                     }

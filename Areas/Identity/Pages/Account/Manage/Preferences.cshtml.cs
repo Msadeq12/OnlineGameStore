@@ -87,7 +87,12 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             // Add Preferences record to DB if it does not exist for this account
             if (preferences == null)
             {
+                preferences = new Preferences();
                 preferences.IdentityUser = user;
+                preferences.Platforms = await _context.Platforms.FirstOrDefaultAsync();
+                preferences.Genres = await _context.Genres.FirstOrDefaultAsync();
+                preferences.Languages = await _context.Languages.FirstOrDefaultAsync();
+                Preferences = preferences;
                 _context.Add(preferences);
                 await _context.SaveChangesAsync();
             }
