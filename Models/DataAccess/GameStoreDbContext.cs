@@ -19,6 +19,9 @@ namespace PROG3050_HMJJ.Models.DataAccess
         public DbSet<Languages> Languages { get; set; }
 
 
+        public DbSet<Profiles> Profiles { get; set; }
+
+
         public GameStoreDbContext(DbContextOptions<GameStoreDbContext> options) : base(options)
         {
 
