@@ -11,8 +11,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<GameStoreDbContext>(options => 
 options.UseSqlServer(builder.Configuration.GetConnectionString("GameStoreCNN")));
 
+builder.Services.AddDbContext<PreferencesContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("GameStoreCNN")));
+
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<GameStoreDbContext>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,6 +46,12 @@ app.MapAreaControllerRoute(
     name: "member",
     areaName: "Member",
     pattern: "Member/{controller=Home}/{action=Index}/{id?}");
+
+// area route for Member panel
+app.MapControllerRoute(
+    name: "preferences",
+    pattern: "Identity/Account/Manage/Preferences/",
+    defaults: new { controller = "Preferences", action = "Preferences" });
 
 app.MapControllerRoute(
     name: "default",

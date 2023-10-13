@@ -5,7 +5,7 @@ namespace PROG3050_HMJJ.Models.DataAccess
 {
     public class GameStoreDbContext : IdentityDbContext
     {
-        public GameStoreDbContext(DbContextOptions options) : base(options)
+        public GameStoreDbContext(DbContextOptions<GameStoreDbContext> options) : base(options)
         {
 
         }

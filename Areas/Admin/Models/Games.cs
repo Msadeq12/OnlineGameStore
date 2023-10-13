@@ -38,6 +38,6 @@ namespace PROG3050_HMJJ.Areas.Admin.Models
         public virtual Genres Genres { get; set; }
 
 
-        public Platforms Platforms { get; set; }
+        public virtual Platforms Platforms { get; set; }
     }
 }
