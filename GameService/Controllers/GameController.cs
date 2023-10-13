@@ -60,7 +60,7 @@ namespace GameService.Controllers
         /// <param name="game">Game object serialized from the client</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult> AddGame(Game game)
+        public async Task<ActionResult> AddGame([FromBody] Game game)
         {
             _context.Games.Add(game);
             await _context.SaveChangesAsync();
@@ -74,15 +74,16 @@ namespace GameService.Controllers
         /// <param name="id">Calls game by Id</param>
         /// <param name="game">Game object is altered and then updated to DB</param>
         /// <returns>An updated game object</returns>
-        [HttpPut("id")]
-        public async Task<ActionResult> UpdateGame(int id, Game game)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Game>> UpdateGame([FromRoute]int id, [FromBody]Game game)
         {
-            if(id != game.gameID)
+            if (id != game.gameID)
             {
                 return BadRequest();
             }
 
-            _context.Entry(game).State = EntityState.Modified;
+            _context.Games.Update(game);
+            //_context.Entry(game).State = EntityState.Modified;
 
             try
             {
@@ -102,7 +103,7 @@ namespace GameService.Controllers
                 }
             }
 
-            return NoContent();
+            return game;
         }
         /// <summary>
         /// Deletes game from DB
@@ -110,7 +111,7 @@ namespace GameService.Controllers
         /// <param name="id">search game by Id</param>
         /// <returns>game object is removed and DB is updated.</returns>
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Game>> DeleteGame(int id)
+        public async Task<ActionResult<Game>> DeleteGame([FromRoute] int id)
         {
             var game = await _context.Games.FindAsync(id);
 

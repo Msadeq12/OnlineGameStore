@@ -8,6 +8,7 @@ namespace GameService.Models
     /// </summary>
     public class Game
     {
+
         public int gameID { get; set; }
 
         public string Title { get; set; }
