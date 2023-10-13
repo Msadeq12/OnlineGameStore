@@ -47,12 +47,6 @@ app.MapAreaControllerRoute(
     areaName: "Member",
     pattern: "Member/{controller=Home}/{action=Index}/{id?}");
 
-// area route for Member panel
-app.MapControllerRoute(
-    name: "preferences",
-    pattern: "Identity/Account/Manage/Preferences/",
-    defaults: new { controller = "Preferences", action = "Preferences" });
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

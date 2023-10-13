@@ -12,8 +12,8 @@ using PROG3050_HMJJ.Models.DataAccess;
 namespace PROG3050_HMJJ.Migrations
 {
     [DbContext(typeof(GameStoreDbContext))]
-    [Migration("20231006192034_IdentityTables")]
-    partial class IdentityTables
+    [Migration("20231013012829_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -227,6 +227,90 @@ namespace PROG3050_HMJJ.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("PROG3050_HMJJ.Areas.Member.Models.Languages", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Languages");
+                });
+
+            modelBuilder.Entity("PROG3050_HMJJ.Areas.Member.Models.Preferences", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int?>("GenresID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IdentityUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("LanguagesID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PlatformsID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("GenresID");
+
+                    b.HasIndex("IdentityUserId");
+
+                    b.HasIndex("LanguagesID");
+
+                    b.HasIndex("PlatformsID");
+
+                    b.ToTable("Preferences");
+                });
+
+            modelBuilder.Entity("PROG3050_HMJJ.Models.Genres", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Genres");
+                });
+
+            modelBuilder.Entity("PROG3050_HMJJ.Models.Platforms", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Platforms");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -276,6 +360,33 @@ namespace PROG3050_HMJJ.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PROG3050_HMJJ.Areas.Member.Models.Preferences", b =>
+                {
+                    b.HasOne("PROG3050_HMJJ.Models.Genres", "Genres")
+                        .WithMany()
+                        .HasForeignKey("GenresID");
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+
+                    b.HasOne("PROG3050_HMJJ.Areas.Member.Models.Languages", "Languages")
+                        .WithMany()
+                        .HasForeignKey("LanguagesID");
+
+                    b.HasOne("PROG3050_HMJJ.Models.Platforms", "Platforms")
+                        .WithMany()
+                        .HasForeignKey("PlatformsID");
+
+                    b.Navigation("Genres");
+
+                    b.Navigation("IdentityUser");
+
+                    b.Navigation("Languages");
+
+                    b.Navigation("Platforms");
                 });
 #pragma warning restore 612, 618
         }
