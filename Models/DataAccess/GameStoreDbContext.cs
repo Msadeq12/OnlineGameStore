@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PROG3050_HMJJ.Models;
+using PROG3050_HMJJ.Models.Account;
 using PROG3050_HMJJ.Areas.Admin.Models;
 using PROG3050_HMJJ.Areas.Member.Models;
 using System.Reflection.Emit;
+using Microsoft.AspNetCore.Identity;
 
 namespace PROG3050_HMJJ.Models.DataAccess
 {
-    public class GameStoreDbContext : IdentityDbContext
+    public class GameStoreDbContext : IdentityDbContext<User>
     {
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -46,6 +47,34 @@ namespace PROG3050_HMJJ.Models.DataAccess
                 new Languages { ID = 9, Name = "Japanese" },
                 new Languages { ID = 10, Name = "Italian" }
                 );
+        }
+
+        public static async Task CreateAdminUser(IServiceProvider serviceProvider)
+        {
+            UserManager<User> userManager =
+                serviceProvider.GetRequiredService<UserManager<User>>();
+            RoleManager<IdentityRole> roleManager = serviceProvider
+                .GetRequiredService<RoleManager<IdentityRole>>();
+
+            string username = "admin";
+            string password = "P@ssw0rd1";
+            string roleName = "Admin";
+
+            // if role doesn't exist, create it
+            if (await roleManager.FindByNameAsync(roleName) == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole(roleName));
+            }
+            // if username doesn't exist, create it and add it to role
+            if (await userManager.FindByNameAsync(username) == null)
+            {
+                User user = new User { UserName = username };
+                var result = await userManager.CreateAsync(user, password);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, roleName);
+                }
+            }
         }
 
         public DbSet<Preferences> Preferences { get; set; }

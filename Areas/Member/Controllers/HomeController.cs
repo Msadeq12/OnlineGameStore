@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PROG3050_HMJJ.Areas.Member.Models;
 using System.Diagnostics;
@@ -6,6 +7,7 @@ using System.Diagnostics;
 namespace PROG3050_HMJJ.Areas.Member.Controllers
 {
     [Area("Member")]
+    [Authorize(Roles = "Admin, Member")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

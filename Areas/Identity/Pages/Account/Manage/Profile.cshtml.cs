@@ -12,18 +12,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using PROG3050_HMJJ.Areas.Member.Models;
 using PROG3050_HMJJ.Models.DataAccess;
+using PROG3050_HMJJ.Models.Account;
 
 namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 {
     public class ProfileModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly GameStoreDbContext _context;
 
         public ProfileModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
             GameStoreDbContext context)
         {
             _userManager = userManager;
@@ -57,12 +58,12 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.IdentityUser.Id == user.Id);
+            var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.User.Id == user.Id);
 
             if(profile == null)
             {
                 profile = new Profiles();
-                profile.IdentityUser = user;
+                profile.User = user;
                 Profile = profile;
                 _context.Add(profile);
                 await _context.SaveChangesAsync();
@@ -82,14 +83,14 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            Profile.IdentityUser = user;
+            Profile.User = user;
 
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            //var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.IdentityUser.Id == user.Id);
+            //var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.User.Id == user.Id);
 
             //profile.FirstName = Profile.FirstName;
             //profile.LastName = Profile.LastName;

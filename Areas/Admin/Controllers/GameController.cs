@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PROG3050_HMJJ.Areas.Admin.Models;
@@ -7,6 +8,7 @@ using System.Text;
 namespace PROG3050_HMJJ.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class GameController : Controller
     {
         private static HttpClient client;

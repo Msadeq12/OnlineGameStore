@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns;
 using PROG3050_HMJJ.Models.DataAccess;
+using PROG3050_HMJJ.Models.Account;
 using Microsoft.AspNetCore.Identity;
 using GoogleReCaptcha.V3.Interface;
 using GoogleReCaptcha.V3;
@@ -15,18 +16,24 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<GameStoreDbContext>(options => 
 options.UseSqlServer(builder.Configuration.GetConnectionString("GameStoreCNN")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => {
+builder.Services.AddDefaultIdentity<User>(options => {
     //Register The Account and Validate the email
     options.SignIn.RequireConfirmedAccount = true;
     //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
     // The maximum number of failed access attempts before a user is locked out.
     options.Lockout.MaxFailedAccessAttempts = 3;
-})
+}).AddDefaultTokenProviders().AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<GameStoreDbContext>();
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
+
+builder.Services.AddRazorPages();
+
+
+
 var app = builder.Build();
 
 
@@ -46,7 +53,17 @@ app.UseRouting();
 app.UseAuthentication();;
 
 app.UseAuthorization();
-app.MapRazorPages();    
+app.MapRazorPages();
+
+// adds a default admin
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+
+    // Call the CreateAdminUser method to create the admin user.
+    await GameStoreDbContext.CreateAdminUser(serviceProvider);
+}
+
 // area route for admin panel
 app.MapAreaControllerRoute(
     name: "admin",
@@ -62,5 +79,7 @@ app.MapAreaControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
 
 app.Run();

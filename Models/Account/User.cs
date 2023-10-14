@@ -1,16 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PROG3050_HMJJ.Models.Account
 {
-    public class User
+    public class User : IdentityUser
     {
-        [Key]
-        public int Id { get; set; }
-        public string UserName { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public bool IsActive {  get; set; }
-        public bool isRemember { get; set; }
-        
+        [NotMapped]
+        public IList<string> RoleNames { get; set; }
+
     }
 }

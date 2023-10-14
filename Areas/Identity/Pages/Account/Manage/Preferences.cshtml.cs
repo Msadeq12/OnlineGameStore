@@ -6,18 +6,19 @@ using PROG3050_HMJJ.Areas.Member.Models;
 using PROG3050_HMJJ.Models;
 using PROG3050_HMJJ.Models.DataAccess;
 using System.ComponentModel.DataAnnotations;
+using PROG3050_HMJJ.Models.Account;
 
 namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 {
     public class PreferencesModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly GameStoreDbContext _context;
 
         public PreferencesModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
             GameStoreDbContext context)
         {
             _userManager = userManager;
@@ -85,13 +86,13 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var preferences = await _context.Preferences.FirstOrDefaultAsync(p => p.IdentityUser.Id == user.Id);
+            var preferences = await _context.Preferences.FirstOrDefaultAsync(p => p.User.Id == user.Id);
 
             // Add Preferences record to DB if it does not exist for this account
             if (preferences == null)
             {
                 preferences = new Preferences();
-                preferences.IdentityUser = user;
+                preferences.User = user;
                 Preferences = preferences;
                 _context.Add(preferences);
                 await _context.SaveChangesAsync();
@@ -125,7 +126,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var preferences = _context.Preferences.FirstOrDefault(p => p.IdentityUser.Id == user.Id);
+            var preferences = _context.Preferences.FirstOrDefault(p => p.User.Id == user.Id);
 
             preferences.Platforms = await _context.Platforms.FirstOrDefaultAsync(p => p.ID == Input.PlatformsID);
             preferences.Genres = await _context.Genres.FirstOrDefaultAsync(g => g.ID == Input.GenresID);
@@ -142,7 +143,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 
         private bool PreferencesExists(string id)
         {
-            return (_context.Preferences?.Any(e => e.IdentityUser.Id == id)).GetValueOrDefault();
+            return (_context.Preferences?.Any(e => e.User.Id == id)).GetValueOrDefault();
         }
     }
 }
