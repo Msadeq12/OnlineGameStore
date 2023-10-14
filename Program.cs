@@ -5,6 +5,9 @@ using PROG3050_HMJJ.Models.Account;
 using Microsoft.AspNetCore.Identity;
 using GoogleReCaptcha.V3.Interface;
 using GoogleReCaptcha.V3;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using PROG3050_HMJJ.Services;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,11 +17,25 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<GameStoreDbContext>(options => 
 options.UseSqlServer(builder.Configuration.GetConnectionString("GameStoreCNN")));
 
-builder.Services.AddDefaultIdentity<User>().AddDefaultTokenProviders().AddRoles<IdentityRole>()
+builder.Services.AddDefaultIdentity<User>(options => {
+    //Register The Account and Validate the email
+    options.SignIn.RequireConfirmedAccount = true;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+    // The maximum number of failed access attempts before a user is locked out.
+    options.Lockout.MaxFailedAccessAttempts = 3;
+}).AddDefaultTokenProviders().AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<GameStoreDbContext>();
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
+builder.Services.AddTransient<IEmailSender>(provider =>
+{
+    return new EmailSender(
+        smtpServer: "sandbox.smtp.mailtrap.io",
+        smtpPort: 587,
+        smtpUsername: "a843ed88b5de8e", // MailHog doesn't require authentication
+        smtpPassword: "a57ca674cb3a7b"
+    );
+});
 builder.Services.AddRazorPages();
 
 

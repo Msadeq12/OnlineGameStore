@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using PROG3050_HMJJ.Recaptcha;
 using PROG3050_HMJJ.Models.Account;
+using PROG3050_HMJJ.Services;
 
 namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
 {
@@ -36,21 +37,21 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly ICaptchaValidator _captchaValidator;
         private readonly RoleManager<IdentityRole> _roleManager;
-
+        private EmailSender emailSender1;
         public RegisterModel(
             UserManager<User> userManager,
             IUserStore<User> userStore,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
             RoleManager<IdentityRole> roleManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender1)
         {
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
+            _emailSender = (EmailSender)emailSender1;
             _roleManager = roleManager;
         }
 
@@ -123,7 +124,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string captcha, string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/Identity/Account/Login");
+            returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if(ReCaptchaValide(Request))
                 {
@@ -134,40 +135,40 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
                     await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
                     await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                     var result = await _userManager.CreateAsync(user, Input.Password);
-                    
-                        if (result.Succeeded)
+
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("User created a new account with password.");
+
+                        if (!await _roleManager.RoleExistsAsync("Member"))
                         {
-                            _logger.LogInformation("User created a new account with password.");
+                            _roleManager.CreateAsync(new IdentityRole("Member")).Wait();
+                        }
 
-                            if(!await _roleManager.RoleExistsAsync("Member"))
-                            {
-                                _roleManager.CreateAsync(new IdentityRole("Member")).Wait();
-                            }
+                        await _userManager.AddToRoleAsync(user, "Member");
 
-                            await _userManager.AddToRoleAsync(user, "Member");
+                        var userId = await _userManager.GetUserIdAsync(user);
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                        var callbackUrl = Url.Page(
+                            "/Account/ConfirmEmail",
+                            pageHandler: null,
+                            values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                            protocol: Request.Scheme);
 
-                            var userId = await _userManager.GetUserIdAsync(user);
-                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                            var callbackUrl = Url.Page(
-                                "/Account/ConfirmEmail",
-                                pageHandler: null,
-                                values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                                protocol: Request.Scheme);
+                        await _emailSender.SendEmailAsync(Input.Email, "Please Confirm your email.",
+                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a> " +
+                            $"\nPlease Note this email was sent by one of Representative's of CVGS Team.");
 
-                            await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                            if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                            {
-                                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                            }
-                            else
-                            {
-                                await _signInManager.SignInAsync(user, isPersistent: false);
-                                return LocalRedirect(returnUrl);
-                            }
-                        
+                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        {
+                            return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+                        }
                     }
                     foreach (var error in result.Errors)
                     {

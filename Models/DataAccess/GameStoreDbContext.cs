@@ -57,7 +57,7 @@ namespace PROG3050_HMJJ.Models.DataAccess
                 .GetRequiredService<RoleManager<IdentityRole>>();
 
             string username = "admin";
-            string password = "P@ssw0rd1";
+            string password = "Test1$";
             string roleName = "Admin";
 
             // if role doesn't exist, create it
@@ -68,7 +68,7 @@ namespace PROG3050_HMJJ.Models.DataAccess
             // if username doesn't exist, create it and add it to role
             if (await userManager.FindByNameAsync(username) == null)
             {
-                User user = new User { UserName = username };
+                User user = new User { UserName = username, Email="admin@cvgs.com", NormalizedEmail="ADMIN@CVGS.COM", EmailConfirmed = true };
                 var result = await userManager.CreateAsync(user, password);
                 if (result.Succeeded)
                 {
