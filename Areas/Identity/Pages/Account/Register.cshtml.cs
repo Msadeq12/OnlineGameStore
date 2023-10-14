@@ -22,24 +22,27 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using PROG3050_HMJJ.Recaptcha;
+using PROG3050_HMJJ.Models.Account;
 
 namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IUserStore<IdentityUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly IUserStore<User> _userStore;
+        private readonly IUserEmailStore<User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly ICaptchaValidator _captchaValidator;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<User> userManager,
+            IUserStore<User> userStore,
+            SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
+            RoleManager<IdentityRole> roleManager,
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -48,6 +51,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -119,7 +123,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string captcha, string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/Identity/Account/Login");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if(ReCaptchaValide(Request))
                 {
@@ -134,6 +138,13 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
                         if (result.Succeeded)
                         {
                             _logger.LogInformation("User created a new account with password.");
+
+                            if(!await _roleManager.RoleExistsAsync("Member"))
+                            {
+                                _roleManager.CreateAsync(new IdentityRole("Member")).Wait();
+                            }
+
+                            await _userManager.AddToRoleAsync(user, "Member");
 
                             var userId = await _userManager.GetUserIdAsync(user);
                             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -169,27 +180,27 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private User CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<User>();
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(User)}'. " +
+                    $"Ensure that '{nameof(User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
 
-        private IUserEmailStore<IdentityUser> GetEmailStore()
+        private IUserEmailStore<User> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser>)_userStore;
+            return (IUserEmailStore<User>)_userStore;
         }
 
         public bool ReCaptchaValide(HttpRequest request, string reCaptchaSecret = "6LcIS5koAAAAAMKWRYt3A-bjYPjmy3mbLLlA621e")

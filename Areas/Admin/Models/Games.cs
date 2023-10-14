@@ -1,6 +1,7 @@
 ﻿/*using Microsoft.AspNetCore.Identity;
 using PROG3050_HMJJ.Models;
 using System.ComponentModel.DataAnnotations;
+using PROG3050_HMJJ.Models.Account;
 
 
 namespace PROG3050_HMJJ.Areas.Admin.Models
@@ -32,7 +33,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Models
         public DateTime ReleaseDate { get; set; }
 
 
-        public virtual IdentityUser IdentityUser { get; set; }
+        public virtual User User { get; set; }
 
 
         public virtual Genres Genres { get; set; }

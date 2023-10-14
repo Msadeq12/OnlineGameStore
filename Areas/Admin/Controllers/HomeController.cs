@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PROG3050_HMJJ.Areas.Admin.Models;
 using System.Diagnostics;
 
 namespace PROG3050_HMJJ.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Area("Admin")]
     public class HomeController : Controller
     {

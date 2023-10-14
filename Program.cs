@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns;
 using PROG3050_HMJJ.Models.DataAccess;
+using PROG3050_HMJJ.Models.Account;
 using Microsoft.AspNetCore.Identity;
 using GoogleReCaptcha.V3.Interface;
 using GoogleReCaptcha.V3;
@@ -13,9 +14,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<GameStoreDbContext>(options => 
 options.UseSqlServer(builder.Configuration.GetConnectionString("GameStoreCNN")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<User>().AddDefaultTokenProviders().AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<GameStoreDbContext>();
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+builder.Services.AddRazorPages();
+
 
 
 var app = builder.Build();
@@ -37,7 +42,17 @@ app.UseRouting();
 app.UseAuthentication();;
 
 app.UseAuthorization();
-app.MapRazorPages();    
+app.MapRazorPages();
+
+// adds a default admin
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+
+    // Call the CreateAdminUser method to create the admin user.
+    await GameStoreDbContext.CreateAdminUser(serviceProvider);
+}
+
 // area route for admin panel
 app.MapAreaControllerRoute(
     name: "admin",
@@ -53,5 +68,7 @@ app.MapAreaControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
 
 app.Run();

@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using PROG3050_HMJJ.Models;
+using PROG3050_HMJJ.Models.Account;
 
 namespace PROG3050_HMJJ.Areas.Member.Models
 {
@@ -11,7 +12,7 @@ namespace PROG3050_HMJJ.Areas.Member.Models
         public int ID { get; set; }
 
 
-        public virtual IdentityUser IdentityUser { get; set; }
+        public virtual User User { get; set; }
 
 
         public virtual Platforms? Platforms { get; set; }

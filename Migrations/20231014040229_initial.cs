@@ -137,8 +137,8 @@ namespace PROG3050_HMJJ.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -182,8 +182,8 @@ namespace PROG3050_HMJJ.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -203,7 +203,7 @@ namespace PROG3050_HMJJ.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -214,8 +214,8 @@ namespace PROG3050_HMJJ.Migrations
                 {
                     table.PrimaryKey("PK_Profiles", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Profiles_AspNetUsers_IdentityUserId",
-                        column: x => x.IdentityUserId,
+                        name: "FK_Profiles_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                 });
@@ -226,7 +226,7 @@ namespace PROG3050_HMJJ.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     PlatformsID = table.Column<int>(type: "int", nullable: true),
                     GenresID = table.Column<int>(type: "int", nullable: true),
                     LanguagesID = table.Column<int>(type: "int", nullable: true)
@@ -235,8 +235,8 @@ namespace PROG3050_HMJJ.Migrations
                 {
                     table.PrimaryKey("PK_Preferences", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Preferences_AspNetUsers_IdentityUserId",
-                        column: x => x.IdentityUserId,
+                        name: "FK_Preferences_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -346,11 +346,6 @@ namespace PROG3050_HMJJ.Migrations
                 column: "GenresID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Preferences_IdentityUserId",
-                table: "Preferences",
-                column: "IdentityUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Preferences_LanguagesID",
                 table: "Preferences",
                 column: "LanguagesID");
@@ -361,9 +356,14 @@ namespace PROG3050_HMJJ.Migrations
                 column: "PlatformsID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Profiles_IdentityUserId",
+                name: "IX_Preferences_UserId",
+                table: "Preferences",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Profiles_UserId",
                 table: "Profiles",
-                column: "IdentityUserId");
+                column: "UserId");
         }
 
         /// <inheritdoc />
