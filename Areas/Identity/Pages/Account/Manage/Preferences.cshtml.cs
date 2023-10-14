@@ -65,7 +65,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             public List<int> SelectedGenresIDList { get; set; }
 
 
-            [Required(ErrorMessage = "Language is Required")]
+            [RegularExpression("^[1-9]+[0-9]*$", ErrorMessage = "Language is Required")]
             public int LanguagesID { get; set; }
         }
 
@@ -114,7 +114,8 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             }
             else
             {
-                LanguageList = new SelectList(languages, "ID", "Name");
+                languages.Add(new Languages { ID = 0, Name = ""});
+                LanguageList = new SelectList(languages, "ID", "Name", 0);
             }
             
 
