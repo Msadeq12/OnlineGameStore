@@ -32,7 +32,8 @@ namespace PROG3050_HMJJ.Services
 
                 var message = new MailMessage
                 {
-                    From = new MailAddress(smtpUsername),
+                    From = new MailAddress("no-reply@cvgs.com","Harshal From CVGS Team"),
+                    ReplyTo = new MailAddress("no-reply@cvgs.com"),
                     Subject = subject,
                     Body = htmlMessage,
                     IsBodyHtml = true,
