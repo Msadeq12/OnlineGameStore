@@ -1,37 +1,37 @@
 ﻿@page
-@using PROG3050_HMJJ.Areas.Member.Models;
-@model Profiles
+@model ProfileModel
 @{
     ViewData["Title"] = "Profile";
-    ViewData["ActivePage"] = ManageNavPages.Profiles;
+    ViewData["ActivePage"] = ManageNavPages.Profile;
 }
 
 <h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
     <div class="col-md-6">
-        <form asp-controller="Profile" asp-action="Profile" id="profile-form" method="post">
+        <form id="profile-form" method="post">
             <div class="form-group row">
-                <label asp-for="FirstName" class="col-sm-4 col-form-label"></label>
+                <label asp-for="Profile.FirstName" class="col-sm-4 col-form-label"></label>
 
                 <div class="col-sm-6">
-                    <input asp-for="FirstName" class="form-control" />
+                    <input asp-for="Profile.FirstName" class="form-control" />
                 </div>
             </div>
 
             <div class="form-group row">
-                <label asp-for="LastName" class="col-sm-4 col-form-label"></label>
+                <label asp-for="Profile.LastName" class="col-sm-4 col-form-label"></label>
 
                 <div class="col-sm-6">
-                    <input asp-for="LastName" class="form-control" />
+                    <input asp-for="Profile.LastName" class="form-control" />
                 </div>
             </div>
 
             <div class="form-group row">
-                <label asp-for="Gender" class="col-sm-4 col-form-label"></label>
+                <label asp-for="Profile.Gender" class="col-sm-4 col-form-label"></label>
 
                 <div class="col-sm-6">
-                    <select asp-for="Gender" class="form-control">
-                        <option value="null"></option>
+                    <select asp-for="Profile.Gender" class="form-control">
+                        <option value=""></option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                         <option value="other">Other</option>
@@ -40,28 +40,30 @@
             </div>
 
             <div class="form-group row">
-                <label asp-for="DOB" class="col-sm-4 col-form-label"></label>
+                <label asp-for="Profile.DOB" class="col-sm-4 col-form-label"></label>
 
                 <div class="col-sm-4">
-                    <input asp-for="DOB" type="date" class="form-control" />
+                    <input asp-for="Profile.DOB" type="date" class="form-control" />
                 </div>
 
                 <div class="col">
-                    <span asp-validation-for="DOB" class="text-danger"></span>
+                    <span asp-validation-for="Profile.DOB" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="form-group row">
-                <label asp-for="RecievePromotions" class="col-sm-4 col-form-label"></label>
+                <label asp-for="Profile.RecievePromotions" class="col-sm-4 col-form-label"></label>
 
                 <div class="col-sm-1">
-                    <input asp-for="RecievePromotions" type="checkbox" />
+                    <input asp-for="Profile.RecievePromotions" type="checkbox" />
                 </div>
             </div>
 
+            <input type="hidden" asp-for="Profile.ID" />
+
             <div class="row">
                 <div>
-                    <button id="profileSaveBtn" type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </form>
