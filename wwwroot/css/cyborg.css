@@ -433,8 +433,11 @@ svg {
 table {
     caption-side: bottom;
     border-collapse: collapse;
+    
 }
-
+table-data{
+    color: white;
+}
 caption {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
@@ -456,6 +459,7 @@ th {
     border-color: inherit;
     border-style: solid;
     border-width: 0;
+   
 }
 
 label {

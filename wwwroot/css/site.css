@@ -54,3 +54,7 @@ body {
 .mult-select-tag ul li {
     color: black !important;
 }
+
+.table {
+    color: white;
+}

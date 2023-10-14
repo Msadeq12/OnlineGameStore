@@ -9,6 +9,7 @@
 <p>
     <a asp-action="Add">Add new Events</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -39,8 +40,8 @@
             {
                 <tr>No events in collection</tr>
             }
-
-        <tr>
+           
+            <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>

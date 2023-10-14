@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using PROG3050_HMJJ.Models.Account;
+using PROG3050_HMJJ.Services;
 
 namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
 {
@@ -25,7 +26,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
         public ForgotPasswordModel(UserManager<User> userManager, IEmailSender emailSender)
         {
             _userManager = userManager;
-            _emailSender = emailSender;
+            _emailSender = (EmailSender)emailSender;
         }
 
         /// <summary>
