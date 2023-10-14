@@ -111,7 +111,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -129,9 +129,21 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    // Check if the user is locked out and display a message
+                    var user = await _signInManager.UserManager.FindByNameAsync(Input.UserName);
+                    if (user != null)
+                    {
+                        var isLockedOut = await _signInManager.UserManager.IsLockedOutAsync(user);
+                        if (isLockedOut)
+                        {
+                            ModelState.AddModelError(string.Empty, "Account locked out. Please try again later.");
+                        }
+                    }
+
                     return Page();
                 }
             }
+            
 
             // If we got this far, something failed, redisplay form
             return Page();

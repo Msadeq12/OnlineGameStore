@@ -12,8 +12,8 @@ using PROG3050_HMJJ.Models.DataAccess;
 namespace PROG3050_HMJJ.Migrations
 {
     [DbContext(typeof(GameStoreDbContext))]
-    [Migration("20231013211439_initial")]
-    partial class initial
+    [Migration("20231014012553_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

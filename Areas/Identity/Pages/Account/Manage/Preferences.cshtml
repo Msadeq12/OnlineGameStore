@@ -67,7 +67,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Input.LanguagesID" class="control-label">Language</label>
-                <select asp-for="Input.LanguagesID" class="form-control">
+                <select asp-for="Input.LanguagesID"  class="form-control">
                     @if (Model.Preferences.Languages != null)
                     {
                         <option selected value="@Model.Preferences.Languages.ID">@Model.Preferences.Languages.Name</option>
