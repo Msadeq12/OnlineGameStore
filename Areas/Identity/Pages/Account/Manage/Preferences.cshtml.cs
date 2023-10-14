@@ -7,6 +7,7 @@ using PROG3050_HMJJ.Models;
 using PROG3050_HMJJ.Models.DataAccess;
 using System.ComponentModel.DataAnnotations;
 using PROG3050_HMJJ.Models.Account;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 {
@@ -57,22 +58,22 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required(ErrorMessage = "Platform is Required")]
-            public int PlatformsID { get; set; }
+            public List<int> SelectedPlatformsIDList { get; set; }
 
 
             [Required(ErrorMessage = "Genre is Required")]
-            public int GenresID { get; set; }
+            public List<int> SelectedGenresIDList { get; set; }
 
 
-            [Required(ErrorMessage = "Language is Required")]
+            [RegularExpression("^[1-9]+[0-9]*$", ErrorMessage = "Language is Required")]
             public int LanguagesID { get; set; }
         }
 
-        public List<Platforms> PlatformList { get; set; }
+        public MultiSelectList PlatformList { get; set; }
 
-        public List<Genres> GenreList { get; set; }
+        public MultiSelectList GenreList { get; set; }
 
-        public List<Languages> LanguageList { get; set; }
+        public SelectList LanguageList { get; set; }
 
         public Preferences Preferences { get; set; }
 
@@ -99,14 +100,26 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             }
 
             var platforms = await _context.Platforms.ToListAsync();
+            var selectedPlatforms = await _context.SelectedPlatforms.Where(p => p.User.Id == user.Id).Select(s => s.Platforms.ID).ToListAsync();
             var genres = await _context.Genres.ToListAsync();
+            var selectedGenres = await _context.SelectedGenres.Where(g => g.User.Id == user.Id).Select(s => s.Genres.ID).ToListAsync();
             var languages = await _context.Languages.ToListAsync();
 
-            Preferences = preferences;
+            PlatformList = new MultiSelectList(platforms, "ID", "Name", selectedPlatforms);
+            GenreList = new MultiSelectList(genres, "ID", "Name", selectedGenres);
+            
+            if(preferences.Languages != null)
+            {
+                LanguageList = new SelectList(languages, "ID", "Name", preferences.Languages.ID);
+            }
+            else
+            {
+                languages.Add(new Languages { ID = 0, Name = ""});
+                LanguageList = new SelectList(languages, "ID", "Name", 0);
+            }
+            
 
-            PlatformList = platforms;
-            GenreList = genres;
-            LanguageList = languages;
+            Preferences = preferences;
 
             return Page();
         }
@@ -127,9 +140,49 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             }
 
             var preferences = _context.Preferences.FirstOrDefault(p => p.User.Id == user.Id);
+            var previouslySelectedPlatforms = _context.SelectedPlatforms.Where(p => p.User.Id == user.Id);
+            var previouslySelectedGenres = _context.SelectedGenres.Where(p => p.User.Id == user.Id);
 
-            preferences.Platforms = await _context.Platforms.FirstOrDefaultAsync(p => p.ID == Input.PlatformsID);
-            preferences.Genres = await _context.Genres.FirstOrDefaultAsync(g => g.ID == Input.GenresID);
+            // For both SelectedPlatforms and SelectedGenres I am mimicking an upsert (i.e. delete if exists, then insert)
+            // Remove all Previously selected platforms
+            foreach (var selectedPlatform in previouslySelectedPlatforms)
+            {
+                _context.SelectedPlatforms.Remove(selectedPlatform);
+                await _context.SaveChangesAsync();
+            }
+
+            // Add newly selected platforms
+            foreach (var platformID in Input.SelectedPlatformsIDList)
+            {
+                var selectedPlatform = new SelectedPlatforms();
+                selectedPlatform.User = user;
+                var platform = _context.Platforms.FirstOrDefault(p => p.ID == platformID);
+                selectedPlatform.Platforms = platform;
+                _context.Add(selectedPlatform);
+                await _context.SaveChangesAsync();
+            }
+
+            // Remove all Previously selected genres
+            foreach (var selectedGenre in previouslySelectedGenres)
+            {
+                _context.SelectedGenres.Remove(selectedGenre);
+                await _context.SaveChangesAsync();
+            }
+
+            // Add newly selected genres
+            foreach (var genreID in Input.SelectedGenresIDList)
+            {
+                var selectedGenre = new SelectedGenres();
+                selectedGenre.User = user;
+                var genre = _context.Genres.FirstOrDefault(p => p.ID == genreID);
+                selectedGenre.Genres = genre;
+                _context.Add(selectedGenre);
+                await _context.SaveChangesAsync();
+            }
+
+
+            //preferences.Platforms = await _context.Platforms.FirstOrDefaultAsync(p => p.ID == Input.PlatformsID);
+            //preferences.Genres = await _context.Genres.FirstOrDefaultAsync(g => g.ID == Input.GenresID);
             preferences.Languages = await _context.Languages.FirstOrDefaultAsync(l => l.ID == Input.LanguagesID);
 
             _context.Preferences.Update(preferences);
