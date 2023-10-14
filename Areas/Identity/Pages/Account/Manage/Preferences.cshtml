@@ -15,78 +15,20 @@
         <form id="preferences-form" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Input.PlatformsID" class="control-label">Favourite Platform</label>
-                <select asp-for="Input.PlatformsID" class="form-control">
-                    @if (Model.Preferences.Platforms != null)
-                    {
-                        <option selected value="@Model.Preferences.Platforms.ID">@Model.Preferences.Platforms.Name</option>
-                        @foreach (Platforms p in Model.PlatformList)
-                        {
-                            @if (p.ID != Model.Preferences.Platforms.ID)
-                            {
-                                <option value="@p.ID">@p.Name</option>
-                            }
-                        }
-                    }
-                    else 
-                    {
-                        <option selected value=""></option>
-                        @foreach (Platforms p in Model.PlatformList)
-                        {
-                            <option value="@p.ID">@p.Name</option>
-                        }
-                    }
-                    
+                <label asp-for="Input.SelectedPlatformsIDList" class="control-label">Favourite Platforms</label>
+                <select asp-for="Input.SelectedPlatformsIDList" asp-items="Model.PlatformList" class="form-control" multiple>
                 </select>
-                <span asp-validation-for="Input.PlatformsID" class="text-danger"></span>
+                <span asp-validation-for="Input.SelectedPlatformsIDList" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.GenresID" class="control-label">Favourite Genre</label>
-                <select asp-for="Input.GenresID" class="form-control">
-                    @if (Model.Preferences.Genres != null)
-                    {
-                        <option selected value="@Model.Preferences.Genres.ID">@Model.Preferences.Genres.Name</option>
-                        @foreach (Genres g in Model.GenreList)
-                        {
-                            @if (g.ID != Model.Preferences.Genres.ID)
-                            {
-                                <option value="@g.ID">@g.Name</option>
-                            }
-                        }
-                    }
-                    else
-                    {
-                        <option selected value=""></option>
-                        @foreach (Genres g in Model.GenreList)
-                        {
-                            <option value="@g.ID">@g.Name</option>
-                        }
-                    }
+                <label asp-for="Input.SelectedGenresIDList" for="genres" class="control-label">Favourite Genres</label>
+                <select asp-for="Input.SelectedGenresIDList" asp-items="Model.GenreList" class="form-control" multiple>
                 </select>
-                <span asp-validation-for="Input.GenresID" class="text-danger"></span>
+                <span asp-validation-for="Input.SelectedGenresIDList" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.LanguagesID" class="control-label">Language</label>
-                <select asp-for="Input.LanguagesID" class="form-control">
-                    @if (Model.Preferences.Languages != null)
-                    {
-                        <option selected value="@Model.Preferences.Languages.ID">@Model.Preferences.Languages.Name</option>
-                        @foreach (Languages l in Model.LanguageList)
-                                {
-                            @if (l.ID != Model.Preferences.Languages.ID)
-                            {
-                                <option value="@l.ID">@l.Name</option>
-                            }
-                        }
-                    }
-                    else
-                    {
-                        <option selected value=""></option>
-                        @foreach (Languages l in Model.LanguageList)
-                                {
-                            <option value="@l.ID">@l.Name</option>
-                        }
-                    }
+                <select asp-for="Input.LanguagesID" asp-items="Model.LanguageList" class="form-control">
                 </select>
                 <span asp-validation-for="Input.LanguagesID" class="text-danger"></span>
             </div>
@@ -97,4 +39,8 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        new MultiSelectTag('Input_SelectedPlatformsIDList');  // id
+        new MultiSelectTag('Input_SelectedGenresIDList');  // id
+    </script>
 }

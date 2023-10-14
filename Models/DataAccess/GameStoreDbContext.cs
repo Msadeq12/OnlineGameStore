@@ -15,7 +15,7 @@ namespace PROG3050_HMJJ.Models.DataAccess
             base.OnModelCreating(builder);
 
             builder.Entity<Platforms>().HasData(
-                new Platforms { ID = 1, Name = "PS5"},
+                new Platforms { ID = 1, Name = "PS5" },
                 new Platforms { ID = 2, Name = "Xbox" },
                 new Platforms { ID = 3, Name = "PC" },
                 new Platforms { ID = 4, Name = "Android" },
@@ -41,7 +41,7 @@ namespace PROG3050_HMJJ.Models.DataAccess
                 new Languages { ID = 3, Name = "German" },
                 new Languages { ID = 4, Name = "Swedish" },
                 new Languages { ID = 5, Name = "Spanish" },
-                new Languages { ID = 6, Name = "Hindi"},
+                new Languages { ID = 6, Name = "Hindi" },
                 new Languages { ID = 7, Name = "Bengali" },
                 new Languages { ID = 8, Name = "Persian" },
                 new Languages { ID = 9, Name = "Japanese" },
@@ -87,6 +87,12 @@ namespace PROG3050_HMJJ.Models.DataAccess
 
 
         public DbSet<Languages> Languages { get; set; }
+
+
+        public DbSet<SelectedPlatforms> SelectedPlatforms { get; set; }
+
+
+        public DbSet<SelectedGenres> SelectedGenres { get; set; }
 
 
         public DbSet<Profiles> Profiles { get; set; }

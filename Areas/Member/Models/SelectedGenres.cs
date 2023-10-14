@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
 using PROG3050_HMJJ.Models;
 using PROG3050_HMJJ.Models.Account;
+using System.ComponentModel.DataAnnotations;
 
 namespace PROG3050_HMJJ.Areas.Member.Models
 {
-    public class Preferences
+    public class SelectedGenres
     {
         [Key]
         public int ID { get; set; }
@@ -13,6 +14,6 @@ namespace PROG3050_HMJJ.Areas.Member.Models
         public virtual User User { get; set; }
 
 
-        public virtual Languages? Languages { get; set; }
+        public virtual Genres Genres { get; set; }
     }
 }

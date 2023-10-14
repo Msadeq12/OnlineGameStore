@@ -49,3 +49,8 @@ body {
 .carousel-control-next {
     right: -50px; /* Adjust the right position as needed */
 }
+
+
+.mult-select-tag ul li {
+    color: black !important;
+}
