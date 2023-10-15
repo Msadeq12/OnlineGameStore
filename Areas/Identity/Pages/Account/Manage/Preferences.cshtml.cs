@@ -8,6 +8,8 @@ using PROG3050_HMJJ.Models.DataAccess;
 using System.ComponentModel.DataAnnotations;
 using PROG3050_HMJJ.Models.Account;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Humanizer;
 
 namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 {
@@ -16,22 +18,19 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly GameStoreDbContext _context;
+        private readonly ILogger<PreferencesModel> _logger;
 
         public PreferencesModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            GameStoreDbContext context)
+            GameStoreDbContext context,
+            ILogger<PreferencesModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _logger = logger;
         }
-
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
-        public string Username { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -40,12 +39,14 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
         [TempData]
         public string StatusMessage { get; set; }
 
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
+
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -57,15 +58,13 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required(ErrorMessage = "Platform is Required")]
-            public List<int> SelectedPlatformsIDList { get; set; }
+            public List<int>? SelectedPlatformsIDList { get; set; }
 
 
-            [Required(ErrorMessage = "Genre is Required")]
-            public List<int> SelectedGenresIDList { get; set; }
+            public List<int>? SelectedGenresIDList { get; set; }
 
 
-            [RegularExpression("^[1-9]+[0-9]*$", ErrorMessage = "Language is Required")]
+            [RegularExpression("^[1-9]+[0-9]*$", ErrorMessage = "Preferred language must be specified")]
             public int LanguagesID { get; set; }
         }
 
@@ -143,6 +142,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             var previouslySelectedPlatforms = _context.SelectedPlatforms.Where(p => p.User.Id == user.Id);
             var previouslySelectedGenres = _context.SelectedGenres.Where(p => p.User.Id == user.Id);
 
+
             // For both SelectedPlatforms and SelectedGenres I am mimicking an upsert (i.e. delete if exists, then insert)
             // Remove all Previously selected platforms
             foreach (var selectedPlatform in previouslySelectedPlatforms)
@@ -151,15 +151,19 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                 await _context.SaveChangesAsync();
             }
 
-            // Add newly selected platforms
-            foreach (var platformID in Input.SelectedPlatformsIDList)
+            // Avoid adding selected platforms to database if there aren't any selected
+            if (Input.SelectedPlatformsIDList != null)
             {
-                var selectedPlatform = new SelectedPlatforms();
-                selectedPlatform.User = user;
-                var platform = _context.Platforms.FirstOrDefault(p => p.ID == platformID);
-                selectedPlatform.Platforms = platform;
-                _context.Add(selectedPlatform);
-                await _context.SaveChangesAsync();
+                // Add newly selected platforms
+                foreach (var platformID in Input.SelectedPlatformsIDList)
+                {
+                    var selectedPlatform = new SelectedPlatforms();
+                    selectedPlatform.User = user;
+                    var platform = _context.Platforms.FirstOrDefault(p => p.ID == platformID);
+                    selectedPlatform.Platforms = platform;
+                    _context.Add(selectedPlatform);
+                    await _context.SaveChangesAsync();
+                }
             }
 
             // Remove all Previously selected genres
@@ -169,20 +173,21 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                 await _context.SaveChangesAsync();
             }
 
-            // Add newly selected genres
-            foreach (var genreID in Input.SelectedGenresIDList)
+            // Avoid adding selected genres to database if there aren't any selected
+            if (Input.SelectedGenresIDList != null)
             {
-                var selectedGenre = new SelectedGenres();
-                selectedGenre.User = user;
-                var genre = _context.Genres.FirstOrDefault(p => p.ID == genreID);
-                selectedGenre.Genres = genre;
-                _context.Add(selectedGenre);
-                await _context.SaveChangesAsync();
+                // Add newly selected genres
+                foreach (var genreID in Input.SelectedGenresIDList)
+                {
+                    var selectedGenre = new SelectedGenres();
+                    selectedGenre.User = user;
+                    var genre = _context.Genres.FirstOrDefault(p => p.ID == genreID);
+                    selectedGenre.Genres = genre;
+                    _context.Add(selectedGenre);
+                    await _context.SaveChangesAsync();
+                }
             }
 
-
-            //preferences.Platforms = await _context.Platforms.FirstOrDefaultAsync(p => p.ID == Input.PlatformsID);
-            //preferences.Genres = await _context.Genres.FirstOrDefaultAsync(g => g.ID == Input.GenresID);
             preferences.Languages = await _context.Languages.FirstOrDefaultAsync(l => l.ID == Input.LanguagesID);
 
             _context.Preferences.Update(preferences);
@@ -190,7 +195,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your preferences have been updated";
-            //_logger.LogInformation("User changed their preferences successfully.");
+            _logger.LogInformation("User changed their preferences successfully.");
             return RedirectToPage();
         }
 
