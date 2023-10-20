@@ -30,7 +30,7 @@ namespace PROG3050_HMJJ.Areas.Member.Models
         public DateTime? DOB { get; set; }
 
 
-        [Display(Name = "Recieve Promotional Emails")]
+        [Display(Name = "Receive Promotional Emails")]
         public bool RecievePromotions { get; set; }
     }
 }
