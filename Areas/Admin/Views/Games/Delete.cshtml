@@ -1,4 +1,4 @@
-﻿@model PROG3050_HMJJ.Areas.Admin.Models.Game
+﻿@model PROG3050_HMJJ.Areas.Admin.Models.Games
 
 @{
     ViewData["Title"] = "Delete";
@@ -12,10 +12,10 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.gameID)
+            @Html.DisplayNameFor(model => model.ID)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.gameID)
+            @Html.DisplayFor(model => model.ID)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
@@ -30,10 +30,16 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GenreID)
+            Genre
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GenreID)
+            @ViewData["genre"]
+        </dd>
+        <dt class="col-sm-2">
+            Platform
+        </dt>
+        <dd class="col-sm-10">
+            @ViewData["platform"]
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Publisher)

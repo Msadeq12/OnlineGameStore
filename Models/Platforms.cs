@@ -2,7 +2,7 @@
 
 namespace PROG3050_HMJJ.Models
 {
-    public class Platforms
+    public sealed class Platforms
     {
         [Key]
         public int ID { get; set; }

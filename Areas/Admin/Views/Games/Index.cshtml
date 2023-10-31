@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PROG3050_HMJJ.Areas.Admin.Models.Game>
+﻿@model IEnumerable<PROG3050_HMJJ.Areas.Admin.Models.Games>
 
 @{
     ViewData["Title"] = "CVGS Games";
@@ -36,8 +36,8 @@
                 <td>@item.Description</td>
                 <td>@item.Price.ToString("C")</td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.gameID}) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.gameID})
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID}) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID})
                 </td>
             </tr>
         

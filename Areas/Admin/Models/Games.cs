@@ -1,7 +1,6 @@
-﻿/*using Microsoft.AspNetCore.Identity;
-using PROG3050_HMJJ.Models;
+﻿using PROG3050_HMJJ.Models;
 using System.ComponentModel.DataAnnotations;
-using PROG3050_HMJJ.Models.Account;
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace PROG3050_HMJJ.Areas.Admin.Models
@@ -12,34 +11,40 @@ namespace PROG3050_HMJJ.Areas.Admin.Models
         public int ID { get; set; }
 
 
+        [Required]
         public string Title { get; set; }
 
 
+        [Required]
         public string Description { get; set; }
 
 
-        public double Price { get; set; }
-
-
-        public string GameFilePath { get; set; }
-
-
-        public string Type { get; set; }
-
-
+        [Required]
         public string Publisher { get; set; }
 
 
-        public DateTime ReleaseDate { get; set; }
+        [Required]
+        public int ReleaseYear { get; set; }
 
 
-        public virtual User User { get; set; }
+        [Required]
+        public decimal Price { get; set; }
 
 
-        public virtual Genres Genres { get; set; }
+        [ForeignKey("Genres")]
+        public int GenresID { get; set; }
 
 
-        public virtual Platforms Platforms { get; set; }
+        [ForeignKey("Platforms")]
+        public int PlatformsID { get; set; }
+
+
+        public virtual Genres? Genres { get; set; }
+
+
+        public virtual Platforms? Platforms { get; set; }
+
+
+        //public Blob Icon { get; set; }
     }
 }
-*/

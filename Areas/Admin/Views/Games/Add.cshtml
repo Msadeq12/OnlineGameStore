@@ -1,4 +1,5 @@
-﻿@model PROG3050_HMJJ.Areas.Admin.Models.Game        
+﻿@using PROG3050_HMJJ.Models;
+@model PROG3050_HMJJ.Areas.Admin.Models.Games       
 
 @{
     ViewData["Title"] = "Add Game";
@@ -13,7 +14,7 @@
         <form asp-action="Add" method="post" class="form-horizontal">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <input type="hidden" asp-for="gameID"/>
+            <input type="hidden" asp-for="ID"/>
 
             <div class="form-group">
                 <label asp-for="Title" class="control-label">Game Title:</label>
@@ -34,16 +35,30 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="GenreID" class="control-label">Genre:</label>
-                <select asp-for="GenreID" class="form-control">
+                <label asp-for="GenresID" class="control-label">Genre:</label>
+                <select asp-for="GenresID" class="form-control">
                     <option value=""></option>
-                    @foreach (Genre g in ViewBag.Genres)
+                    @foreach (Genres g in ViewBag.Genres)
                     {
-                        <option value="@g.GenreID">@g.GenreName</option>
+                        <option value="@g.ID">@g.Name</option>
                     }
                 </select>
-                <span asp-validation-for="GenreID" class="text-danger"></span>
+                <span asp-validation-for="GenresID" class="text-danger"></span>
             </div>
+
+
+            <div class="form-group">
+                <label asp-for="PlatformsID" class="control-label">Platform:</label>
+                <select asp-for="PlatformsID" class="form-control">
+                    <option value=""></option>
+                    @foreach (Platforms g in ViewBag.Platforms)
+                    {
+                        <option value="@g.ID">@g.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="PlatformsID" class="text-danger"></span>
+            </div>
+
 
             <div class="form-group">
                 <label asp-for="Publisher" class="control-label">Publisher:</label>

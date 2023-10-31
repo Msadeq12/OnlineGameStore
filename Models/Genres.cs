@@ -2,7 +2,7 @@
 
 namespace PROG3050_HMJJ.Models
 {
-    public class Genres
+    public sealed class Genres
     {
         [Key]
         public int ID { get; set; }

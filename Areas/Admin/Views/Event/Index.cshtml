@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PROG3050_HMJJ.Areas.Admin.Models.Event>
+﻿@model IEnumerable<PROG3050_HMJJ.Areas.Admin.Models.Events>
 
 @{
     ViewData["Title"] = "Events";
@@ -58,8 +58,8 @@
                 @Html.DisplayFor(modelItem => item.Date.TimeOfDay)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.eventID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.eventID })
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
             </td>
         </tr>
 }

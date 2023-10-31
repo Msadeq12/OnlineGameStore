@@ -3,18 +3,21 @@ using Microsoft.AspNetCore.Mvc;
 using PROG3050_HMJJ.Areas.Admin.Models;
 using System.Diagnostics;
 
+
 namespace PROG3050_HMJJ.Areas.Admin.Controllers
 {
     [Authorize(Roles = "Admin")]
     [Area("Admin")]
-    public class HomeController : Controller
+    public sealed class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
+
 
         [Route("[area]/")]
         public IActionResult Index()
@@ -27,6 +30,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
         {
             return View();
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

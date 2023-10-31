@@ -3,22 +3,23 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using PROG3050_HMJJ.Models.Account;
 
+
 namespace PROG3050_HMJJ.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
-    public class RoleController : Controller
+    public sealed class RoleController : Controller
     {
-        private RoleManager<IdentityRole> _roleManager;
-        private UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<User> _userManager;
+
 
         public RoleController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
         {
             _roleManager = roleManager;
-
             _userManager = userManager;
-
         }
+
 
         [HttpGet]
         public IActionResult Index()
@@ -28,11 +29,13 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
             return View(roles);
         }
 
+
         [HttpGet]
         public ViewResult CreateRole()
         {
             return View();
         }
+
 
         [HttpPost]
         public async Task<IActionResult> CreateRole(IdentityRole role)
@@ -44,8 +47,5 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
 
             return RedirectToAction ("Index");
         }
-
-
-
     }
 }
