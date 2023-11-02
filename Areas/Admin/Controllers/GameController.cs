@@ -137,7 +137,8 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
 
             string url = $"https://localhost:7108/api/game/{id}";
             HttpResponseMessage response = client.PutAsJsonAsync(url, game).Result;
-
+            Console.WriteLine("Edit status code: " + response.StatusCode);
+            Console.WriteLine("Game content: " + JsonConvert.SerializeObject(game));
 
             if (response.IsSuccessStatusCode)
             {
@@ -146,7 +147,8 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
 
             else
             {
-                ViewBag.Genres = genres;
+                ViewBag.Genres = genresPlatforms.GenreList;
+                ViewBag.Platforms = genresPlatforms.PlatformList;
                 return View(game);
             }
 

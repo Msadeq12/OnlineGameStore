@@ -20,7 +20,7 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
 
 
         [HttpGet]
-        public IActionResult Index()
+        public ViewResult Index()
         {
             string url = "https://localhost:7108/api/game";
 
@@ -40,8 +40,10 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
             return View(games);
         }
 
+   
+
         [HttpGet]
-        public IActionResult Details(int id)
+        public ViewResult Details(int id)
         {
             string url = $"https://localhost:7108/api/game/{id}";
 
