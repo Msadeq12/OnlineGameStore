@@ -17,5 +17,6 @@
         public string? GameGenre { get; set; }
 
         public string? GamePlatform { get; set; }
+
     }
 }
