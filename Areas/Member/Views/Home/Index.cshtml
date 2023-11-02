@@ -1,8 +1,100 @@
-﻿@{
+﻿@model List<PROG3050_HMJJ.Areas.Admin.Models.GamesViewModel>
+
+@{
     ViewData["Title"] = "Member Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome, this is Member page</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    
+    <form method="get">
+        <input type="search" asp-action="" />
+
+        <input type="submit" value="Search" />  
+    </form>
+    
 </div>
+
+<div class="row">
+    <h1>Our Game Collection</h1>
+    
+    <div>
+        <div id="imageCarousel" class="carousel" data-ride="carousel">
+
+            <div class="carousel-inner">
+
+                <div class="carousel-item active">
+
+                    <div class="card">
+
+                        <div class="card-body">
+                            <h5 class="card-title"><a asp-action="Details" asp-controller="Home" asp-route-id="@Model[0].ID">@Model[0].Title</a></h5>
+
+                            <p class="card-text">
+                                @Model[0].Description
+                            </p>
+
+                            <p class="card-text">
+                                @Model[0].Price.ToString("C")
+                            </p>
+
+                            <a asp-controller="Details" class="btn btn-primary" asp-route-id="@Model[0].ID">Details</a>
+                        </div>
+
+                    </div>
+                </div>
+
+                @for (int i = 1; i <= Model.Count - 1; i++)
+                {
+                    <div class="carousel-item">
+
+                        <div class="card">
+
+                            <div class="card-body">
+                                <h5 class="card-title"><a asp-action="Details" asp-controller="Home" asp-route-id="@Model[i].ID">@Model[i].Title</a></h5>
+
+                                <p class="card-text">
+                                    @Model[i].Description
+                                </p>
+
+                                <p class="card-text">
+                                    @Model[i].Price.ToString("C")
+                                </p>
+
+                                <a asp-controller="Details" class="btn btn-primary" asp-route-id="@Model[i].ID">Details</a>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+                <a class="carousel-control-prev" href="#imageCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#imageCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </a>
+            </div>
+
+
+            
+        </div>
+    </div>
+   
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        $(document).ready(function () {
+
+            // Initialize the Bootstrap Carousel
+
+            $('#imageCarousel').carousel();
+
+        });
+
+    </script>
+}
