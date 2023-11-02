@@ -8,17 +8,14 @@
 
 <h1>CVGS Collections</h1>
 
-<p>
-    <a class="btn btn-primary" asp-action="Add">Add New Game</a>
-</p>
-
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>Title</th>
             <th>Description</th>
             <th>Price (CAD)</th>
-            <th>Actions</th>
+            <th>Genre</th>
+            <th>Platform</th>
         </tr>
     </thead>
 
@@ -36,13 +33,9 @@
                 <td>@item.Title</td>
                 <td>@item.Description</td>
                 <td>@item.Price.ToString("C")</td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ID}) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ID})
-                </td>
+                <td>@item.Genres.Name</td>
+                <td>@item.Platforms.Name</td>
             </tr>
-        
-        
-}
+        }
     </tbody>
 </table>

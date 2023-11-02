@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using PROG3050_HMJJ.Areas.Admin.Models;
 using PROG3050_HMJJ.Models;
 using PROG3050_HMJJ.Models.DataAccess;
 

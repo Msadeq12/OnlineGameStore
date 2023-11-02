@@ -1,9 +1,8 @@
-﻿using PROG3050_HMJJ.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace PROG3050_HMJJ.Areas.Admin.Models
+namespace PROG3050_HMJJ.Models
 {
     public class Games
     {
