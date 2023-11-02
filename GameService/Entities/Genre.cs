@@ -1,4 +1,4 @@
-﻿namespace GameService.Models
+﻿namespace GameService.Entities
 {
     public class Genre
     {

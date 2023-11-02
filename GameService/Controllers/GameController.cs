@@ -1,6 +1,8 @@
-﻿using GameService.Models;
+﻿using GameService.Entities;
+using GameService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Numerics;
 
 namespace GameService.Controllers
 {
@@ -22,7 +24,28 @@ namespace GameService.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAllGames()
         {
-            return Ok(await _context.Games.ToListAsync());
+            List<GameDTO> gameClientList = new List<GameDTO>();
+
+            foreach (Game game in _context.Games)
+            {
+                GameDTO gameClient = new GameDTO()
+                {
+                    ID = game.gameID,
+                    Title = game.Title,
+                    Description = game.Description,
+                    Price = game.Price,
+                    Publisher = game.Publisher,
+                    ReleaseYear = game.ReleaseYear,
+                    GameGenre = _context.Genres.FirstOrDefault(g => g.GenreID == game.GenreID)?.GenreName,
+                    GamePlatform = _context.Platforms.FirstOrDefault(p => p.PlatformID == game.PlatformID)?.Name
+                };
+
+                gameClientList.Add(gameClient);
+            }
+
+            return Ok(gameClientList);
+
+            //return Ok(await _context.Games.ToListAsync());
         }
 
         /// <summary>
@@ -30,10 +53,16 @@ namespace GameService.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("Genres")]
-        public async Task<ActionResult> GetAllGenres()
+        [Route("GenresPlatforms")]
+        public async Task<ActionResult> GetAllGenresPlatforms()
         {
-            return Ok( await _context.Genres.ToListAsync());
+            GenrePlatformDTO clientList = new()
+            {
+                GenreList = _context.Genres.ToList(),
+                PlatformList = _context.Platforms.ToList()
+            };
+
+            return Ok(clientList);
         }
 
         /// <summary>
@@ -42,17 +71,32 @@ namespace GameService.Controllers
         /// <param name="id">refers to gameID</param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetGame(int id)
+        public async Task<ActionResult> GetGameById(int id)
         {
             var game = await _context.Games.FindAsync(id);
 
-            if (game == null)
+            GameDTO gameById = new()
+            {
+                ID = game.gameID,
+                Title = game.Title,
+                Description = game.Description,
+                Price = game.Price,
+                Publisher = game.Publisher,
+                ReleaseYear = game.ReleaseYear,
+                GameGenre = _context.Genres.FirstOrDefault(g => g.GenreID == game.GenreID)?.GenreName,
+                GamePlatform = _context.Platforms.FirstOrDefault(p => p.PlatformID == game.PlatformID)?.Name
+            };
+
+            if (gameById == null)
             {
                 return NotFound();
             }
 
-            return Ok(game);
+            return Ok(gameById);
         }
+
+
+       
 
         /// <summary>
         /// Adds a new game to DB
@@ -60,12 +104,24 @@ namespace GameService.Controllers
         /// <param name="game">Game object serialized from the client</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult> AddGame([FromBody] Game game)
+        public async Task<ActionResult> AddGame([FromBody] GameDTO game)
         {
-            _context.Games.Add(game);
+            Game newGame = new()
+            {
+                Title = game.Title,
+                Description = game.Description,
+                Price = game.Price.Value,
+                Publisher = game.Publisher,
+                ReleaseYear = game.ReleaseYear.Value,
+                GenreID = _context.Genres.FirstOrDefault(g => g.GenreName == game.GameGenre)?.GenreID ?? 0,
+                PlatformID = _context.Platforms.FirstOrDefault(p => p.Name == game.GamePlatform)?.PlatformID ?? 0
+
+            };
+
+            _context.Games.Add(newGame);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGame", new { id = game.gameID }, game);
+            return CreatedAtAction("GetGame", new { id = newGame.gameID }, newGame);
         }
 
         /// <summary>
@@ -75,14 +131,29 @@ namespace GameService.Controllers
         /// <param name="game">Game object is altered and then updated to DB</param>
         /// <returns>An updated game object</returns>
         [HttpPut("{id}")]
-        public async Task<ActionResult<Game>> UpdateGame([FromRoute]int id, [FromBody]Game game)
+        public async Task<ActionResult<GameDTO>> UpdateGame([FromRoute]int id, [FromBody]GameDTO game)
         {
-            if (id != game.gameID)
+            Game updateGame = new()
+            {
+                gameID = game.ID,
+                Title = game.Title,
+                Description = game.Description,
+                Price = game.Price.Value,
+                Publisher = game.Publisher,
+                ReleaseYear = game.ReleaseYear.Value,
+                GenreID = _context.Genres.FirstOrDefault(g => g.GenreName == game.GameGenre)?.GenreID ?? 0,
+                PlatformID = _context.Platforms.FirstOrDefault(p => p.Name == game.GamePlatform)?.PlatformID ?? 0
+
+            };
+
+            if (id != updateGame.gameID)
             {
                 return BadRequest();
             }
 
-            _context.Games.Update(game);
+
+
+            _context.Games.Update(updateGame);
             //_context.Entry(game).State = EntityState.Modified;
 
             try
@@ -105,6 +176,7 @@ namespace GameService.Controllers
 
             return game;
         }
+
         /// <summary>
         /// Deletes game from DB
         /// </summary>

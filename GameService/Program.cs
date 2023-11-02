@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using GameService.Models;
+using GameService.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
