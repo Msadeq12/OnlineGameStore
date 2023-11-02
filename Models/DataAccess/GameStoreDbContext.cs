@@ -10,7 +10,7 @@ namespace PROG3050_HMJJ.Models.DataAccess
 {
     public class GameStoreDbContext : IdentityDbContext<User>
     {
-        #region seedMiscData
+        #region seedMiscDataAndDefineCascades
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -60,6 +60,19 @@ namespace PROG3050_HMJJ.Models.DataAccess
                 new Events { ID = 2, Name = "The Small Event", Location = "The Small City", Description = "A small event in the small city", Date = new DateTime(2021, 12, 26) }
             );
             #endregion
+
+            #region defineCascades
+            builder.Entity<User>()
+                .HasOne(u => u.Preferences)
+                .WithOne(p => p.User)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            builder.Entity<User>()
+               .HasOne(u => u.Profiles)
+               .WithOne(p => p.User)
+               .OnDelete(DeleteBehavior.Cascade);
+            #endregion;
         }
         #endregion
 
@@ -87,6 +100,50 @@ namespace PROG3050_HMJJ.Models.DataAccess
                 User user = new User { UserName = username, Email="admin@cvgs.com", NormalizedEmail="ADMIN@CVGS.COM", EmailConfirmed = true };
                 var result = await userManager.CreateAsync(user, password);
                 if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, roleName);
+                }
+            }
+        }
+        #endregion
+
+
+        #region seedUserMember
+        public static async Task CreateMemberUser(IServiceProvider serviceProvider)
+        {
+            UserManager<User> userManager =
+                serviceProvider.GetRequiredService<UserManager<User>>();
+            RoleManager<IdentityRole> roleManager = serviceProvider
+                .GetRequiredService<RoleManager<IdentityRole>>();
+
+            string username = "member";
+            string password = "Test1$";
+            string roleName = "Member";
+
+            // if role doesn't exist, create it
+            if (await roleManager.FindByNameAsync(roleName) == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole(roleName));
+            }
+
+            var user = await userManager.FindByNameAsync(username);
+
+            // if username doesn't exist, create it and add it to role
+            if (user == null)
+            {
+                user = new User { UserName = username, Email = "member@cvgs.com", NormalizedEmail = "MEMBER@CVGS.COM", EmailConfirmed = true };
+                var result = await userManager.CreateAsync(user, password);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, roleName);
+                }
+            }
+            else
+            {
+                var deleteUserResult = await userManager.DeleteAsync(user);
+                user = new User { UserName = username, Email = "member@cvgs.com", NormalizedEmail = "MEMBER@CVGS.COM", EmailConfirmed = true };
+                var createUserResult = await userManager.CreateAsync(user, password);
+                if (deleteUserResult.Succeeded && createUserResult.Succeeded)
                 {
                     await userManager.AddToRoleAsync(user, roleName);
                 }

@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using PROG3050_HMJJ.Areas.Member.Models;
 using PROG3050_HMJJ.Models;
 using PROG3050_HMJJ.Models.Account;
 using PROG3050_HMJJ.Models.DataAccess;
@@ -12,7 +10,7 @@ using PROG3050_HMJJ.Models.DataAccess;
 namespace PROG3050_HMJJ.Areas.Member.Controllers
 {
     [Area("Member")]
-    //[Authorize(Roles = "Member")]
+    [Authorize(Roles = "Member")]
     public sealed class GamesController : Controller
     {
         private readonly GameStoreDbContext _context;
