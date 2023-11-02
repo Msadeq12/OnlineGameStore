@@ -118,6 +118,8 @@ namespace PROG3050_HMJJ.Models.DataAccess
 
 
         public DbSet<Games> Games { get; set; }
+
+        public DbSet<Events> Events { get; set; }
         #endregion
 
 

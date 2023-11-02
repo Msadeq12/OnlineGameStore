@@ -20,7 +20,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
 
 
         [HttpGet]
-        public ViewResult Index()
+        public IActionResult Index()
         {
             var events = _context.Set<Events>().ToList();
             return View(events);

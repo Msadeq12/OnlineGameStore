@@ -53,6 +53,22 @@ namespace PROG3050_HMJJ.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Events",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Events", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Genres",
                 columns: table => new
                 {
@@ -326,6 +342,15 @@ namespace PROG3050_HMJJ.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Events",
+                columns: new[] { "ID", "Date", "Description", "Location", "Name" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2021, 12, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "A big event in the big city", "The Big City", "The Big Event" },
+                    { 2, new DateTime(2021, 12, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "A small event in the small city", "The Small City", "The Small Event" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Genres",
                 columns: new[] { "ID", "Name" },
                 values: new object[,]
@@ -472,6 +497,9 @@ namespace PROG3050_HMJJ.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Events");
 
             migrationBuilder.DropTable(
                 name: "Games");

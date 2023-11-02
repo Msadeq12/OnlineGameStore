@@ -12,7 +12,7 @@ using PROG3050_HMJJ.Models.DataAccess;
 namespace PROG3050_HMJJ.Migrations
 {
     [DbContext(typeof(GameStoreDbContext))]
-    [Migration("20231026203915_Initial")]
+    [Migration("20231102190509_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -160,6 +160,52 @@ namespace PROG3050_HMJJ.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("PROG3050_HMJJ.Areas.Admin.Models.Events", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Events");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Date = new DateTime(2021, 12, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "A big event in the big city",
+                            Location = "The Big City",
+                            Name = "The Big Event"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Date = new DateTime(2021, 12, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "A small event in the small city",
+                            Location = "The Small City",
+                            Name = "The Small Event"
+                        });
                 });
 
             modelBuilder.Entity("PROG3050_HMJJ.Areas.Admin.Models.Games", b =>
