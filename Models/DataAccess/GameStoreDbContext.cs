@@ -46,6 +46,20 @@ namespace PROG3050_HMJJ.Models.DataAccess
                 new Languages { ID = 9, Name = "Japanese" },
                 new Languages { ID = 10, Name = "Italian" }
             );
+
+
+            #region defineCascades
+            builder.Entity<User>()
+                .HasOne(u => u.Preferences)
+                .WithOne(p => p.User)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            builder.Entity<User>()
+               .HasOne(u => u.Profiles)
+               .WithOne(p => p.User)
+               .OnDelete(DeleteBehavior.Cascade);
+            #endregion
         }
 
 
@@ -60,22 +74,11 @@ namespace PROG3050_HMJJ.Models.DataAccess
             string adminPassword = "Test1$";
             string adminRoleName = "Admin";
 
-            string memberUsername = "member";
-            string memberPassword = "Test1$";
-            string memberRoleName = "Member";
-
 
             // if role doesn't exist, create it
             if (await roleManager.FindByNameAsync(adminRoleName) == null)
             {
                 await roleManager.CreateAsync(new IdentityRole(adminRoleName));
-            }
-
-
-            // if role doesn't exist, create it
-            if (await roleManager.FindByNameAsync(memberRoleName) == null)
-            {
-                await roleManager.CreateAsync(new IdentityRole(memberRoleName));
             }
 
 
@@ -89,33 +92,51 @@ namespace PROG3050_HMJJ.Models.DataAccess
                     await userManager.AddToRoleAsync(admin, adminRoleName);
                 }
             }
+        }
 
 
-            //Member account is needed for testing member panel components
-            var member = new User { UserName = memberUsername, Email = "member@cvgs.com", NormalizedEmail = "MEMBER@CVGS.COM", EmailConfirmed = true };
+        #region seedUserMember
+        public static async Task CreateMemberUser(IServiceProvider serviceProvider)
+        {
+            UserManager<User> userManager =
+                serviceProvider.GetRequiredService<UserManager<User>>();
+            RoleManager<IdentityRole> roleManager = serviceProvider
+                .GetRequiredService<RoleManager<IdentityRole>>();
 
-            // if member username doesn't exist, create it and add it to role
-            if (await userManager.FindByNameAsync(memberUsername) == null)
+            string username = "member";
+            string password = "Test1$";
+            string roleName = "Member";
+
+            // if role doesn't exist, create it
+            if (await roleManager.FindByNameAsync(roleName) == null)
             {
-                
-                var result = await userManager.CreateAsync(member, memberPassword);
+                await roleManager.CreateAsync(new IdentityRole(roleName));
+            }
+
+            var user = await userManager.FindByNameAsync(username);
+
+            // if username doesn't exist, create it and add it to role
+            if (user == null)
+            {
+                user = new User { UserName = username, Email = "member@cvgs.com", NormalizedEmail = "MEMBER@CVGS.COM", EmailConfirmed = true };
+                var result = await userManager.CreateAsync(user, password);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(member, memberRoleName);
+                    await userManager.AddToRoleAsync(user, roleName);
                 }
             }
-           /* else // Attempt to reinitialize user (Need to work out how to cascade delete though so tests can be repeated)
+            else
             {
-                //Resets member select data so that testing can be done for initial setup
-                var test = await userManager.FindByNameAsync(memberUsername);
-                var deleteResult = await userManager.DeleteAsync(test);
-                var createResult = await userManager.CreateAsync(member);
-                if (deleteResult.Succeeded)
+                var deleteUserResult = await userManager.DeleteAsync(user);
+                user = new User { UserName = username, Email = "member@cvgs.com", NormalizedEmail = "MEMBER@CVGS.COM", EmailConfirmed = true };
+                var createUserResult = await userManager.CreateAsync(user, password);
+                if (deleteUserResult.Succeeded && createUserResult.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(member, memberRoleName);
+                    await userManager.AddToRoleAsync(user, roleName);
                 }
-            }*/
+            }
         }
+        #endregion
 
 
         public DbSet<Preferences> Preferences { get; set; }
