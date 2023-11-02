@@ -72,7 +72,7 @@ namespace PROG3050_HMJJ.Models.DataAccess
                .HasOne(u => u.Profiles)
                .WithOne(p => p.User)
                .OnDelete(DeleteBehavior.Cascade);
-            #endregion;
+            #endregion
         }
         #endregion
 
