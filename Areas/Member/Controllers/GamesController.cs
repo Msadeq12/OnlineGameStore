@@ -55,9 +55,9 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
 
                 // Grab data for user
                 var platforms = await _context.Platforms.ToListAsync();
-                var selectedPlatforms = await _context.SelectedPlatforms.Where(p => p.User.Id == user.Id).Select(s => s.Platforms).ToListAsync();
+                var selectedPlatforms = await _context.SelectedPlatforms.Where(p => p.Preferences.ID == preferences.ID).Select(s => s.Platforms).ToListAsync();
                 var genres = await _context.Genres.ToListAsync();
-                var selectedGenres = await _context.SelectedGenres.Where(g => g.User.Id == user.Id).Select(s => s.Genres).ToListAsync();
+                var selectedGenres = await _context.SelectedGenres.Where(g => g.Preferences.ID == preferences.ID).Select(s => s.Genres).ToListAsync();
                 var languages = await _context.Languages.ToListAsync();
                 
                 foreach (var genre in selectedGenres)
