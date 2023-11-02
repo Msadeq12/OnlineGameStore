@@ -11,7 +11,7 @@ namespace PROG3050_HMJJ.Areas.Member.Models
         public int ID { get; set; }
 
 
-        public virtual User User { get; set; }
+        public virtual Preferences Preferences { get; set; }
 
 
         public virtual Platforms Platforms { get; set; }

@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PROG3050_HMJJ.Models.Account;
-using PROG3050_HMJJ.Areas.Admin.Models;
 using PROG3050_HMJJ.Areas.Member.Models;
-using System.Reflection.Emit;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace PROG3050_HMJJ.Models.DataAccess
 {
@@ -46,36 +45,78 @@ namespace PROG3050_HMJJ.Models.DataAccess
                 new Languages { ID = 8, Name = "Persian" },
                 new Languages { ID = 9, Name = "Japanese" },
                 new Languages { ID = 10, Name = "Italian" }
-                );
+            );
         }
+
 
         public static async Task CreateAdminUser(IServiceProvider serviceProvider)
         {
-            UserManager<User> userManager =
+            var userManager =
                 serviceProvider.GetRequiredService<UserManager<User>>();
-            RoleManager<IdentityRole> roleManager = serviceProvider
+            var roleManager = serviceProvider
                 .GetRequiredService<RoleManager<IdentityRole>>();
 
-            string username = "admin";
-            string password = "Test1$";
-            string roleName = "Admin";
+            string adminUsername = "admin";
+            string adminPassword = "Test1$";
+            string adminRoleName = "Admin";
+
+            string memberUsername = "member";
+            string memberPassword = "Test1$";
+            string memberRoleName = "Member";
+
 
             // if role doesn't exist, create it
-            if (await roleManager.FindByNameAsync(roleName) == null)
+            if (await roleManager.FindByNameAsync(adminRoleName) == null)
             {
-                await roleManager.CreateAsync(new IdentityRole(roleName));
+                await roleManager.CreateAsync(new IdentityRole(adminRoleName));
             }
-            // if username doesn't exist, create it and add it to role
-            if (await userManager.FindByNameAsync(username) == null)
+
+
+            // if role doesn't exist, create it
+            if (await roleManager.FindByNameAsync(memberRoleName) == null)
             {
-                User user = new User { UserName = username, Email="admin@cvgs.com", NormalizedEmail="ADMIN@CVGS.COM", EmailConfirmed = true };
-                var result = await userManager.CreateAsync(user, password);
+                await roleManager.CreateAsync(new IdentityRole(memberRoleName));
+            }
+
+
+            // if admin username doesn't exist, create it and add it to role
+            if (await userManager.FindByNameAsync(adminUsername) == null)
+            {
+                var admin = new User { UserName = adminUsername, Email="admin@cvgs.com", NormalizedEmail="ADMIN@CVGS.COM", EmailConfirmed = true };
+                var result = await userManager.CreateAsync(admin, adminPassword);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user, roleName);
+                    await userManager.AddToRoleAsync(admin, adminRoleName);
                 }
             }
+
+
+            //Member account is needed for testing member panel components
+            var member = new User { UserName = memberUsername, Email = "member@cvgs.com", NormalizedEmail = "MEMBER@CVGS.COM", EmailConfirmed = true };
+
+            // if member username doesn't exist, create it and add it to role
+            if (await userManager.FindByNameAsync(memberUsername) == null)
+            {
+                
+                var result = await userManager.CreateAsync(member, memberPassword);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(member, memberRoleName);
+                }
+            }
+           /* else // Attempt to reinitialize user (Need to work out how to cascade delete though so tests can be repeated)
+            {
+                //Resets member select data so that testing can be done for initial setup
+                var test = await userManager.FindByNameAsync(memberUsername);
+                var deleteResult = await userManager.DeleteAsync(test);
+                var createResult = await userManager.CreateAsync(member);
+                if (deleteResult.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(member, memberRoleName);
+                }
+            }*/
         }
+
 
         public DbSet<Preferences> Preferences { get; set; }
 
@@ -100,7 +141,6 @@ namespace PROG3050_HMJJ.Models.DataAccess
 
         public GameStoreDbContext(DbContextOptions<GameStoreDbContext> options) : base(options)
         {
-
         }
     }
 }
