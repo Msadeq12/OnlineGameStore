@@ -9,7 +9,7 @@ namespace PROG3050_HMJJ.Areas.Member.Models
         [Key]
         public int ID { get; set; }
 
-        public virtual User? user { get; set; }
+        public virtual User? User { get; set; }
 
         [Required(ErrorMessage = "Address line 1 is required")]
         [Display(Name = "Address line 1")]
@@ -25,13 +25,16 @@ namespace PROG3050_HMJJ.Areas.Member.Models
         public string PostalCode { get; set; }
 
         [Required]
+        [Display(Name = "Country")]
         public virtual Countries Country { get; set; }
 
         [Required]
         public virtual Regions Region { get; set; }
 
+        [Display(Name = "Delivery Instructions")]
         public string? DeliveryInstructions { get; set; }
 
+        [Display(Name = "Mailing and Shipping Addresses Are the Same")]
         public Boolean SameAddress { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
