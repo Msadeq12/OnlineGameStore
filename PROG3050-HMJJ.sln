@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PROG3050-HMJJ", "PROG3050-HMJJ.csproj", "{E73877C9-40D4-4E45-85B8-87A5E987DEAF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PROG3050-HMJJ.Tests", "..\PROG3050-HMJJ.Tests\PROG3050-HMJJ.Tests.csproj", "{FBB4F469-3B06-4154-B344-FAA071EF9D90}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{E73877C9-40D4-4E45-85B8-87A5E987DEAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E73877C9-40D4-4E45-85B8-87A5E987DEAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E73877C9-40D4-4E45-85B8-87A5E987DEAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBB4F469-3B06-4154-B344-FAA071EF9D90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBB4F469-3B06-4154-B344-FAA071EF9D90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBB4F469-3B06-4154-B344-FAA071EF9D90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBB4F469-3B06-4154-B344-FAA071EF9D90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
