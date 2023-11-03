@@ -40,6 +40,29 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
             return View(games);
         }
 
+        [HttpGet]
+        public ViewResult Search(string searchString)
+        {
+
+            string url = $"https://localhost:7108/api/game/search?search={searchString}";
+
+            HttpResponseMessage searchResponse = _client.GetAsync(url).Result;
+            Console.WriteLine("Search status code: " + searchResponse.StatusCode);
+            Console.WriteLine("URL: " + url);
+            List<GamesViewModel>? games;
+
+            if (searchResponse.IsSuccessStatusCode)
+            {
+                games = searchResponse.Content.ReadFromJsonAsync<List<GamesViewModel>>().Result;
+            }
+
+            else
+            {
+                games = null;
+            }
+
+            return View(games);
+        }
    
 
         [HttpGet]

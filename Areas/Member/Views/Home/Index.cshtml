@@ -39,10 +39,11 @@
 
 <div class="row">
     
-    <form method="get">
-        <input type="search" asp-action="" />
+    <form method="get" asp-action="Search">
+        <label for="searchString">Search for games:</label>
+        <input type="search" name="searchString"/>
 
-        <input type="submit" value="Search" />  
+        <input type="submit" />  
     </form>
     
 </div>
@@ -55,14 +56,14 @@
             <div class="carousel-item active">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title"><a asp-action="Details" asp-controller="Home" asp-route-id="@Model[0].ID">@Model[0].Title</a></h5>
+                        <h5 class="card-title">@Model[0].Title</h5>
                         <p class="card-text">
                             @Model[0].Description
                         </p>
                         <p class="card-text">
                             @Model[0].Price.ToString("C")
                         </p>
-                        <a asp-controller="Details" class="btn btn-primary" asp-route-id="@Model[0].ID">Details</a>
+                        <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[0].ID">Details</a>
                     </div>
                 </div>
             </div>
@@ -73,7 +74,7 @@
                     <div class="card">
 
                         <div class="card-body">
-                            <h5 class="card-title"><a asp-action="Details" asp-controller="Home" asp-route-id="@Model[i].ID">@Model[i].Title</a></h5>
+                            <h5 class="card-title">@Model[i].Title</h5>
 
                             <p class="card-text">
                                 @Model[i].Description
@@ -83,7 +84,7 @@
                                 @Model[i].Price.ToString("C")
                             </p>
 
-                            <a asp-controller="Details" class="btn btn-primary" asp-route-id="@Model[i].ID">Details</a>
+                            <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[i].ID">Details</a>
                         </div>
 
                     </div>
