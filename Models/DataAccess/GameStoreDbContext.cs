@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PROG3050_HMJJ.Models.Account;
-using PROG3050_HMJJ.Areas.Admin.Models;
 using PROG3050_HMJJ.Areas.Member.Models;
-using System.Reflection.Emit;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace PROG3050_HMJJ.Models.DataAccess
 {
@@ -46,36 +45,99 @@ namespace PROG3050_HMJJ.Models.DataAccess
                 new Languages { ID = 8, Name = "Persian" },
                 new Languages { ID = 9, Name = "Japanese" },
                 new Languages { ID = 10, Name = "Italian" }
-                );
+            );
+
+
+            #region defineCascades
+            builder.Entity<User>()
+                .HasOne(u => u.Preferences)
+                .WithOne(p => p.User)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            builder.Entity<User>()
+               .HasOne(u => u.Profiles)
+               .WithOne(p => p.User)
+               .OnDelete(DeleteBehavior.Cascade);
+            #endregion
         }
 
+
         public static async Task CreateAdminUser(IServiceProvider serviceProvider)
+        {
+            var userManager =
+                serviceProvider.GetRequiredService<UserManager<User>>();
+            var roleManager = serviceProvider
+                .GetRequiredService<RoleManager<IdentityRole>>();
+
+            string adminUsername = "admin";
+            string adminPassword = "Test1$";
+            string adminRoleName = "Admin";
+
+
+            // if role doesn't exist, create it
+            if (await roleManager.FindByNameAsync(adminRoleName) == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole(adminRoleName));
+            }
+
+
+            // if admin username doesn't exist, create it and add it to role
+            if (await userManager.FindByNameAsync(adminUsername) == null)
+            {
+                var admin = new User { UserName = adminUsername, Email="admin@cvgs.com", NormalizedEmail="ADMIN@CVGS.COM", EmailConfirmed = true };
+                var result = await userManager.CreateAsync(admin, adminPassword);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(admin, adminRoleName);
+                }
+            }
+        }
+
+
+        #region seedUserMember
+        public static async Task CreateMemberUser(IServiceProvider serviceProvider)
         {
             UserManager<User> userManager =
                 serviceProvider.GetRequiredService<UserManager<User>>();
             RoleManager<IdentityRole> roleManager = serviceProvider
                 .GetRequiredService<RoleManager<IdentityRole>>();
 
-            string username = "admin";
+            string username = "member";
             string password = "Test1$";
-            string roleName = "Admin";
+            string roleName = "Member";
 
             // if role doesn't exist, create it
             if (await roleManager.FindByNameAsync(roleName) == null)
             {
                 await roleManager.CreateAsync(new IdentityRole(roleName));
             }
+
+            var user = await userManager.FindByNameAsync(username);
+
             // if username doesn't exist, create it and add it to role
-            if (await userManager.FindByNameAsync(username) == null)
+            if (user == null)
             {
-                User user = new User { UserName = username, Email="admin@cvgs.com", NormalizedEmail="ADMIN@CVGS.COM", EmailConfirmed = true };
+                user = new User { UserName = username, Email = "member@cvgs.com", NormalizedEmail = "MEMBER@CVGS.COM", EmailConfirmed = true };
                 var result = await userManager.CreateAsync(user, password);
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(user, roleName);
                 }
             }
+            else
+            {
+                var deleteUserResult = await userManager.DeleteAsync(user);
+                user = new User { UserName = username, Email = "member@cvgs.com", NormalizedEmail = "MEMBER@CVGS.COM", EmailConfirmed = true };
+                var createUserResult = await userManager.CreateAsync(user, password);
+                if (deleteUserResult.Succeeded && createUserResult.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, roleName);
+                }
+            }
         }
+        #endregion
+
 
         public DbSet<Preferences> Preferences { get; set; }
 
@@ -100,7 +162,6 @@ namespace PROG3050_HMJJ.Models.DataAccess
 
         public GameStoreDbContext(DbContextOptions<GameStoreDbContext> options) : base(options)
         {
-
         }
     }
 }

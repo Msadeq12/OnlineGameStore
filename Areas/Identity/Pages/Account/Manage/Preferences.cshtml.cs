@@ -3,13 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using PROG3050_HMJJ.Areas.Member.Models;
-using PROG3050_HMJJ.Models;
 using PROG3050_HMJJ.Models.DataAccess;
 using System.ComponentModel.DataAnnotations;
 using PROG3050_HMJJ.Models.Account;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Humanizer;
+
 
 namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 {
@@ -99,9 +97,9 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             }
 
             var platforms = await _context.Platforms.ToListAsync();
-            var selectedPlatforms = await _context.SelectedPlatforms.Where(p => p.User.Id == user.Id).Select(s => s.Platforms.ID).ToListAsync();
+            var selectedPlatforms = await _context.SelectedPlatforms.Where(p => p.Preferences.ID == preferences.ID).Select(s => s.Platforms.ID).ToListAsync();
             var genres = await _context.Genres.ToListAsync();
-            var selectedGenres = await _context.SelectedGenres.Where(g => g.User.Id == user.Id).Select(s => s.Genres.ID).ToListAsync();
+            var selectedGenres = await _context.SelectedGenres.Where(g => g.Preferences.ID == preferences.ID).Select(s => s.Genres.ID).ToListAsync();
             var languages = await _context.Languages.ToListAsync();
 
             PlatformList = new MultiSelectList(platforms, "ID", "Name", selectedPlatforms);
@@ -139,8 +137,8 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             }
 
             var preferences = _context.Preferences.FirstOrDefault(p => p.User.Id == user.Id);
-            var previouslySelectedPlatforms = _context.SelectedPlatforms.Where(p => p.User.Id == user.Id);
-            var previouslySelectedGenres = _context.SelectedGenres.Where(p => p.User.Id == user.Id);
+            var previouslySelectedPlatforms = _context.SelectedPlatforms.Where(p => p.Preferences.ID == preferences.ID);
+            var previouslySelectedGenres = _context.SelectedGenres.Where(p => p.Preferences.ID == preferences.ID);
 
 
             // For both SelectedPlatforms and SelectedGenres I am mimicking an upsert (i.e. delete if exists, then insert)
@@ -158,7 +156,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                 foreach (var platformID in Input.SelectedPlatformsIDList)
                 {
                     var selectedPlatform = new SelectedPlatforms();
-                    selectedPlatform.User = user;
+                    selectedPlatform.Preferences = preferences;
                     var platform = _context.Platforms.FirstOrDefault(p => p.ID == platformID);
                     selectedPlatform.Platforms = platform;
                     _context.Add(selectedPlatform);
@@ -180,7 +178,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                 foreach (var genreID in Input.SelectedGenresIDList)
                 {
                     var selectedGenre = new SelectedGenres();
-                    selectedGenre.User = user;
+                    selectedGenre.Preferences = preferences;
                     var genre = _context.Genres.FirstOrDefault(p => p.ID == genreID);
                     selectedGenre.Genres = genre;
                     _context.Add(selectedGenre);
