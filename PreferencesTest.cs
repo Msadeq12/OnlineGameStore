@@ -33,7 +33,7 @@ public class PreferencesTest {
   protected void TearDown() {
     driver.Quit();
   }
-  [Test]
+  [Test, Order(1)]
   public void memberAddInitialPreferences() {
     driver.Navigate().GoToUrl("https://localhost:7132/");
     driver.Manage().Window.Size = new System.Drawing.Size(1212, 719);
@@ -74,7 +74,7 @@ public class PreferencesTest {
     driver.FindElement(By.CssSelector(".alert")).Click();
     Assert.That(driver.FindElement(By.CssSelector(".alert")).Text, Is.EqualTo("Your preferences have been updated"));
   }
-  [Test]
+  [Test, Order(2)]
   public void memberEditInitialPreferences() {
     driver.Navigate().GoToUrl("https://localhost:7132/");
     driver.Manage().Window.Size = new System.Drawing.Size(1612, 1019);
