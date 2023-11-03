@@ -95,7 +95,42 @@ namespace GameService.Controllers
             return Ok(gameById);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="search">search query parameter from client</param>
+        /// <returns>A list of game or games based on search query</returns>
+        [HttpGet("search")]
+        public async Task<ActionResult> GetGameBySearch(string search)
+        {
+            IQueryable<Game> games = _context.Games;
 
+            if (!String.IsNullOrEmpty(search))
+            {
+                games = games.Where(g => g.Title.Contains(search));
+            }
+
+            List<GameDTO> gameClientList = new List<GameDTO>();
+
+            foreach (Game game in games)
+            {
+                GameDTO gameClient = new GameDTO()
+                {
+                    ID = game.gameID,
+                    Title = game.Title,
+                    Description = game.Description,
+                    Price = game.Price,
+                    Publisher = game.Publisher,
+                    ReleaseYear = game.ReleaseYear,
+                    GameGenre = _context.Genres.FirstOrDefault(g => g.GenreID == game.GenreID)?.GenreName,
+                    GamePlatform = _context.Platforms.FirstOrDefault(p => p.PlatformID == game.PlatformID)?.Name
+                };
+
+                gameClientList.Add(gameClient);
+            }
+
+            return Ok(gameClientList);
+        }
        
 
         /// <summary>
