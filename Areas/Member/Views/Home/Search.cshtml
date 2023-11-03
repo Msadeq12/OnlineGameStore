@@ -57,6 +57,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.GamePlatform)
             </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.ID } )
+            </td>
         </tr>
 }
     </tbody>
