@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PROG3050_HMJJ.Models.Account;
 using PROG3050_HMJJ.Areas.Member.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+
 
 namespace PROG3050_HMJJ.Models.DataAccess
 {
@@ -100,40 +100,13 @@ namespace PROG3050_HMJJ.Models.DataAccess
         {
             UserManager<User> userManager =
                 serviceProvider.GetRequiredService<UserManager<User>>();
-            RoleManager<IdentityRole> roleManager = serviceProvider
-                .GetRequiredService<RoleManager<IdentityRole>>();
 
-            string username = "member";
-            string password = "Test1$";
-            string roleName = "Member";
+            // For unit tests only; user is created in unit tests
+            var signUpTestMember = await userManager.FindByNameAsync("TestMember");
 
-            // if role doesn't exist, create it
-            if (await roleManager.FindByNameAsync(roleName) == null)
+            if (signUpTestMember != null)
             {
-                await roleManager.CreateAsync(new IdentityRole(roleName));
-            }
-
-            var user = await userManager.FindByNameAsync(username);
-
-            // if username doesn't exist, create it and add it to role
-            if (user == null)
-            {
-                user = new User { UserName = username, Email = "member@cvgs.com", NormalizedEmail = "MEMBER@CVGS.COM", EmailConfirmed = true };
-                var result = await userManager.CreateAsync(user, password);
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(user, roleName);
-                }
-            }
-            else
-            {
-                var deleteUserResult = await userManager.DeleteAsync(user);
-                user = new User { UserName = username, Email = "member@cvgs.com", NormalizedEmail = "MEMBER@CVGS.COM", EmailConfirmed = true };
-                var createUserResult = await userManager.CreateAsync(user, password);
-                if (deleteUserResult.Succeeded && createUserResult.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(user, roleName);
-                }
+                await userManager.DeleteAsync(signUpTestMember);
             }
         }
         #endregion
