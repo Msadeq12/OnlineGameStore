@@ -7,6 +7,17 @@
 <h1>@ViewData["Title"]</h1>
 
 <table class="table">
+
+    @if (Model.ToList().Count == 0)
+    {
+        <tbody>
+            <tr class="text-center">
+                <td>Game not found</td>
+            </tr>
+        </tbody>
+        
+    }
+
     <thead>
         <tr>
             <th>
@@ -33,8 +44,10 @@
             <th></th>
         </tr>
     </thead>
+
     <tbody>
-@foreach (var item in Model) {
+
+        @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
