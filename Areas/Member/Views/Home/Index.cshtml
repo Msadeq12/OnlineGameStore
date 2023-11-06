@@ -1,8 +1,150 @@
-﻿@{
+﻿@model List<PROG3050_HMJJ.Areas.Admin.Models.GamesViewModel>
+
+@{
     ViewData["Title"] = "Member Home Page";
 }
+<style>
+    .carousel-inner {
+  padding: 1em;
+}
+.card {
+  margin: 0 0.5em;
+  box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
+  border: none;
+}
 
-<div class="text-center">
-    <h1 class="display-4">Welcome, this is Member page</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+.carousel-item {
+    margin-right: 0;
+    flex: 0 0 33.333333%;
+    display: block;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  background-color: #e1e1e1;
+  width: 6vh;
+  height: 6vh;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+  .carousel-inner {
+    display: flex;
+  }
+
+
+.card .img-wrapper {
+    max-width: 100%;
+    height: 13em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.card img {
+    max-height: 100%;
+}
+
+
+</style>
+
+<div class="row">
+    
+    <form method="get" asp-action="Search">
+        <label for="searchString">Search for games:</label>
+        <input type="search" name="searchString"/>
+
+        <input type="submit" />  
+    </form>
+    
 </div>
+
+<div class="row">
+    <h1>Our Game Collection</h1>
+</div>
+    <div id="carouselExampleControls" class="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model[0].Title</h5>
+                        <p class="card-text">
+                            @Model[0].Description
+                        </p>
+                        <p class="card-text">
+                            @Model[0].Price.ToString("C")
+                        </p>
+                        <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[0].ID">Details</a>
+                    </div>
+                </div>
+            </div>
+            @for (int i = 1; i <= Model.Count - 1; i++)
+            {
+                <div class="carousel-item">
+
+                    <div class="card">
+
+                        <div class="card-body">
+                            <h5 class="card-title">@Model[i].Title</h5>
+
+                            <p class="card-text">
+                                @Model[i].Description
+                            </p>
+
+                            <p class="card-text">
+                                @Model[i].Price.ToString("C")
+                            </p>
+
+                            <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[i].ID">Details</a>
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+                
+
+@section Scripts {
+
+    <script>
+        var multipleCardCarousel = document.querySelector(
+            "#carouselExampleControls"
+        );
+        if (window.matchMedia("(min-width: 768px)").matches) {
+            var carousel = new bootstrap.Carousel(multipleCardCarousel, {
+                interval: false,
+            });
+            var carouselWidth = $(".carousel-inner")[0].scrollWidth;
+            var cardWidth = $(".carousel-item").width();
+            var scrollPosition = 0;
+            $("#carouselExampleControls .carousel-control-next").on("click", function () {
+                if (scrollPosition < carouselWidth - cardWidth * 4) {
+                    scrollPosition += cardWidth;
+                    $("#carouselExampleControls .carousel-inner").animate(
+                        { scrollLeft: scrollPosition },
+                        600
+                    );
+                }
+            });
+            $("#carouselExampleControls .carousel-control-prev").on("click", function () {
+                if (scrollPosition > 0) {
+                    scrollPosition -= cardWidth;
+                    $("#carouselExampleControls .carousel-inner").animate(
+                        { scrollLeft: scrollPosition },
+                        600
+                    );
+                }
+            });
+        } else {
+            $(multipleCardCarousel).addClass("slide");
+        }
+    </script>
+}
