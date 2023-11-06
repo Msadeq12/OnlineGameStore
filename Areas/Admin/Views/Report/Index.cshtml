@@ -7,6 +7,8 @@
         <img src="" class="card-img-top" alt="">
         <div class="card-body">
             <h5 class="card-title">Download Member Details Report</h5>
+            <a asp-controller="Report" asp-action="ViewMemberDetails" target="_blank" class="btn btn-primary">View</a>
+            &nbsp;
             <a asp-controller="Report" asp-action="GetMemberDetails" class="btn btn-primary">Download</a>
         </div>
     </div>
@@ -14,6 +16,8 @@
         <img src="" class="card-img-top" alt="">
         <div class="card-body">
             <h5 class="card-title">Download Member List Report</h5>
+            <a asp-controller="Report" asp-action="ViewMemberList" target="_blank" class="btn btn-primary">View</a>
+            &nbsp;
             <a asp-controller="Report" asp-action="GetMemberList" class="btn btn-primary">Download</a>
         </div>
     </div>
@@ -21,14 +25,18 @@
         <img src="" class="card-img-top" alt="">
         <div class="card-body">
             <h5 class="card-title">Download Game Details Report</h5>
-            <a asp-controller="Report" asp-action="Index" class="btn btn-primary">Download</a>
+            <a asp-controller="Report" asp-action="ViewGameDetailList" target="_blank" class="btn btn-primary">View</a>
+            &nbsp;
+            <a asp-controller="Report" asp-action="GetGameDetailList" class="btn btn-primary">Download</a>
         </div>
     </div>
     <div class="card mt-2 pt-2" style="width: 18rem;">
         <img src="" class="card-img-top" alt="">
         <div class="card-body">
-            <h5 class="card-title">Download Game List Report</h5>
-            <a asp-controller="Report" asp-action="Index" class="btn btn-primary">Download</a>
+            <h5 class="card-title">Download or View Game List Report</h5>
+            <a asp-controller="Report" asp-action="ViewGameList" target="_blank" class="btn btn-primary">View</a>
+            &nbsp;
+            <a asp-controller="Report" asp-action="GetGameList" class="btn btn-primary">Download</a>
         </div>
     </div>
 </div>
