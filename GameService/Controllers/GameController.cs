@@ -2,6 +2,7 @@
 using GameService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Numerics;
 
 namespace GameService.Controllers
@@ -131,7 +132,117 @@ namespace GameService.Controllers
 
             return Ok(gameClientList);
         }
-       
+
+
+
+        /*List<string> genres = new List<string> { "Action", "Adventure" };
+
+        string url = "https://localhost:7108/api/Game/preference?";
+		
+		for(int i = 0; i <= genres.Count -1; i++)
+		{
+			url += "GamesByGenre=" + genres[i];
+			
+			if(genres.Count > 1)
+			{
+				url += "&";
+			}
+        }
+            url = url.Remove(url.Length - 1);
+            Console.WriteLine("New URL: " + url);*/
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model">a list of strings as query parameter</param>
+        /// <returns>A Game filtered by Genre</returns>
+        [HttpGet("GameByGenre")]
+        public async Task<ActionResult> GetGameByGenre([FromQuery] List<string> model)
+        {
+            List<GameDTO> gameClientList = new List<GameDTO>();
+
+            foreach (Game game in _context.Games)
+            {
+                GameDTO gameClient = new GameDTO()
+                {
+                    ID = game.gameID,
+                    Title = game.Title,
+                    Description = game.Description,
+                    Price = game.Price,
+                    Publisher = game.Publisher,
+                    ReleaseYear = game.ReleaseYear,
+                    GameGenre = _context.Genres.FirstOrDefault(g => g.GenreID == game.GenreID)?.GenreName,
+                    GamePlatform = _context.Platforms.FirstOrDefault(p => p.PlatformID == game.PlatformID)?.Name
+                };
+
+                gameClientList.Add(gameClient);
+            }
+
+            IQueryable<GameDTO> games = gameClientList.AsQueryable();
+            List<GameDTO> gamesByPreference = new List<GameDTO>();
+
+            if (model.Count != 0)
+            {
+                foreach(var game in gameClientList)
+                {
+                    if(model.Contains(game.GameGenre))
+                    {
+                        gamesByPreference.Add(game);
+                    }
+                }
+            }
+
+            return Ok(gamesByPreference);
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model">a list of strings as query parameter</param>
+        /// <returns>A Game filtered by Platform</returns>
+        [HttpGet("GameByPlatform")]
+        public async Task<ActionResult> GetGameByPlatform([FromQuery] List<string> model)
+        {
+            List<GameDTO> gameClientList = new List<GameDTO>();
+
+            foreach (Game game in _context.Games)
+            {
+                GameDTO gameClient = new GameDTO()
+                {
+                    ID = game.gameID,
+                    Title = game.Title,
+                    Description = game.Description,
+                    Price = game.Price,
+                    Publisher = game.Publisher,
+                    ReleaseYear = game.ReleaseYear,
+                    GameGenre = _context.Genres.FirstOrDefault(g => g.GenreID == game.GenreID)?.GenreName,
+                    GamePlatform = _context.Platforms.FirstOrDefault(p => p.PlatformID == game.PlatformID)?.Name
+                };
+
+                gameClientList.Add(gameClient);
+            }
+
+            IQueryable<GameDTO> games = gameClientList.AsQueryable();
+            List<GameDTO> gamesByPreference = new List<GameDTO>();
+
+            if (model.Count != 0)
+            {
+                foreach (var game in gameClientList)
+                {
+                    if (model.Contains(game.GamePlatform))
+                    {
+                        gamesByPreference.Add(game);
+                    }
+                }
+            }
+
+            return Ok(gamesByPreference);
+
+        }
+
 
         /// <summary>
         /// Adds a new game to DB
