@@ -28,8 +28,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Models
         {
             using (SqlConnection connection = GetConnection())
             {
-                SqlCommand cmd = new SqlCommand("SELECT FirstName,LastName,Gender,DOB,RecievePromotions " +
-                "FROM Profiles " +
+                SqlCommand cmd = new SqlCommand("SELECT  ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS Sr_No,[FirstName],[LastName],[Gender],format(cast([DOB] as date), 'yyyy-MM-dd') As 'Date of Birth',[RecievePromotions] As 'Promotions' FROM [Profiles]" +
                 "WHERE FirstName IS NOT NULL AND LastName IS NOT NULL AND Gender IS NOT NULL AND DOB IS NOT NULL", connection);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
@@ -55,7 +54,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Models
         {
             using (SqlConnection connection = GetConnection2())
             {
-                SqlCommand cmd = new SqlCommand("SELECT [gameID],[Title],[Description],[Price],[GenreID],[Publisher],[ReleaseYear] FROM [Games].[dbo].[Games]", connection);
+                SqlCommand cmd = new SqlCommand("SELECT ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS Sr_No, [Title],[Description],[Price],[Publisher],[ReleaseYear] As 'Year',[GameGenre] As 'Genre',[GamePlatform] As 'Platform' FROM [Games].[dbo].[GameDataTransferObjects]", connection);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
@@ -67,7 +66,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Models
         {
             using (SqlConnection connection = GetConnection2())
             {
-                SqlCommand cmd = new SqlCommand("SELECT [gameID],[Title] FROM [Games].[dbo].[Games]", connection);
+                SqlCommand cmd = new SqlCommand("SELECT ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS Sr_No,[Title] FROM [Games].[dbo].[Games]", connection);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
