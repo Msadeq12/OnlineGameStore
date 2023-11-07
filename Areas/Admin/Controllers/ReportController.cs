@@ -39,7 +39,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
                 pdfpage.Paragraphs.Add(heading);
                 Table table = new Table
                 {
-                    ColumnWidths = "20% 20% 20% 20% 20%",
+                    ColumnWidths = "10% 20% 20% 15% 15% 20%",
                     DefaultCellPadding = new MarginInfo(10, 5, 10, 5),
                     Border = new BorderInfo(BorderSide.All, .5f, Color.Black),
                     DefaultCellBorder = new BorderInfo(BorderSide.All, .2f, Color.Black)
@@ -182,7 +182,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
                 pdfpage.Paragraphs.Add(heading);
                 Table table = new Table
                 {
-                    ColumnWidths = "10% 10% 15% 10% 15% 10% 15% 15%",
+                    ColumnWidths = "10% 14% 15% 10% 15% 10% 15% 11%",
                     DefaultCellPadding = new MarginInfo(10, 5, 10, 5),
                     Border = new BorderInfo(BorderSide.All, .5f, Color.Black),
                     DefaultCellBorder = new BorderInfo(BorderSide.All, .2f, Color.Black)
