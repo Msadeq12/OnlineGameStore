@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GameService.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace GameService.Entities
@@ -43,8 +44,14 @@ namespace GameService.Entities
                 new Game { gameID = 2, Title = "Adventures in the Black Forest", Description = "A game about adventure in the forest", Price = 9.99m, GenreID = 2, Publisher = "Inc Mania", ReleaseYear = 2012, PlatformID = 3 },
                 new Game { gameID = 3, Title = "Escape the City", Description = "An RPG game in the city", Price = 8.99m, GenreID = 3, Publisher = "Kronos Studios", ReleaseYear = 2021, PlatformID = 4 },
                 new Game { gameID = 4, Title = "Heroes in Action", Description = "A game about heroes in action", Price = 10.99m, GenreID = 1, Publisher = "Petroglyph", ReleaseYear = 2005, PlatformID = 1 }
+                );
 
+            modelBuilder.Entity<GameDTO>().HasData(
 
+                new GameDTO { ID = 1, Title = "Heroes in Action", Description = "A game about heroes in action", Price = 10.99m, GameGenre = "Action", GamePlatform = "Xbox", Publisher = "Petroglyph", ReleaseYear = 2005 },
+                new GameDTO { ID = 2, Title = "Adventures in the Black Forest", Description = "A game about adventure in the forest", Price = 9.99m, GameGenre = "Adventure", GamePlatform = "Xbox", Publisher = "Inc Mania", ReleaseYear = 2012 },
+                new GameDTO { ID = 3, Title = "Escape the City", Description = "An RPG game in the city", Price = 8.99m, GameGenre = "Action", GamePlatform = "RPG", Publisher = "Kronos Studios", ReleaseYear = 2021 },
+                new GameDTO { ID = 4, Title = "Heroes in Action", Description = "A game about heroes in action", Price = 11.99m, GameGenre = "Action", GamePlatform = "Xbox", Publisher = "Petroglyph", ReleaseYear = 2005 }
 
                 );
         }
@@ -54,5 +61,7 @@ namespace GameService.Entities
         public DbSet<Genre> Genres { get; set; }
 
         public DbSet<Platform> Platforms { get; set; }
+
+        public DbSet<GameDTO> GameDataTransferObjects { get; set; }
     }
 }
