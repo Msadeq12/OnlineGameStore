@@ -1,4 +1,5 @@
-﻿using System.Reflection.Metadata;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata;
 using System.Text.Json.Serialization;
 
 namespace GameService.Entities
@@ -8,6 +9,7 @@ namespace GameService.Entities
     /// </summary>
     public class Game
     {
+        [Key]
         public int gameID { get; set; }
 
         public string Title { get; set; }

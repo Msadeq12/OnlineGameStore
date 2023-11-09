@@ -254,6 +254,7 @@ namespace GameService.Controllers
         {
             Game newGame = new()
             {
+                gameID = game.ID,
                 Title = game.Title,
                 Description = game.Description,
                 Price = game.Price.Value,
@@ -267,7 +268,7 @@ namespace GameService.Controllers
             _context.Games.Add(newGame);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGame", new { id = newGame.gameID }, newGame);
+            return CreatedAtAction("GetGameById", new { id = newGame.gameID }, newGame);
         }
 
         /// <summary>
