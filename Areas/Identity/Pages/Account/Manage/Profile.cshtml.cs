@@ -79,18 +79,6 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            return RedirectToPage();
-        }
-
-        
-
-        public async Task<IActionResult> OnPostAddress()
-        {
-            return RedirectToPage();
-        }
-
-        public async Task<IActionResult> OnPostProfile()
-        {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -109,6 +97,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
+            return RedirectToPage();
             return RedirectToPage();
         }
     }
