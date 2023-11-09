@@ -209,6 +209,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostRegions(string addressType)
         {
+            StatusMessage = null;
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -578,11 +579,15 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 
             if (ShippingAddress.SameAddress)
             {
-                StatusMessage = "Your mailing address has been updated";
+                StatusMessage = "Your mailing and shipping addresses have been updated";
+                SetRegionAndCodeLabels();
+                SelectRegions();
+                MailingRegionList.ElementAt(MailingAddress.RegionID).Selected = true;
             }
             else
             {
                 StatusMessage = "Your shipping address has been updated";
+
             }
 
             return Page();
