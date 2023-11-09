@@ -5,6 +5,7 @@ using PROG3050_HMJJ.Areas.Admin.Models;
 using PROG3050_HMJJ.Areas.Member.Models;
 using System.Reflection.Emit;
 using Microsoft.AspNetCore.Identity;
+using System.Runtime.InteropServices;
 
 namespace PROG3050_HMJJ.Models.DataAccess
 {
@@ -125,8 +126,7 @@ namespace PROG3050_HMJJ.Models.DataAccess
                 new Regions { ID = 69, Name = "Washington", CountryID = 2 },
                 new Regions { ID = 70, Name = "West Virginia", CountryID = 2 },
                 new Regions { ID = 71, Name = "Wisconsin", CountryID = 2 },
-                new Regions { ID = 72, Name = "Wyoming", CountryID = 2 }
-                );
+                new Regions { ID = 72, Name = "Wyoming", CountryID = 2 });
         }
 
         public static async Task CreateAdminUser(IServiceProvider serviceProvider)
