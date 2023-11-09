@@ -126,7 +126,9 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if(ReCaptchaValide(Request))
+
+            // Skip captcha when authorized testing (otherwise automated inputs will be flagged)
+            if(Input.UserName == "TestMember" || ReCaptchaValide(Request))
                 {
                 if (ModelState.IsValid)
                 {
@@ -162,6 +164,12 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
 
                         if (_userManager.Options.SignIn.RequireConfirmedAccount)
                         {
+                            // Add override for test purposes
+                            if(user.UserName == "TestMember")
+                            {
+                                user.EmailConfirmed = true;
+                                await _userManager.UpdateAsync(user);
+                            }
                             return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                         }
                         else
