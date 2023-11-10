@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using PROG3050_HMJJ.Areas.Admin.Models;
 
-namespace PROG3050_HMJJ.Component
+namespace PROG3050_HMJJ.Areas.Member.Components
 {
     public class GamesByGenre : ViewComponent
     {
@@ -26,10 +26,10 @@ namespace PROG3050_HMJJ.Component
         }
 
 
-        public async Task<IViewComponentResult> Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
             var user = await _userManager.GetUserAsync((System.Security.Claims.ClaimsPrincipal)User);
-            string endpoint = "GameByGenre";
+            string endpoint = "model";
 
             if (user == null)
             {
@@ -46,19 +46,19 @@ namespace PROG3050_HMJJ.Component
             var platforms = await _context.Platforms.ToListAsync();
             var selectedGenres = await _context.SelectedGenres.Where(g => g.Preferences.ID == preferences.ID).Select(s => s.Genres.Name).ToListAsync();
 
-            string baseUrl = "$https://localhost:7108/api/game/GameByGenre?";
+            string baseUrl = "https://localhost:7108/api/game/GameByGenre?";
 
             string updatedUrl = HelperClass.QueryUrlParser(selectedGenres, baseUrl, endpoint);
 
             HttpResponseMessage response = await _client.GetAsync(updatedUrl);
-            GamesViewModel? gameByGenre;
+            List<GamesViewModel>? gameByGenre;
 
             await Console.Out.WriteLineAsync("GameGenre View status: " + response.StatusCode);
             await Console.Out.WriteLineAsync("updated url from VC: " + updatedUrl);
 
             if (response.IsSuccessStatusCode)
             {
-                gameByGenre = response.Content.ReadFromJsonAsync<GamesViewModel>().Result;
+                gameByGenre = response.Content.ReadFromJsonAsync<List<GamesViewModel>>().Result;
             }
 
             else

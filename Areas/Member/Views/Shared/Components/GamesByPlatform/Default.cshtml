@@ -1,4 +1,4 @@
-﻿@model List<PROG3050_HMJJ.Areas.Admin.Models.GamesViewModel>;
+﻿@model List<PROG3050_HMJJ.Areas.Admin.Models.GamesViewModel>
 
 @{
 }
@@ -49,10 +49,10 @@
 
 </style>
 
-@if(Model.Count == 0)
+@if (Model.Count == 0)
 {
     <div class="row">
-        <h3>Please update your Preferences for Genre</h3>
+        <h3>Please update your Preferences for Platform</h3>
     </div>
     
 }
@@ -60,7 +60,7 @@
 else
 {
     <div class="row">
-        <h1>Your Favourite Genre:</h1>
+        <h1>Your Favourite Platforms:</h1>
         <div id="carouselExampleControls" class="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">

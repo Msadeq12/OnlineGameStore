@@ -7,7 +7,7 @@
             
             for (int i = 0; i <= collection.Count - 1; i++)
             {
-                url += $"{endpoint}=" + collection[i];
+                url += $"{endpoint}={collection[i]}";
 
                 if (collection.Count > 1)
                 {
