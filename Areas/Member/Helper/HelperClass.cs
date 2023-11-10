@@ -1,6 +1,6 @@
 ﻿namespace PROG3050_HMJJ.Areas.Member.Helper
 {
-    public static class Helper
+    public static class HelperClass
     {
         public static string QueryUrlParser(List<string> collection, string url, string endpoint)
         {

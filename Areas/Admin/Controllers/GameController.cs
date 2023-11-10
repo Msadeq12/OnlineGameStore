@@ -82,14 +82,20 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
 
             HttpResponseMessage response = client.PostAsJsonAsync(url, game).Result;
 
-            if(response.IsSuccessStatusCode)
+            Console.WriteLine(response.StatusCode);
+            Console.WriteLine(response.Headers);
+            Console.WriteLine(JsonConvert.SerializeObject(game));
+
+            if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
             }
 
             else
             {
-                return View();
+                ViewBag.Genres = genresPlatforms.GenreList;
+                ViewBag.Platforms = genresPlatforms.PlatformList;
+                return View(game);
             }
 
         }
