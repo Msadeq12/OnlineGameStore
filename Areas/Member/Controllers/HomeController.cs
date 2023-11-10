@@ -20,9 +20,8 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
 
 
         [HttpGet]
-        public async Task<ViewResult> Index()
+        public ViewResult Index()
         {
-
             string url = "https://localhost:7108/api/game";
 
             HttpResponseMessage response = _client.GetAsync(url).Result;
