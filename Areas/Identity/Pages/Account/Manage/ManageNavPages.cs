@@ -43,13 +43,6 @@ namespace  PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public static string Address => "Address";
-
-
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public static string ProfilesNavClass(ViewContext viewContext) => PageNavClass(viewContext, Profiles);
 
         /// <summary>
@@ -69,13 +62,6 @@ namespace  PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public static string PreferencesNavClass(ViewContext viewContext) => PageNavClass(viewContext, Preferences);
-
-
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
-        public static string AddressNavClass(ViewContext viewContext) => PageNavClass(viewContext, Address);
 
 
         /// <summary>
