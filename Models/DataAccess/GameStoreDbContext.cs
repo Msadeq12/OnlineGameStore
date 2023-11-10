@@ -125,7 +125,7 @@ namespace PROG3050_HMJJ.Models.DataAccess
                 new Regions { ID = 69, Name = "Washington", CountryID = 2 },
                 new Regions { ID = 70, Name = "West Virginia", CountryID = 2 },
                 new Regions { ID = 71, Name = "Wisconsin", CountryID = 2 },
-                new Regions { ID = 72, Name = "Wyoming", CountryID = 2 }
+                new Regions { ID = 72, Name = "Wyoming", CountryID = 2 });
             );
 
 
