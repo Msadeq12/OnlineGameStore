@@ -158,6 +158,7 @@ namespace PROG3050_HMJJ.Models.DataAccess
 
 
         public DbSet<Profiles> Profiles { get; set; }
+        public DbSet<Reviews> Reviews { get; set; }
 
 
         public GameStoreDbContext(DbContextOptions<GameStoreDbContext> options) : base(options)
