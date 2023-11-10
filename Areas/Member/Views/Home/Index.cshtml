@@ -59,6 +59,7 @@
 </div>
 
 <div class="row">
+
     <h1>Our Game Collection</h1>
 </div>
     <div id="carouselExampleControls" class="carousel">
@@ -73,7 +74,7 @@
                         <p class="card-text">
                             @Model[0].Price.ToString("C")
                         </p>
-                        <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[0].ID">Details</a>
+                            <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[0].ID">Details</a>
                     </div>
                 </div>
             </div>
@@ -94,7 +95,7 @@
                                 @Model[i].Price.ToString("C")
                             </p>
 
-                            <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[i].ID">Details</a>
+                                <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[i].ID">Details</a>
                         </div>
 
                     </div>
@@ -110,6 +111,16 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
+
+    <div class="row">
+        @await Component.InvokeAsync("GamesByGenre")
+    </div>
+
+    <div class="row">
+        @await Component.InvokeAsync("GamesByPlatform")
+    </div>
+
+    
                 
 
 @section Scripts {
