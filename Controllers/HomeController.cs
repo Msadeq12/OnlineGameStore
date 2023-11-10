@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PROG3050_HMJJ.Areas.Admin.Models;
 using PROG3050_HMJJ.Models;
 using System.Diagnostics;
 
@@ -7,82 +6,20 @@ namespace PROG3050_HMJJ.Controllers
 {
     public class HomeController : Controller
     {
-        private HttpClient _client;
-        
+        private readonly ILogger<HomeController> _logger;
 
-        public HomeController()
+        public HomeController(ILogger<HomeController> logger)
         {
-            _client = new HttpClient();
+            _logger = logger;
         }
 
       
         public IActionResult Index()
         {
-            string url = "https://localhost:7108/api/game";
-
-            HttpResponseMessage response = _client.GetAsync(url).Result;
-            List<GamesViewModel> games;
-
-            if (response.IsSuccessStatusCode)
-            {
-                games = response.Content.ReadFromJsonAsync<List<GamesViewModel>>().Result;
-            }
-
-            else
-            {
-                games = null;
-            }
-
-            return View(games);
+            return View();
         }
 
-        [HttpGet]
-        public ViewResult Search(string searchString)
-        {
-
-            string url = $"https://localhost:7108/api/game/search?search={searchString}";
-
-            HttpResponseMessage searchResponse = _client.GetAsync(url).Result;
-            Console.WriteLine("Search status code: " + searchResponse.StatusCode);
-            Console.WriteLine("URL: " + url);
-            List<GamesViewModel>? games;
-
-            if (searchResponse.IsSuccessStatusCode)
-            {
-                games = searchResponse.Content.ReadFromJsonAsync<List<GamesViewModel>>().Result;
-            }
-
-            else
-            {
-                games = null;
-            }
-
-            return View(games);
-        }
-
-
-        [HttpGet]
-        public ViewResult Details(int id)
-        {
-            string url = $"https://localhost:7108/api/game/{id}";
-
-            HttpResponseMessage response = _client.GetAsync(url).Result;
-            GamesViewModel? game;
-
-            if (response.IsSuccessStatusCode)
-            {
-                game = response.Content.ReadFromJsonAsync<GamesViewModel>().Result;
-            }
-
-            else
-            {
-                game = null;
-            }
-
-            return View(game);
-        }
-
-
+        
         public IActionResult Privacy()
         {
             return View();
