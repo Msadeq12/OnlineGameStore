@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using PROG3050_HMJJ.Areas.Member.Models;
 using PROG3050_HMJJ.Models.DataAccess;
 using PROG3050_HMJJ.Models.Account;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.JSInterop;
 
 namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 {
@@ -86,19 +88,12 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            //var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.User.Id == user.Id);
-
-            //profile.FirstName = Profile.FirstName;
-            //profile.LastName = Profile.LastName;
-            //profile.Gender = Profile.Gender;
-            //profile.DOB = Profile.DOB;
-            //profile.RecievePromotions = Profile.RecievePromotions;
-
             _context.Profiles.Update(Profile);
             _context.SaveChanges();
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
+            return RedirectToPage();
             return RedirectToPage();
         }
     }
