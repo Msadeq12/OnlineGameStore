@@ -1,13 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns;
 using PROG3050_HMJJ.Models.DataAccess;
 using PROG3050_HMJJ.Models.Account;
 using Microsoft.AspNetCore.Identity;
-using GoogleReCaptcha.V3.Interface;
-using GoogleReCaptcha.V3;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using PROG3050_HMJJ.Services;
-using Microsoft.Extensions.Hosting;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,6 +65,9 @@ using (var scope = app.Services.CreateScope())
 
     // Call the CreateAdminUser method to create the admin user.
     await GameStoreDbContext.CreateAdminUser(serviceProvider);
+
+    // Call the CreateMemberUser method to create the member user.
+    await GameStoreDbContext.CreateMemberUser(serviceProvider);
 }
 
 // area route for admin panel

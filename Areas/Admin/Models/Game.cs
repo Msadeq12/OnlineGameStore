@@ -25,6 +25,12 @@ namespace PROG3050_HMJJ.Areas.Admin.Models
         [Required]
         public decimal Price { get; set; }
 
+        public int PlatformID { get; set; }
+
+        public virtual Platform Platform { get; set; }
+
+
+
         //public Blob Icon { get; set; }
 
 

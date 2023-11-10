@@ -12,23 +12,23 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
     public class GameController : Controller
     {
         private static HttpClient client;
-        List<Genre>? genres;
+        GenrePlatformViewModel? genresPlatforms;
 
         public GameController()
         {
-            string urlGenre = "https://localhost:7108/api/game/genres";
+            string urlGenre = "https://localhost:7108/api/game/GenresPlatforms";
             client = new HttpClient();
 
             HttpResponseMessage responseGenre = client.GetAsync(urlGenre).Result;
 
             if (responseGenre.IsSuccessStatusCode)
             {
-                genres = responseGenre.Content.ReadFromJsonAsync<List<Genre>>().Result;
+                genresPlatforms = responseGenre.Content.ReadFromJsonAsync<GenrePlatformViewModel>().Result;
             }
 
             else
             {
-                genres = null;
+                genresPlatforms = null;
             }
 
         }
@@ -41,15 +41,15 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
         public IActionResult Index()
         {
 
-            string url = "https://localhost:7108/api/game";
+            string url = "https://localhost:7108/api/game/";
 
             HttpResponseMessage response = client.GetAsync(url).Result;
 
-            List<Game>? games;
+            List<GamesViewModel>? games;
 
             if (response.IsSuccessStatusCode)
             {
-                games = response.Content.ReadFromJsonAsync<List<Game>>().Result;
+                games = response.Content.ReadFromJsonAsync<List<GamesViewModel>>().Result;
             }
 
             else
@@ -68,13 +68,14 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Add()
         {
-            ViewBag.Genres = genres;
+            ViewBag.Genres = genresPlatforms.GenreList;
+            ViewBag.Platforms = genresPlatforms.PlatformList;
 
             return View();
         }
 
         [HttpPost]
-        public IActionResult Add(Game game)
+        public IActionResult Add(GamesViewModel game)
         {
 
             string url = "https://localhost:7108/api/game";
@@ -109,11 +110,11 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
             //this is a response for getting a specific game through API
             //passed through the View 
             HttpResponseMessage response = client.GetAsync(url).Result;
-            Game? game;
+            GamesViewModel? game;
 
             if (response.IsSuccessStatusCode)
             {
-                game = response.Content.ReadFromJsonAsync<Game>().Result;
+                game = response.Content.ReadFromJsonAsync<GamesViewModel>().Result;
             }
 
             else
@@ -123,19 +124,21 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
 
             // this is a response for getting all genres through API
             //response passed on through ViewBag
-            ViewBag.Genres = genres;
+            ViewBag.Genres = genresPlatforms.GenreList;
+            ViewBag.Platforms = genresPlatforms.PlatformList;
 
 
             return View(game);
         }
         
         [HttpPost]
-        public IActionResult Edit(int id, Game game)
+        public IActionResult Edit(int id, GamesViewModel game)
         {
 
             string url = $"https://localhost:7108/api/game/{id}";
             HttpResponseMessage response = client.PutAsJsonAsync(url, game).Result;
-
+            Console.WriteLine("Edit status code: " + response.StatusCode);
+            Console.WriteLine("Game content: " + JsonConvert.SerializeObject(game));
 
             if (response.IsSuccessStatusCode)
             {
@@ -144,7 +147,8 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
 
             else
             {
-                ViewBag.Genres = genres;
+                ViewBag.Genres = genresPlatforms.GenreList;
+                ViewBag.Platforms = genresPlatforms.PlatformList;
                 return View(game);
             }
 
@@ -158,11 +162,11 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
             string url = $"https://localhost:7108/api/game/{id}";
             
             HttpResponseMessage response = client.GetAsync(url).Result;
-            Game? game;
+            GamesViewModel? game;
 
             if (response.IsSuccessStatusCode)
             {
-                game = response.Content.ReadFromJsonAsync<Game>().Result;
+                game = response.Content.ReadFromJsonAsync<GamesViewModel>().Result;
             }
 
             else
