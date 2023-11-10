@@ -364,3 +364,5 @@ FodyWeavers.xsd
 /Migrations/20231106233246_Init.cs
 /Migrations/20231106233246_Init.Designer.cs
 /Migrations/GameStoreDbContextModelSnapshot.cs
+/Migrations/20231110214246_Reviews.cs
+/Migrations/20231110214246_Reviews.Designer.cs
