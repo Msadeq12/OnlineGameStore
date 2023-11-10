@@ -44,6 +44,10 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
         [HttpGet]
         public ViewResult Search(string searchString)
         {
+            if (String.IsNullOrEmpty(searchString))
+            {
+                searchString = "";
+            }
 
             string url = $"https://localhost:7108/api/game/search?search={searchString}";
 
