@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PROG3050_HMJJ.Models;
+using PROG3050_HMJJ.Areas.Admin.Models;
 using System.Diagnostics;
 
 namespace PROG3050_HMJJ.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly HttpClient _client;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController()
         {
-            _logger = logger;
+            _client = new HttpClient();
         }
 
       
