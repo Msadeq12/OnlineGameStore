@@ -59,6 +59,9 @@ namespace PROG3050_HMJJ.Models.DataAccess
                .HasOne(u => u.Profiles)
                .WithOne(p => p.User)
                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Reviews>()
+        .Property(r => r.CommentId)
+        .HasDefaultValueSql("NEWID()");
             #endregion
         }
 
@@ -131,6 +134,7 @@ namespace PROG3050_HMJJ.Models.DataAccess
 
 
         public DbSet<Profiles> Profiles { get; set; }
+        public DbSet<Reviews> Reviews { get; set; }
 
 
         public GameStoreDbContext(DbContextOptions<GameStoreDbContext> options) : base(options)

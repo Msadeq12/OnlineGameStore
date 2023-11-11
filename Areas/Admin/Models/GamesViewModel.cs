@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PROG3050_HMJJ.Areas.Member.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace PROG3050_HMJJ.Areas.Admin.Models
 {
@@ -26,6 +27,10 @@ namespace PROG3050_HMJJ.Areas.Admin.Models
 
         [Required]
         public string? GamePlatform { get; set; }
+
+        public Reviews NewReview { get; set; }
+
+        public List<Reviews> ApprovedReviews { get; set; }
 
     }
 }
