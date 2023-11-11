@@ -1,0 +1,41 @@
+﻿@model List<PROG3050_HMJJ.Areas.Member.Models.Reviews>
+
+<h2>Pending Reviews</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Comment</th>
+            <th>User</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var review in Model)
+        {
+            <tr>
+                <td>@review.CommentText</td>
+                <td>@review.UserId</td>
+                <td>
+                    <form asp-action="ApproveReview" method="post">
+                        <input type="hidden" name="reviewId" value="@review.CommentId" />
+                        <button type="submit" class="btn btn-primary">Approve</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
