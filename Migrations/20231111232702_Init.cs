@@ -92,7 +92,7 @@ namespace PROG3050_HMJJ.Migrations
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
                     GameId = table.Column<int>(type: "int", nullable: false),
-                    IsApproved = table.Column<bool>(type: "bit", nullable: false)
+                    IsApproved = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {

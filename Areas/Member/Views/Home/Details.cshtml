@@ -105,3 +105,9 @@
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     <a asp-action="Index">Back to List</a>
 </div>
+@if (TempData["ReviewMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["ReviewMessage"]
+    </div>
+}

@@ -19,7 +19,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
         public async Task<IActionResult> Reviews()
         {
             var reviews = await _context.Reviews
-                                        .Where(r => !r.IsApproved)
+                                        .Where(r => r.IsApproved==null)
                                         .ToListAsync();
             return View(reviews);
         }
@@ -37,6 +37,23 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
             else
             {
                 TempData["ErrorMessage"] = "No Reviews were found to approve.";
+            }
+            return RedirectToAction("Reviews");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DisapproveReview(string reviewId)
+        {
+            var review = await _context.Reviews.FindAsync(reviewId);
+            if (review != null)
+            {
+                review.IsApproved = false;
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Review disapproved successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "No Reviews were found to disapprove.";
             }
             return RedirectToAction("Reviews");
         }

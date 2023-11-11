@@ -89,7 +89,7 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                 {
                     // Initialize the NewReview property with a new Reviews object
                     game.NewReview = new Reviews() { GameId = game.ID };
-                    game.ApprovedReviews = _context.Reviews.Where(r => r.GameId == id && r.IsApproved)
+                    game.ApprovedReviews = _context.Reviews.Where(r => r.GameId == id && r.IsApproved==true)
                                              .ToList();
                     ViewBag.CurrentUsername = User?.Identity.Name ?? string.Empty;
                 }
@@ -122,7 +122,7 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                 var review = new Reviews
                 {
                     Timestamp = DateTime.Now,
-                    IsApproved = false,
+                    IsApproved = null,
                     UserId = model.NewReview.UserId,
                     CommentText = model.NewReview.CommentText,
                     GameId = model.NewReview.GameId,
@@ -133,7 +133,7 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
 
                 // Save changes asynchronously
                 await _context.SaveChangesAsync();
-
+                TempData["ReviewMessage"] = "Review submitted successfully, will be shown once approved by an admin.";
                 // Redirect to the game's details page after submission
                 return RedirectToAction("Details", "Home", new { area = "Member", id = review.GameId });
             }

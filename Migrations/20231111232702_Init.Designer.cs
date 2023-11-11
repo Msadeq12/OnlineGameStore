@@ -12,7 +12,7 @@ using PROG3050_HMJJ.Models.DataAccess;
 namespace PROG3050_HMJJ.Migrations
 {
     [DbContext(typeof(GameStoreDbContext))]
-    [Migration("20231111061632_Init")]
+    [Migration("20231111232702_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -291,7 +291,7 @@ namespace PROG3050_HMJJ.Migrations
                     b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsApproved")
+                    b.Property<bool?>("IsApproved")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("Timestamp")

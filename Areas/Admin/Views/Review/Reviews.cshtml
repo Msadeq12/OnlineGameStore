@@ -17,9 +17,10 @@
                 <td>@review.CommentText</td>
                 <td>@review.UserId</td>
                 <td>
-                    <form asp-action="ApproveReview" method="post">
+                    <form method="post">
                         <input type="hidden" name="reviewId" value="@review.CommentId" />
-                        <button type="submit" class="btn btn-primary">Approve</button>
+                        <button type="submit" class="btn btn-primary" asp-action="ApproveReview">Approve</button>
+                        <button type="submit" class="btn btn-danger" asp-action="DisapproveReview">Disapprove</button>
                     </form>
                 </td>
             </tr>

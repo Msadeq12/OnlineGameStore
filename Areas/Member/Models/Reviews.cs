@@ -11,6 +11,6 @@ namespace PROG3050_HMJJ.Areas.Member.Models
         public string UserId { get; set; }
         public DateTime Timestamp { get; set; }
         public int GameId { get; set; } 
-        public bool IsApproved { get; set; } = false;
+        public bool? IsApproved { get; set; } = null;
     }
 }
