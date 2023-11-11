@@ -47,17 +47,41 @@ namespace PROG3050_HMJJ.Models.DataAccess
                 new Languages { ID = 10, Name = "Italian" }
             );
 
+            builder.Entity<Countries>().HasData(
+                new Countries { ID = 1, Name = "Canada" }
+                );
+
+            builder.Entity<Regions>().HasData(
+                new Regions { ID = 1, Name = "Alberta", CountriesID = 1 },
+                new Regions { ID = 2, Name = "British Columbia", CountriesID = 1 },
+                new Regions { ID = 3, Name = "Manitoba", CountriesID = 1 },
+                new Regions { ID = 4, Name = "New Brunswick", CountriesID = 1 },
+                new Regions { ID = 5, Name = "Newfoundland and Labrador", CountriesID = 1 },
+                new Regions { ID = 6, Name = "Northwest Territories", CountriesID = 1 },
+                new Regions { ID = 7, Name = "Nova Scotia", CountriesID = 1 },
+                new Regions { ID = 8, Name = "Nunavut", CountriesID = 1 },
+                new Regions { ID = 9, Name = "Ontario", CountriesID = 1 },
+                new Regions { ID = 10, Name = "Prince Edward Island", CountriesID = 1 },
+                new Regions { ID = 11, Name = "Quebec", CountriesID = 1 },
+                new Regions { ID = 12, Name = "Saskatchewan", CountriesID = 1 },
+                new Regions { ID = 13, Name = "Yukon", CountriesID = 1 }
+            );
+            // ToDo: seed address related data and define cascade behaviour
 
             #region defineCascades
-            builder.Entity<User>()
-                .HasOne(u => u.Preferences)
-                .WithOne(p => p.User)
+            builder.Entity<Preferences>()
+                .HasOne(u => u.User)
+                .WithOne(p => p.Preferences)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Profiles>()
+               .HasOne(u => u.User)
+               .WithOne(p => p.Profiles)
+               .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<User>()
-               .HasOne(u => u.Profiles)
-               .WithOne(p => p.User)
+            builder.Entity<Addresses>()
+               .HasOne(u => u.User)
+               .WithOne(a => a.Addresses)
                .OnDelete(DeleteBehavior.Cascade);
             #endregion
         }
@@ -131,6 +155,21 @@ namespace PROG3050_HMJJ.Models.DataAccess
 
 
         public DbSet<Profiles> Profiles { get; set; }
+
+
+        public DbSet<Addresses> Addresses { get; set; }
+
+        
+        public DbSet<Regions> Regions { get; set; }
+
+
+        public DbSet<Countries> Countries { get; set; }
+
+
+        public DbSet<MailingAddresses> MailingAddresses { get; set; }
+
+
+        public DbSet<ShippingAddresses> ShippingAddresses { get; set; }
 
 
         public GameStoreDbContext(DbContextOptions<GameStoreDbContext> options) : base(options)

@@ -1,0 +1,154 @@
+﻿@page
+@using PROG3050_HMJJ.Areas.Member.Models;
+@using PROG3050_HMJJ.Models;
+@model AddressesModel;
+@{
+    ViewData["Title"] = "Addresses";
+    ViewData["ActivePage"] = ManageNavPages.Addresses;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <form id="addresses-form" method="post">
+        <h2>Mailing Address</h2>
+            <input type="hidden" asp-for="MailingAddresses.ID" />
+            <div class="form-group row">
+                <label asp-for="MailingAddresses.Line1" class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-6">
+                    <input asp-for="MailingAddresses.Line1" class="form-control" />
+                </div>
+                <div class="col">
+                    <span asp-validation-for="MailingAddresses.Line1" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="MailingAddresses.Line2" class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-6">
+                    <input asp-for="MailingAddresses.Line2" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Input.SelectedMailingCountryID" class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-6">
+                    <select asp-for="Input.SelectedMailingCountryID" asp-items="Model.MailingCountryList" class="form-select">
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label asp-for="MailingAddresses.RegionsID" class="col-sm-4 col-form-label">@ViewData["MailingRegion"]</label>
+                <div class="col-sm-6">
+                    <select asp-for="MailingAddresses.RegionsID" asp-items="Model.MailingRegionList" class="form-select">
+                    </select>
+                </div>
+                <div class="col">
+                    <span asp-validation-for="MailingAddresses.RegionsID" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="MailingAddresses.City" class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-6">
+                    <input asp-for="MailingAddresses.City" class="form-control" />
+                </div>
+                <div class="col">
+                    <span asp-validation-for="MailingAddresses.City" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="MailingAddresses.PostalCode" class="col-sm-4 col-form-label">@ViewData["MailingCode"]</label>
+                <div class="col-sm-6">
+                    <input asp-for="MailingAddresses.PostalCode" class="form-control" />
+                </div>
+                <div class="col">
+                    <span asp-validation-for="MailingAddresses.PostalCode" class="text-danger"></span>
+                </div>
+            </div>
+            @if (!Model.Addresses.SameAddress)
+            {
+                <br />
+                <h2>Shipping Address</h2>
+                <input type="hidden" asp-for="ShippingAddresses.ID" />
+                <div class="form-group row">
+                    <label asp-for="ShippingAddresses.Line1" class="col-sm-4 col-form-label"></label>
+                    <div class="col-sm-6">
+                        <input asp-for="ShippingAddresses.Line1" class="form-control" />
+                    </div>
+                    <div class="col">
+                        <span asp-validation-for="ShippingAddresses.Line1" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="ShippingAddresses.Line2" class="col-sm-4 col-form-label"></label>
+                    <div class="col-sm-6">
+                        <input asp-for="ShippingAddresses.Line2" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Input.SelectedShippingCountryID" class="col-sm-4 col-form-label"></label>
+                    <div class="col-sm-6">
+                        <select asp-for="Input.SelectedShippingCountryID" asp-items="Model.ShippingCountryList" class="form-select">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label asp-for="ShippingAddresses.RegionsID" class="col-sm-4 col-form-label">@ViewData["ShippingRegion"]</label>
+                    <div class="col-sm-6">
+                        <select asp-for="ShippingAddresses.RegionsID" asp-items="Model.ShippingRegionList" class="form-select">
+                        </select>
+                    </div>
+                    <div class="col">
+                        <span asp-validation-for="ShippingAddresses.RegionsID" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="ShippingAddresses.City" class="col-sm-4 col-form-label"></label>
+                    <div class="col-sm-6">
+                        <input asp-for="ShippingAddresses.City" class="form-control" />
+                    </div>
+                    <div class="col">
+                        <span asp-validation-for="ShippingAddresses.City" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="ShippingAddresses.PostalCode" class="col-sm-4 col-form-label">@ViewData["ShippingCode"]</label>
+                    <div class="col-sm-6">
+                        <input asp-for="ShippingAddresses.PostalCode" class="form-control" />
+                    </div>
+                    <div class="col">
+                        <span asp-validation-for="ShippingAddresses.PostalCode" class="text-danger"></span>
+                    </div>
+                </div>
+            }
+            <input type="hidden" asp-for="Addresses.ID" />
+            <div class="form-group row">
+                <label asp-for="Addresses.DeliveryInstructions" class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-6">
+                    <input asp-for="Addresses.DeliveryInstructions" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Addresses.SameAddress" class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-6">
+                    <input type="checkbox" asp-for="Addresses.SameAddress" class="form-check" />
+                </div>
+            </div>
+            <button id="update-addresses-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+       </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function SelectMailingRegions() {
+            document.getElementById("selectMailingRegions").click();
+        }
+
+        function SelectShippingRegions() {
+            document.getElementById("selectShippingRegions").click();
+        }
+    </script>
+}

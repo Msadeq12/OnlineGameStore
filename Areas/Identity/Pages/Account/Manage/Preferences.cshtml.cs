@@ -68,9 +68,12 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 
         public MultiSelectList PlatformList { get; set; }
 
+
         public MultiSelectList GenreList { get; set; }
 
+
         public SelectList LanguageList { get; set; }
+
 
         public Preferences Preferences { get; set; }
 
