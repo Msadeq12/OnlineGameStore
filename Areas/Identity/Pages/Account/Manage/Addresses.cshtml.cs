@@ -6,10 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using PROG3050_HMJJ.Areas.Member.Models;
 using PROG3050_HMJJ.Models.Account;
 using PROG3050_HMJJ.Models.DataAccess;
-using SendGrid.Helpers.Mail;
-using System.Net;
-using System.Text.RegularExpressions;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
