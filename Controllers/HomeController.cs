@@ -37,8 +37,12 @@ namespace PROG3050_HMJJ.Controllers
         }
 
         [HttpGet]
-        public ViewResult Search(string searchString)
+        public IActionResult Search(string searchString)
         {
+            if (String.IsNullOrEmpty(searchString))
+            {
+                return RedirectToAction("Index");
+            }
 
             string url = $"https://localhost:7108/api/game/search?search={searchString}";
 
