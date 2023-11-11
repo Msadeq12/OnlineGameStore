@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PROG3050_HMJJ.Areas.Admin.Models;
 using PROG3050_HMJJ.Models;
 using System.Diagnostics;
 
@@ -7,12 +6,11 @@ namespace PROG3050_HMJJ.Controllers
 {
     public class HomeController : Controller
     {
-        private HttpClient _client;
-        
+        private readonly ILogger<HomeController> _logger;
 
-        public HomeController()
+        public HomeController(ILogger<HomeController> logger)
         {
-            _client = new HttpClient();
+            _logger = logger;
         }
 
       
@@ -86,7 +84,7 @@ namespace PROG3050_HMJJ.Controllers
             return View(game);
         }
 
-
+        
         public IActionResult Privacy()
         {
             return View();

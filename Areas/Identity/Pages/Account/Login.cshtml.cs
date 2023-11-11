@@ -283,6 +283,16 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
 
                     _logger.LogWarning("User account locked out.");
 
+                    // If TestMember user for unit testing, make the wait time shorter for the account lockout (i.e. 2 seconds)
+                    if(Input.UserName == "TestMember")
+                    {
+                        var user = await _userManager.FindByNameAsync(Input.UserName);
+                        if(user != null)
+                        {
+                            user.LockoutEnd = DateTime.Now.AddSeconds(2);
+                            _userManager.UpdateAsync(user).Wait();
+                        }
+                    }
                     return RedirectToPage("./Lockout");
 
                 }
