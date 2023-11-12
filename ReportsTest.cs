@@ -2,7 +2,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
 
-[TestFixture, Order(6)]
+[TestFixture, Order(8)]
 internal sealed class ReportsTest {
   private static IWebDriver s_driver;
   private static IDictionary<string, object> s_vars;

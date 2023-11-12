@@ -2,7 +2,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 
 
-[TestFixture, Order(3)]
+[TestFixture, Order(4)]
 internal sealed class PreferencesTest {
   private static IWebDriver s_driver;
   

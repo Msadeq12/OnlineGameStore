@@ -2,7 +2,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 
 
-[TestFixture, Order(5)]
+[TestFixture, Order(7)]
 internal sealed class AdminTest {
   private static IWebDriver s_driver;
 

@@ -2,7 +2,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 
 
-[TestFixture, Order(4)]
+[TestFixture, Order(6)]
 internal sealed class ProfilesTest {
   private static IWebDriver s_driver;
 
@@ -73,7 +73,7 @@ internal sealed class ProfilesTest {
     s_driver.FindElement(By.Id("Profile_DOB")).SendKeys("1982-09-22");
     s_driver.FindElement(By.Id("Profile_RecievePromotions")).Click();
     s_driver.FindElement(By.CssSelector(".btn-primary")).Click();
-    s_driver.FindElement(By.CssSelector(".alert")).Click();
+   // s_driver.FindElement(By.CssSelector(".alert")).Click();
     Assert.That(s_driver.FindElement(By.CssSelector(".alert")).Text, Is.EqualTo("Your profile has been updated"));
   }
 }
