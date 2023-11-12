@@ -26,56 +26,88 @@ namespace PROG3050_HMJJ.Areas.Member.Components
         }
 
 
+        //public async Task<IViewComponentResult> InvokeAsync()
+        //{
+        //    var user = await _userManager.GetUserAsync((System.Security.Claims.ClaimsPrincipal)User);
+        //    string endpoint = "model";
+
+        //    List<GamesViewModel>? gameByGenre;
+
+        //    if (user == null)
+        //    {
+        //        Console.WriteLine("User not found.");
+        //    }
+
+        //    var preferences = _context.Preferences.FirstOrDefault(p => p.User.Id == user.Id);
+
+        //    if (preferences == null)
+        //    {
+        //        Console.WriteLine("Preferences not found.");
+        //        gameByGenre = new List<GamesViewModel>();
+        //    }
+
+        //    else
+        //    {
+        //        var platforms = await _context.Platforms.ToListAsync();
+        //        var selectedGenres = await _context.SelectedGenres.Where(g => g.Preferences.ID == preferences.ID).Select(s => s.Genres.Name).ToListAsync();
+
+        //        string baseUrl = "https://localhost:7108/api/game/GameByGenre?";
+
+        //        string updatedUrl = HelperClass.QueryUrlParser(selectedGenres, baseUrl, endpoint);
+
+        //        HttpResponseMessage response = await _client.GetAsync(updatedUrl);
+
+
+        //        await Console.Out.WriteLineAsync("GameGenre View status: " + response.StatusCode);
+        //        await Console.Out.WriteLineAsync("updated url from VC: " + updatedUrl);
+
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            gameByGenre = response.Content.ReadFromJsonAsync<List<GamesViewModel>>().Result;
+        //        }
+
+        //        else
+        //        {
+        //            gameByGenre = null;
+        //        }
+
+        //    }
+
+
+
+        //    return View(gameByGenre);
+        //}
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var user = await _userManager.GetUserAsync((System.Security.Claims.ClaimsPrincipal)User);
-            string endpoint = "model";
-
-            List<GamesViewModel>? gameByGenre;
-
             if (user == null)
             {
                 Console.WriteLine("User not found.");
+                return View(new List<GamesViewModel>());
             }
 
             var preferences = _context.Preferences.FirstOrDefault(p => p.User.Id == user.Id);
-
             if (preferences == null)
             {
                 Console.WriteLine("Preferences not found.");
-                gameByGenre = new List<GamesViewModel>();
+                return View(new List<GamesViewModel>());
             }
 
-            else
+            var selectedGenres = await _context.SelectedGenres.Where(g => g.Preferences.ID == preferences.ID).Select(s => s.Genres.Name).ToListAsync();
+            var selectedPlatforms = await _context.SelectedPlatforms.Where(g => g.Preferences.ID == preferences.ID).Select(s => s.Platforms.Name).ToListAsync();
+
+            string baseUrl = "https://localhost:7108/api/game/GameByGenre";
+            var query = $"?genreIds={String.Join("&genreIds=", selectedGenres)}&platformIds={String.Join("&platformIds=", selectedPlatforms)}";
+            var response = await _client.GetAsync(baseUrl + query);
+            Console.WriteLine(baseUrl + query);
+            if (!response.IsSuccessStatusCode)
             {
-                var platforms = await _context.Platforms.ToListAsync();
-                var selectedGenres = await _context.SelectedGenres.Where(g => g.Preferences.ID == preferences.ID).Select(s => s.Genres.Name).ToListAsync();
-
-                string baseUrl = "https://localhost:7108/api/game/GameByGenre?";
-
-                string updatedUrl = HelperClass.QueryUrlParser(selectedGenres, baseUrl, endpoint);
-
-                HttpResponseMessage response = await _client.GetAsync(updatedUrl);
-
-
-                await Console.Out.WriteLineAsync("GameGenre View status: " + response.StatusCode);
-                await Console.Out.WriteLineAsync("updated url from VC: " + updatedUrl);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    gameByGenre = response.Content.ReadFromJsonAsync<List<GamesViewModel>>().Result;
-                }
-
-                else
-                {
-                    gameByGenre = null;
-                }
-
+                Console.WriteLine("API request failed.");
+                return View(new List<GamesViewModel>());
             }
-
-
-
-            return View(gameByGenre);
+            
+            var games = await response.Content.ReadFromJsonAsync<List<GamesViewModel>>();
+            return View(games);
         }
     }
 }

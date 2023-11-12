@@ -11,17 +11,12 @@ namespace PROG3050_HMJJ.Models.Account
         public IList<string> RoleNames { get; set; }
 
 
-        [ForeignKey("Profiles")]
-        public int? ProfilesID { get; set; }
+        public Profiles? Profiles { get; set; }
 
 
-        [ForeignKey("Preferences")]
-        public int? PreferencesID { get; set; }
+        public  Preferences? Preferences { get; set; }
 
 
-        public virtual Profiles? Profiles { get; set; }
-
-
-        public virtual Preferences? Preferences { get; set; }
+        public Addresses? Addresses { get; set; }
     }
 }
