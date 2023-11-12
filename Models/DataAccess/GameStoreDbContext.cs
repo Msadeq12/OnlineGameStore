@@ -189,13 +189,22 @@ namespace PROG3050_HMJJ.Models.DataAccess
             UserManager<User> userManager =
                 serviceProvider.GetRequiredService<UserManager<User>>();
 
-            // For unit tests only; user is created in unit tests
-            var signUpTestMember = await userManager.FindByNameAsync("TestMember");
-
-            if (signUpTestMember != null)
+            try
             {
-                await userManager.DeleteAsync(signUpTestMember);
+                // For unit tests only; user is created in unit tests
+                var signUpTestMember = await userManager.FindByNameAsync("TestMember");
+
+                if (signUpTestMember != null)
+                {
+                    await userManager.DeleteAsync(signUpTestMember);
+                }
             }
+            catch
+            {
+                // Getting error due to cascade issues with Mailing/Shipping Addresses
+                // Tests are still functional but to run full suite we'll need to reinitialize the database before hand.
+            }
+           
         }
         #endregion
 
