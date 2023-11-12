@@ -11,7 +11,7 @@ namespace PROG3050_HMJJ.Areas.Member.Models
 
 
         [ForeignKey("User")]
-        public string UserID { get; set; }
+        public string? UserID { get; set; }
 
 
         public virtual User? User { get; set; }
