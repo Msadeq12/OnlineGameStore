@@ -49,18 +49,18 @@
 
 </style>
 
-@if (Model.Count == 0)
+@if (Model == null || !Model.Any())
 {
     <div class="row">
-        <h3>Please update your Preferences for Platform</h3>
+        <h3>Please update your Preferences to see the recommended games.</h3>
     </div>
     
 }
 
 else
 {
-    <div class="row">
-        <h1>Your Favourite Platforms:</h1>
+    @* <div class="row">
+        <h1>Your Favourite Genres:</h1>
         <div id="carouselExampleControls" class="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -111,6 +111,28 @@ else
             </button>
         </div>
 
+    </div> *@
+    <div class="row">
+        <h1>Recommended Games:</h1>
+        @foreach (var game in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 box-shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">@game.Title</h5>
+                        <p class="card-text">@game.Description</p>
+                        <p class="card-text">@game.GameGenre</p>
+                        <p class="card-text">@game.GamePlatform</p>
+                        <p class="card-text">@game.Price.ToString("C")</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@game.ID">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 }
 

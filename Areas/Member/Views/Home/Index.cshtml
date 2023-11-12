@@ -110,15 +110,16 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
     </button>
+        
+</div>
+<div class="row">
+@await Component.InvokeAsync("GamesByGenre")
 </div>
 
-<div class="row">
-    @await Component.InvokeAsync("GamesByGenre")
-</div>
 
-<div class="row">
+@* <div class="row">
     @await Component.InvokeAsync("GamesByPlatform")
-</div>
+</div> *@
                 
 
 @section Scripts {
