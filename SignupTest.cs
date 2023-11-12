@@ -7,6 +7,16 @@ internal sealed class SignupTest {
   private static IWebDriver s_driver;
   
 
+    // There is a temporary issue clearing the TestMember from the database
+    // due to improper cascading
+    // To have tests pass please "drop-database" and re-run "update-database"
+    // There is no need to recreate migrations unless yours are non existent or out of date.
+    // FYI the suite is meant to be run cohesively to ensure proper clearing of resources
+    // and to ensure the application is harmonious. To run the suite cohesively please select run all tests
+    // in the tests exployer.
+    // Thank you
+
+
   [SetUp]
   public static void SetUp() {
     s_driver = new FirefoxDriver(new FirefoxOptions { AcceptInsecureCertificates = true });

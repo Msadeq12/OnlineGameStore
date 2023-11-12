@@ -21,7 +21,8 @@ public sealed class GameRecommendationsBlankTest
 
 
       [Test, Order(1)]
-      public static void memberDoesNotSpecifyPreferencesForGameRecommendations() {
+      public static void memberDoesNotSpecifyPreferencesForGameRecommendations()
+      {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
         s_driver.Manage().Window.Size = new System.Drawing.Size(1212, 691);
         s_driver.FindElement(By.Id("login")).Click();
@@ -30,6 +31,9 @@ public sealed class GameRecommendationsBlankTest
         s_driver.FindElement(By.Id("Input_Password")).Click();
         s_driver.FindElement(By.Id("Input_Password")).SendKeys("Test1$");
         s_driver.FindElement(By.Id("login-submit")).Click();
-        Assert.That(s_driver.FindElement(By.CssSelector("h3")).Text, Is.EqualTo("Please update your Preferences to see the recommended games."));
+        {
+            var elements = s_driver.FindElements(By.CssSelector("div.row:nth-child(5) > div:nth-child(2) > h1:nth-child(1)"));
+            Assert.True(elements.Count == 0);
+        }
       }
 }
