@@ -15,13 +15,13 @@ namespace PROG3050_HMJJ.Areas.Member.Models
 
 
         [ForeignKey("Regions")]
-        public int? RegionsID { get; set; }
+        public int RegionsID { get; set; }
 
 
-        public virtual Addresses Addresses { get; set; }
+        public virtual Addresses? Addresses { get; set; }
 
 
-        public virtual Regions Regions { get; set; }
+        public virtual Regions? Regions { get; set; }
 
 
         [Display(Name = "Address line 1")]

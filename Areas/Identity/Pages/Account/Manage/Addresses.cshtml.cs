@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using PROG3050_HMJJ.Areas.Member.Models;
 using PROG3050_HMJJ.Models.Account;
 using PROG3050_HMJJ.Models.DataAccess;
-
+using System.Net;
+using System.Text.RegularExpressions;
 
 namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 {
@@ -46,7 +47,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
         public ShippingAddresses ShippingAddresses { get; set; }
 
 
-        [BindProperty]
+        [BindProperty(SupportsGet = true)]
         public InputModel Input { get; set; }
 
 
@@ -104,6 +105,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 
             var regions = await _context.Regions.ToListAsync();
             var countries = await _context.Countries.ToListAsync();
+            countries.Insert(0, new Countries() { ID = 0, Name = "" });
             var mailingAddress = await _context.MailingAddresses.FirstOrDefaultAsync(a => a.Addresses.ID == address.ID);
             var shippingAddress = await _context.ShippingAddresses.FirstOrDefaultAsync(a => a.Addresses.ID == address.ID);
 
@@ -114,7 +116,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                 mailingAddress.Addresses = address;
                 mailingAddress.RegionsID = 1;
                 MailingAddresses = mailingAddress;
-                _context.Add(mailingAddress);
+                _context.MailingAddresses.Add(mailingAddress);
                 _context.SaveChanges();
             }
             else
@@ -128,7 +130,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                 shippingAddress.Addresses = address;
                 shippingAddress.RegionsID = 1;
                 ShippingAddresses = shippingAddress;
-                _context.Add(shippingAddress);
+                _context.ShippingAddresses.Add(shippingAddress);
                 _context.SaveChanges();
             }
             else
@@ -136,57 +138,214 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                 ShippingAddresses = shippingAddress;
             }
 
-
-            if (address.SameAddress)
+            if (MailingAddresses.Line1 == null)
             {
-                ShippingAddresses.AddressesID = Addresses.ID;
-                ShippingAddresses.RegionsID = MailingAddresses.RegionsID;
-                ShippingAddresses.Addresses = Addresses;
-                ShippingAddresses.Regions = MailingAddresses.Regions;
-                ShippingAddresses.Line1 = MailingAddresses.Line1;
-                ShippingAddresses.Line2 = MailingAddresses.Line2;
-                ShippingAddresses.City = MailingAddresses.City;
-                ShippingAddresses.PostalCode = MailingAddresses.PostalCode;
+                MailingAddresses.RegionsID = 0;
+            }
+
+            if (ShippingAddresses.Line1 == null)
+            {
+                ShippingAddresses.RegionsID = 0;
             }
 
 
             // ToDo: handle or fix null exception
 
-            if (mailingAddress != null)
+            if (MailingAddresses.RegionsID != 0)
             {
-                var mailingSelectedRegion = await _context.Regions.FirstOrDefaultAsync(r => r.ID == mailingAddress.RegionsID);
+                var mailingSelectedRegion = await _context.Regions.FirstOrDefaultAsync(r => r.ID == MailingAddresses.RegionsID);
                 MailingCountryList = new SelectList(countries, "ID", "Name", mailingSelectedRegion.CountriesID);
-                MailingRegionList = new SelectList(regions, "ID", "Name", mailingSelectedRegion.ID);
+                Input.SelectedMailingCountryID = mailingSelectedRegion.CountriesID;
             }
             else
             {
-                MailingCountryList = new SelectList(countries, "ID", "Name", 1);
-                MailingRegionList = new SelectList(regions, "ID", "Name", 1);
+                MailingCountryList = new SelectList(countries, "ID", "Name", 0);
+                Input.SelectedMailingCountryID = 0;
             }
 
-            if (shippingAddress != null)
+            if (ShippingAddresses.RegionsID != 0)
             {
-                var shippingSelectedRegion = await _context.Regions.FirstOrDefaultAsync(r => r.ID == shippingAddress.RegionsID);
+                var shippingSelectedRegion = await _context.Regions.FirstOrDefaultAsync(r => r.ID == ShippingAddresses.RegionsID);
                 ShippingCountryList = new SelectList(countries, "ID", "Name", shippingSelectedRegion.CountriesID);
-                ShippingRegionList = new SelectList(regions, "ID", "Name", shippingSelectedRegion.ID);
+                Input.SelectedShippingCountryID = shippingSelectedRegion.CountriesID;
             }
             else
             {
-                ShippingCountryList = new SelectList(countries, "ID", "Name", 1);
-                ShippingRegionList = new SelectList(regions, "ID", "Name", 1);
+                ShippingCountryList = new SelectList(countries, "ID", "Name", 0);
+                Input.SelectedShippingCountryID = 0;
+            }
+
+            SelectRegions();
+            SetRegionAndCodeLabels();
+
+            if (MailingAddresses.RegionsID != 0){
+                MailingRegionList.ElementAt(MailingAddresses.RegionsID).Selected = true;
+            }
+
+            if (ShippingAddresses.RegionsID != 0)
+            {
+                ShippingRegionList.ElementAt(ShippingAddresses.RegionsID).Selected = true;
             }
 
             return Page();
         }
 
 
-        public async Task<IActionResult> OnPostAsync()
+        public void SelectRegions()
+        {
+            List<Regions> mailingRegions = _context.Regions.Where(r => r.CountriesID == Input.SelectedMailingCountryID).ToList();
+
+            mailingRegions.Insert(0, new Regions { ID = 0, Name = "" });
+            MailingRegionList = new SelectList(mailingRegions, "ID", "Name");
+
+            MailingRegionList.ElementAt(0).Selected = true;
+
+            List<Regions> shippingRegions = _context.Regions.Where(r => r.CountriesID == Input.SelectedShippingCountryID).ToList();
+
+            shippingRegions.Insert(0, new Regions { ID = 0, Name = "" });
+            ShippingRegionList = new SelectList(shippingRegions, "ID", "Name");
+
+            ShippingRegionList.ElementAt(0).Selected = true;
+        }
+
+        public void SetRegionAndCodeLabels()
+        {
+            if (Input.SelectedMailingCountryID == 0)
+            {
+                ViewData["MailingRegion"] = "Region";
+                ViewData["MailingCode"] = "Address Code";
+            }
+            else if (Input.SelectedMailingCountryID == 1)
+            {
+                ViewData["MailingRegion"] = "Province/Territory";
+                ViewData["MailingCode"] = "Postal Code";
+            }
+            else if (Input.SelectedMailingCountryID == 2)
+            {
+                ViewData["MailingRegion"] = "State/Territory";
+                ViewData["MailingCode"] = "Zip Code";
+            }
+
+            if (Input.SelectedShippingCountryID == 0)
+            {
+                ViewData["ShippingRegion"] = "Region";
+                ViewData["ShippingCode"] = "Address Code";
+            }
+            else if (Input.SelectedShippingCountryID == 1)
+            {
+                ViewData["ShippingRegion"] = "Province/Territory";
+                ViewData["ShippingCode"] = "Postal Code";
+            }
+            else if (Input.SelectedShippingCountryID == 2)
+            {
+                ViewData["ShippingRegion"] = "State/Territory";
+                ViewData["ShippingCode"] = "Zip Code";
+            }
+        }
+
+        public async Task<IActionResult> OnPostRegions(string addressType)
+        {
+            StatusMessage = null;
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var countries = _context.Countries.ToList();
+            countries.Insert(0, new Countries { ID = 0, Name = "" });
+            MailingCountryList = new SelectList(countries, "ID", "Name", Input.SelectedMailingCountryID);
+            ShippingCountryList = new SelectList(countries, "ID", "Name", Input.SelectedShippingCountryID);
+
+            SetRegionAndCodeLabels();
+            SelectRegions();
+
+            if (addressType.Equals("shipping"))
+            {
+                if (MailingAddresses.RegionsID != 0)
+                {
+                    MailingRegionList.ElementAt(MailingAddresses.RegionsID).Selected = true;
+                }
+            }
+            else if (addressType.Equals("mailing"))
+            {
+                if (ShippingAddresses.RegionsID != 0)
+                {
+                    ShippingRegionList.ElementAt(ShippingAddresses.RegionsID).Selected = true;
+                }
+            }
+
+            return Page();
+        }
+
+
+        public async Task<IActionResult> OnPostSameAddress()
+        {
+            StatusMessage = "Make sure to save.";
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var countries = _context.Countries.ToList();
+            countries.Insert(0, new Countries { ID = 0, Name = "" });
+            MailingCountryList = new SelectList(countries, "ID", "Name", Input.SelectedMailingCountryID);
+            ShippingCountryList = new SelectList(countries, "ID", "Name", Input.SelectedShippingCountryID);
+
+            SetRegionAndCodeLabels();
+            SelectRegions();
+
+            if (MailingAddresses.RegionsID != 0)
+            {
+                MailingRegionList.ElementAt(MailingAddresses.RegionsID).Selected = true;
+            }
+            
+            if (ShippingAddresses.RegionsID != 0)
+            {
+                ShippingRegionList.ElementAt(ShippingAddresses.RegionsID).Selected = true;
+            }
+
+            return Page();
+        }
+
+
+        public async Task<IActionResult> OnPostAddresses()
         {
             var user = await _userManager.GetUserAsync(User);
 
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            ValidateMailingAddress();
+
+            if (Addresses.SameAddress == false)
+            {
+                ValidateShippingAddress();
+            }
+
+            var countries = _context.Countries.ToList();
+            countries.Insert(0, new Countries { ID = 0, Name = "" });
+            MailingCountryList = new SelectList(countries, "ID", "Name", Input.SelectedMailingCountryID);
+            ShippingCountryList = new SelectList(countries, "ID", "Name", Input.SelectedShippingCountryID);
+
+            SetRegionAndCodeLabels();
+            SelectRegions();
+
+            if (MailingAddresses.RegionsID != 0)
+            {
+                MailingRegionList.ElementAt(MailingAddresses.RegionsID).Selected = true;
+            }
+            if (ShippingAddresses.RegionsID != 0)
+            {
+                ShippingRegionList.ElementAt(ShippingAddresses.RegionsID).Selected = true;
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return Page();
             }
 
             Addresses.User = user;
@@ -200,23 +359,16 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             ShippingAddresses.Addresses = Addresses;
 
             // Avoid adding selected platforms to database if there aren't any selected
-            if (Addresses.SameAddress != null && Addresses.SameAddress == true)
+            if (Addresses.SameAddress == true)
             {
-                ShippingAddresses.AddressesID = Addresses.ID;
-                ShippingAddresses.RegionsID = MailingAddresses.RegionsID;
-                ShippingAddresses.Addresses = Addresses;
-                ShippingAddresses.Regions = MailingAddresses.Regions;
-                ShippingAddresses.Line1 = MailingAddresses.Line1;
-                ShippingAddresses.Line2 = MailingAddresses.Line2;
-                ShippingAddresses.City = MailingAddresses.City;
-                ShippingAddresses.PostalCode = MailingAddresses.PostalCode;
+                ShippingAddresses.RegionsID = 1;
             }
             else
             {
                 ShippingAddresses.Regions = _context.Regions.Where(r => r.ID == ShippingAddresses.RegionsID).FirstOrDefault();
             }
 
-            _context.Update(ShippingAddresses);
+            _context.ShippingAddresses.Update(ShippingAddresses);
             _context.SaveChanges();
             _context.Addresses.Update(Addresses);
             _context.SaveChanges();
@@ -226,29 +378,23 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             _logger.LogInformation("User changed their address information successfully.");
             return RedirectToPage();
         }
-    }
-}
 
         
-        /*public async Task<bool> ValidMailingAddress()
+        public async void ValidateMailingAddress()
         {
-            bool valid = true;
             if (MailingAddresses.Line1 == null)
             {
-                ModelState.AddModelError("MailingAddress.Line1", "Please enter address line 1");
-                valid = false;
+                ModelState.AddModelError("MailingAddresses.Line1", "Please enter address line 1");
             }
 
             if (MailingAddresses.RegionsID == 0)
             {
-                ModelState.AddModelError("MailingAddress.RegionID", "Please choose a region");
-                valid = false;
+                ModelState.AddModelError("MailingAddresses.RegionsID", "Please choose a region");
             }
 
             if (System.String.IsNullOrEmpty(MailingAddresses.City))
             {
-                ModelState.AddModelError("MailingAddress.City", "Please enter a city");
-                valid = false;
+                ModelState.AddModelError("MailingAddresses.City", "Please enter a city");
             }
 
             if (!System.String.IsNullOrWhiteSpace(MailingAddresses.PostalCode))
@@ -261,8 +407,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                         regex = new Regex("^[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ] [0-9][ABCEGHJKMNPRSTVWXYZ][0-9]$");
                         if (!regex.Match(MailingAddresses.PostalCode).Success)
                         {
-                            ModelState.AddModelError("MailingAddress.PostalCode", "Please enter a valid Postal Code");
-                            valid = false;
+                            ModelState.AddModelError("MailingAddresses.PostalCode", "Please enter a valid Postal Code");
                         }
                     }
                     else if (Input.SelectedMailingCountryID == 2)
@@ -270,8 +415,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                         regex = new Regex("^\\d{5}(-{0,1}\\d{4})?$");
                         if (!regex.Match(MailingAddresses.PostalCode).Success)
                         {
-                            ModelState.AddModelError("MailingAddress.PostalCode", "Please enter a valid Zip Code");
-                            valid = false;
+                            ModelState.AddModelError("MailingAddresses.PostalCode", "Please enter a valid Zip Code");
                         }
                     }
                 }
@@ -280,38 +424,31 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             {
                 if (Input.SelectedMailingCountryID == 1)
                 {
-                    ModelState.AddModelError("MailingAddress.PostalCode", "Please enter a Postal Code");
-                    valid = false;
+                    ModelState.AddModelError("MailingAddresses.PostalCode", "Please enter a Postal Code");
                 }
                 else if (Input.SelectedMailingCountryID == 2)
                 {
-                    ModelState.AddModelError("MailingAddress.PostalCode", "Please enter a Zip Code");
-                    valid = false;
+                    ModelState.AddModelError("MailingAddresses.PostalCode", "Please enter a Zip Code");
                 }
             }
-            return valid;
         }
 
 
-        public async Task<bool> ValidShippingAddress()
+        public async void ValidateShippingAddress()
         {
-            bool valid = true;
             if (ShippingAddresses.Line1 == null)
             {
-                ModelState.AddModelError("ShippingAddress.Line1", "Please enter address line 1");
-                valid = false;
+                ModelState.AddModelError("ShippingAddresses.Line1", "Please enter address line 1");
             }
 
             if (ShippingAddresses.RegionsID == 0)
             {
-                ModelState.AddModelError("ShippingAddress.RegionID", "Please choose a region");
-                valid = false;
+                ModelState.AddModelError("ShippingAddresses.RegionsID", "Please choose a region");
             }
 
             if (System.String.IsNullOrEmpty(ShippingAddresses.City))
             {
-                ModelState.AddModelError("ShippingAddress.City", "Please enter a city");
-                valid = false;
+                ModelState.AddModelError("ShippingAddresses.City", "Please enter a city");
             }
 
             if (!System.String.IsNullOrWhiteSpace(ShippingAddresses.PostalCode))
@@ -324,8 +461,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                         regex = new Regex("^[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ] [0-9][ABCEGHJKMNPRSTVWXYZ][0-9]$");
                         if (!regex.Match(ShippingAddresses.PostalCode).Success)
                         {
-                            ModelState.AddModelError("ShippingAddress.PostalCode", "Please enter a valid Postal Code");
-                            valid = false;
+                            ModelState.AddModelError("ShippingAddresses.PostalCode", "Please enter a valid Postal Code");
                         }
                     }
                     else if (Input.SelectedShippingCountryID == 2)
@@ -333,8 +469,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                         regex = new Regex("^\\d{5}(-{0,1}\\d{4})?$");
                         if (!regex.Match(ShippingAddresses.PostalCode).Success)
                         {
-                            ModelState.AddModelError("ShippingAddress.PostalCode", "Please enter a valid Zip Code");
-                            valid = false;
+                            ModelState.AddModelError("ShippingAddresses.PostalCode", "Please enter a valid Zip Code");
                         }
                     }
                 }
@@ -343,17 +478,13 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             {
                 if (Input.SelectedShippingCountryID == 1)
                 {
-                    ModelState.AddModelError("ShippingAddress.PostalCode", "Please enter a Postal Code");
-                    valid = false;
+                    ModelState.AddModelError("ShippingAddresses.PostalCode", "Please enter a Postal Code");
                 }
                 else if (Input.SelectedShippingCountryID == 2)
                 {
-                    ModelState.AddModelError("ShippingAddress.PostalCode", "Please enter a Zip Code");
-                    valid = false;
+                    ModelState.AddModelError("ShippingAddresses.PostalCode", "Please enter a Zip Code");
                 }
             }
-            return valid;
         }
     }
 }
-*/

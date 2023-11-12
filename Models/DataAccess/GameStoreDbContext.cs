@@ -48,7 +48,8 @@ namespace PROG3050_HMJJ.Models.DataAccess
             );
 
             builder.Entity<Countries>().HasData(
-                new Countries { ID = 1, Name = "Canada" }
+                new Countries { ID = 1, Name = "Canada" },
+                new Countries { ID = 2, Name = "US" }
                 );
 
             builder.Entity<Regions>().HasData(
@@ -64,7 +65,66 @@ namespace PROG3050_HMJJ.Models.DataAccess
                 new Regions { ID = 10, Name = "Prince Edward Island", CountriesID = 1 },
                 new Regions { ID = 11, Name = "Quebec", CountriesID = 1 },
                 new Regions { ID = 12, Name = "Saskatchewan", CountriesID = 1 },
-                new Regions { ID = 13, Name = "Yukon", CountriesID = 1 }
+                new Regions { ID = 13, Name = "Yukon", CountriesID = 1 },
+                new Regions { ID = 14, Name = "Alabama", CountriesID = 2 },
+                new Regions { ID = 15, Name = "Alaska", CountriesID = 2 },
+                new Regions { ID = 16, Name = "American Samoa", CountriesID = 2 },
+                new Regions { ID = 17, Name = "Arizona", CountriesID = 2 },
+                new Regions { ID = 18, Name = "Arkansas", CountriesID = 2 },
+                new Regions { ID = 19, Name = "California", CountriesID = 2 },
+                new Regions { ID = 20, Name = "Colorado", CountriesID = 2 },
+                new Regions { ID = 21, Name = "Connecticut", CountriesID = 2 },
+                new Regions { ID = 22, Name = "Delaware", CountriesID = 2 },
+                new Regions { ID = 23, Name = "Federated States of Micronesia", CountriesID = 2 },
+                new Regions { ID = 24, Name = "Florida", CountriesID = 2 },
+                new Regions { ID = 25, Name = "Georgia", CountriesID = 2 },
+                new Regions { ID = 26, Name = "Guam", CountriesID = 2 },
+                new Regions { ID = 27, Name = "Hawaii", CountriesID = 2 },
+                new Regions { ID = 28, Name = "Idaho", CountriesID = 2 },
+                new Regions { ID = 29, Name = "Illinois", CountriesID = 2 },
+                new Regions { ID = 30, Name = "Indiana", CountriesID = 2 },
+                new Regions { ID = 31, Name = "Iowa", CountriesID = 2 },
+                new Regions { ID = 32, Name = "Kansas", CountriesID = 2 },
+                new Regions { ID = 33, Name = "Kentucky", CountriesID = 2 },
+                new Regions { ID = 34, Name = "Louisiana", CountriesID = 2 },
+                new Regions { ID = 35, Name = "Maine", CountriesID = 2 },
+                new Regions { ID = 36, Name = "Marshall Islands", CountriesID = 2 },
+                new Regions { ID = 37, Name = "Maryland", CountriesID = 2 },
+                new Regions { ID = 38, Name = "Massachusetts", CountriesID = 2 },
+                new Regions { ID = 39, Name = "Michigan", CountriesID = 2 },
+                new Regions { ID = 40, Name = "Minnesota", CountriesID = 2 },
+                new Regions { ID = 41, Name = "Mississippi", CountriesID = 2 },
+                new Regions { ID = 42, Name = "Missouri", CountriesID = 2 },
+                new Regions { ID = 43, Name = "Montana", CountriesID = 2 },
+                new Regions { ID = 44, Name = "Nebraska", CountriesID = 2 },
+                new Regions { ID = 45, Name = "Nevada", CountriesID = 2 },
+                new Regions { ID = 46, Name = "New Hampshire", CountriesID = 2 },
+                new Regions { ID = 47, Name = "New Jersey", CountriesID = 2 },
+                new Regions { ID = 48, Name = "New Mexico", CountriesID = 2 },
+                new Regions { ID = 49, Name = "New York", CountriesID = 2 },
+                new Regions { ID = 50, Name = "North Carolina", CountriesID = 2 },
+                new Regions { ID = 51, Name = "North Dakota", CountriesID = 2 },
+                new Regions { ID = 52, Name = "Northern Mariana Islands", CountriesID = 2 },
+                new Regions { ID = 53, Name = "Ohio", CountriesID = 2 },
+                new Regions { ID = 54, Name = "Oklahoma", CountriesID = 2 },
+                new Regions { ID = 55, Name = "Oregon", CountriesID = 2 },
+                new Regions { ID = 56, Name = "Palau", CountriesID = 2 },
+                new Regions { ID = 57, Name = "Pennsylvania", CountriesID = 2 },
+                new Regions { ID = 58, Name = "Puerto Rico", CountriesID = 2 },
+                new Regions { ID = 59, Name = "Rhode Island", CountriesID = 2 },
+                new Regions { ID = 60, Name = "South Carolina", CountriesID = 2 },
+                new Regions { ID = 61, Name = "South Dakota", CountriesID = 2 },
+                new Regions { ID = 62, Name = "Tennessee", CountriesID = 2 },
+                new Regions { ID = 63, Name = "Texas", CountriesID = 2 },
+                new Regions { ID = 64, Name = "U.S. Minor Outlying Islands", CountriesID = 2 },
+                new Regions { ID = 65, Name = "U.S. Virgin Islands", CountriesID = 2 },
+                new Regions { ID = 66, Name = "Utah", CountriesID = 2 },
+                new Regions { ID = 67, Name = "Vermont", CountriesID = 2 },
+                new Regions { ID = 68, Name = "Virginia", CountriesID = 2 },
+                new Regions { ID = 69, Name = "Washington", CountriesID = 2 },
+                new Regions { ID = 70, Name = "West Virginia", CountriesID = 2 },
+                new Regions { ID = 71, Name = "Wisconsin", CountriesID = 2 },
+                new Regions { ID = 72, Name = "Wyoming", CountriesID = 2 }
             );
             // ToDo: seed address related data and define cascade behaviour
 
