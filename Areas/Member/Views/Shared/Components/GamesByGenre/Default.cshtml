@@ -52,27 +52,30 @@
 @if (Model == null || !Model.Any())
 {
     <div class="row">
-        <h3>Please update your Preferences to see the recommended games.</h3>
+        @* <h3>Please update your Preferences to see the recommended games.</h3> *@
     </div>
     
 }
 
 else
 {
-    @* <div class="row">
-        <h1>Your Favourite Genres:</h1>
+    <div class="row">
+        <h1>Based on your Preferences:</h1>
         <div id="carouselExampleControls" class="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">@Model[0].Title</h5>
+
                             <p class="card-text">
-                                @Model[0].Description
+                                @Model[0].GameGenre
                             </p>
+
                             <p class="card-text">
-                                @Model[0].Price.ToString("C")
+                                @Model[0].GamePlatform
                             </p>
+
                             <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[0].ID">Details</a>
                         </div>
                     </div>
@@ -87,11 +90,11 @@ else
                                 <h5 class="card-title">@Model[i].Title</h5>
 
                                 <p class="card-text">
-                                    @Model[i].Description
+                                    @Model[i].GameGenre
                                 </p>
 
                                 <p class="card-text">
-                                    @Model[i].Price.ToString("C")
+                                    @Model[i].GamePlatform
                                 </p>
 
                                 <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[i].ID">Details</a>
@@ -111,8 +114,10 @@ else
             </button>
         </div>
 
-    </div> *@
-    <div class="row">
+    </div>
+
+
+    @* <div class="row">
         <h1>Recommended Games:</h1>
         @foreach (var game in Model)
         {
@@ -133,7 +138,7 @@ else
                 </div>
             </div>
         }
-    </div>
+    </div> *@
 }
 
 

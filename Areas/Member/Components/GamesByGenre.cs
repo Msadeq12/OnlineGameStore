@@ -87,6 +87,7 @@ namespace PROG3050_HMJJ.Areas.Member.Components
             }
 
             var preferences = _context.Preferences.FirstOrDefault(p => p.User.Id == user.Id);
+
             if (preferences == null)
             {
                 Console.WriteLine("Preferences not found.");
@@ -97,9 +98,11 @@ namespace PROG3050_HMJJ.Areas.Member.Components
             var selectedPlatforms = await _context.SelectedPlatforms.Where(g => g.Preferences.ID == preferences.ID).Select(s => s.Platforms.Name).ToListAsync();
 
             string baseUrl = "https://localhost:7108/api/game/GameByGenre";
-            var query = $"?genreIds={String.Join("&genreIds=", selectedGenres)}&platformIds={String.Join("&platformIds=", selectedPlatforms)}";
+            var query = $"?genres={String.Join("&genres=", selectedGenres)}&platforms={String.Join("&platforms=", selectedPlatforms)}";
             var response = await _client.GetAsync(baseUrl + query);
+
             Console.WriteLine(baseUrl + query);
+
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine("API request failed.");
