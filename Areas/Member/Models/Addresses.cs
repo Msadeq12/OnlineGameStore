@@ -23,11 +23,5 @@ namespace PROG3050_HMJJ.Areas.Member.Models
 
         [Display(Name = "Mailing and Shipping Addresses Are the Same")]
         public bool SameAddress { get; set; }
-
-
-        public virtual MailingAddresses MailingAddresses { get; set; }
-
-
-        public virtual ShippingAddresses ShippingAddresses { get; set; }
     }
 }
