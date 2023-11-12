@@ -158,10 +158,12 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
                             values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                             protocol: Request.Scheme);
 
-                        await _emailSender.SendEmailAsync(Input.Email, "Please Confirm your email.",
-                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a> " +
-                            $"\nPlease Note this email was sent by one of Representative's of CVGS Team.");
-
+                        if (Input.UserName != "TestMember")
+                        {
+                            await _emailSender.SendEmailAsync(Input.Email, "Please Confirm your email.",
+                                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a> " +
+                                $"\nPlease Note this email was sent by one of Representative's of CVGS Team.");
+                        }
                         if (_userManager.Options.SignIn.RequireConfirmedAccount)
                         {
                             // Add override for test purposes

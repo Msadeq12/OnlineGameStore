@@ -143,6 +143,17 @@ namespace PROG3050_HMJJ.Models.DataAccess
                .HasOne(u => u.User)
                .WithOne(a => a.Addresses)
                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<MailingAddresses>()
+              .HasOne(u => u.Addresses)
+              .WithOne(a => a.MailingAddresses)
+              .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ShippingAddresses>()
+              .HasOne(u => u.Addresses)
+              .WithOne(a => a.ShippingAddresses)
+              .OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<Reviews>()
         .Property(r => r.CommentId)
         .HasDefaultValueSql("NEWID()");

@@ -4,7 +4,6 @@ using PROG3050_HMJJ.Models.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using PROG3050_HMJJ.Services;
-using System.Runtime.InteropServices;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,7 +29,7 @@ builder.Services.AddTransient<IEmailSender>(provider =>
     return new EmailSender(
         smtpServer: "sandbox.smtp.mailtrap.io",
         smtpPort: 587,
-        smtpUsername: "12e948e8dfd69f",
+        smtpUsername: "12e948e8dfd69f", // MailHog doesn't require authentication
         smtpPassword: "570529c4e4c0ed"
     );
 });
