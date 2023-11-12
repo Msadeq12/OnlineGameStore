@@ -281,7 +281,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostSameAddress()
         {
-            StatusMessage = "Make sure to save.";
+            StatusMessage = null;
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -361,6 +361,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             // Avoid adding selected platforms to database if there aren't any selected
             if (Addresses.SameAddress == true)
             {
+                ShippingAddresses.Addresses = Addresses;
                 ShippingAddresses.RegionsID = 1;
             }
             else
