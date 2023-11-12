@@ -281,7 +281,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostSameAddress()
         {
-            StatusMessage = null;
+            StatusMessage = "Make sure to save";
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
