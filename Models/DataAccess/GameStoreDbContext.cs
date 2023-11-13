@@ -183,26 +183,18 @@ namespace PROG3050_HMJJ.Models.DataAccess
         }
 
 
-        #region seedUserMember
-        public static async Task CreateMemberUser(IServiceProvider serviceProvider)
+        #region deleteTestMemberUser
+        public static async Task DeleteTestMemberUser(IServiceProvider serviceProvider)
         {
             UserManager<User> userManager =
                 serviceProvider.GetRequiredService<UserManager<User>>();
+           
+            // For unit tests only; user is created in unit tests
+            var signUpTestMember = await userManager.FindByNameAsync("TestMember");
 
-            try
+            if (signUpTestMember != null)
             {
-                // For unit tests only; user is created in unit tests
-                var signUpTestMember = await userManager.FindByNameAsync("TestMember");
-
-                if (signUpTestMember != null)
-                {
-                    await userManager.DeleteAsync(signUpTestMember);
-                }
-            }
-            catch
-            {
-                // Getting error due to cascade issues with Mailing/Shipping Addresses
-                // Tests are still functional but to run full suite we'll need to reinitialize the database before hand.
+                await userManager.DeleteAsync(signUpTestMember);
             }
            
         }
@@ -228,6 +220,8 @@ namespace PROG3050_HMJJ.Models.DataAccess
 
 
         public DbSet<Profiles> Profiles { get; set; }
+
+
         public DbSet<Reviews> Reviews { get; set; }
 
 

@@ -18,7 +18,7 @@ namespace PROG3050_HMJJ.Areas.Member.Models
         public int RegionsID { get; set; }
 
 
-        public virtual Addresses? Addresses { get; set; }
+        public virtual Addresses Addresses { get; set; }
 
 
         public virtual Regions? Regions { get; set; }

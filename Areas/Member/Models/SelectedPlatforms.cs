@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using PROG3050_HMJJ.Models;
-using PROG3050_HMJJ.Models.Account;
+﻿using PROG3050_HMJJ.Models;
 using System.ComponentModel.DataAnnotations;
+
 
 namespace PROG3050_HMJJ.Areas.Member.Models
 {

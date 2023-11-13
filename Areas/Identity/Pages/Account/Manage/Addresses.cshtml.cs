@@ -18,6 +18,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
         private readonly GameStoreDbContext _context;
         private readonly ILogger<PreferencesModel> _logger;
 
+
         public AddressesModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
@@ -102,7 +103,6 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                 Addresses = address;
             }
 
-
             var regions = await _context.Regions.ToListAsync();
             var countries = await _context.Countries.ToListAsync();
             countries.Insert(0, new Countries() { ID = 0, Name = "" });
@@ -147,9 +147,6 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             {
                 ShippingAddresses.RegionsID = 0;
             }
-
-
-            // ToDo: handle or fix null exception
 
             if (MailingAddresses.RegionsID != 0)
             {
@@ -325,11 +322,12 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            ValidateMailingAddress();
+            var isValidMailing = ValidateMailingAddress();
+            bool isValidShipping = true;
 
             if (Addresses.SameAddress == false)
             {
-                ValidateShippingAddress();
+                isValidShipping = ValidateShippingAddress();
             }
 
             var countries = _context.Countries.ToList();
@@ -351,7 +349,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                 shippingRegion.Selected = true;
             }
 
-            if (!ModelState.IsValid)
+            if (!isValidMailing || !isValidShipping)
             {
                 return Page();
             }
@@ -389,21 +387,26 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
         }
 
         
-        public async void ValidateMailingAddress()
+        public bool ValidateMailingAddress()
         {
+            bool valid = true;
+
             if (MailingAddresses.Line1 == null)
             {
                 ModelState.AddModelError("MailingAddresses.Line1", "Please enter address line 1");
+                valid = false;
             }
 
             if (MailingAddresses.RegionsID == 0)
             {
                 ModelState.AddModelError("MailingAddresses.RegionsID", "Please choose a region");
+                valid = false;
             }
 
             if (System.String.IsNullOrEmpty(MailingAddresses.City))
             {
                 ModelState.AddModelError("MailingAddresses.City", "Please enter a city");
+                valid = false;
             }
 
             if (!System.String.IsNullOrWhiteSpace(MailingAddresses.PostalCode))
@@ -413,10 +416,11 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                     Regex regex;
                     if (Input.SelectedMailingCountryID == 1)
                     {
-                        regex = new Regex("^[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ] [0-9][ABCEGHJKMNPRSTVWXYZ][0-9]$");
+                        regex = new Regex("^[A-Z][0-9][A-Z] [0-9][A-Z][0-9]$");
                         if (!regex.Match(MailingAddresses.PostalCode).Success)
                         {
                             ModelState.AddModelError("MailingAddresses.PostalCode", "Please enter a valid Postal Code");
+                            valid = false;
                         }
                     }
                     else if (Input.SelectedMailingCountryID == 2)
@@ -425,6 +429,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                         if (!regex.Match(MailingAddresses.PostalCode).Success)
                         {
                             ModelState.AddModelError("MailingAddresses.PostalCode", "Please enter a valid Zip Code");
+                            valid = false;
                         }
                     }
                 }
@@ -434,30 +439,38 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                 if (Input.SelectedMailingCountryID == 1)
                 {
                     ModelState.AddModelError("MailingAddresses.PostalCode", "Please enter a Postal Code");
+                    valid = false;
                 }
                 else if (Input.SelectedMailingCountryID == 2)
                 {
                     ModelState.AddModelError("MailingAddresses.PostalCode", "Please enter a Zip Code");
+                    valid = false;
                 }
             }
+            return valid;
         }
 
 
-        public async void ValidateShippingAddress()
+        public bool ValidateShippingAddress()
         {
+            bool valid = true;
+
             if (ShippingAddresses.Line1 == null)
             {
                 ModelState.AddModelError("ShippingAddresses.Line1", "Please enter address line 1");
+                valid = false;
             }
 
             if (ShippingAddresses.RegionsID == 0)
             {
                 ModelState.AddModelError("ShippingAddresses.RegionsID", "Please choose a region");
+                valid = false;
             }
 
             if (System.String.IsNullOrEmpty(ShippingAddresses.City))
             {
                 ModelState.AddModelError("ShippingAddresses.City", "Please enter a city");
+                valid = false;
             }
 
             if (!System.String.IsNullOrWhiteSpace(ShippingAddresses.PostalCode))
@@ -467,10 +480,11 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                     Regex regex;
                     if (Input.SelectedShippingCountryID == 1)
                     {
-                        regex = new Regex("^[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ] [0-9][ABCEGHJKMNPRSTVWXYZ][0-9]$");
+                        regex = new Regex("^[A-Z][0-9][A-Z] [0-9][A-Z][0-9]$");
                         if (!regex.Match(ShippingAddresses.PostalCode).Success)
                         {
                             ModelState.AddModelError("ShippingAddresses.PostalCode", "Please enter a valid Postal Code");
+                            valid = false;
                         }
                     }
                     else if (Input.SelectedShippingCountryID == 2)
@@ -479,6 +493,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                         if (!regex.Match(ShippingAddresses.PostalCode).Success)
                         {
                             ModelState.AddModelError("ShippingAddresses.PostalCode", "Please enter a valid Zip Code");
+                            valid = false;
                         }
                     }
                 }
@@ -488,12 +503,16 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
                 if (Input.SelectedShippingCountryID == 1)
                 {
                     ModelState.AddModelError("ShippingAddresses.PostalCode", "Please enter a Postal Code");
+                    valid = false;
                 }
                 else if (Input.SelectedShippingCountryID == 2)
                 {
                     ModelState.AddModelError("ShippingAddresses.PostalCode", "Please enter a Zip Code");
+                    valid = false;
                 }
             }
+
+            return valid;
         }
     }
 }

@@ -67,7 +67,7 @@ using (var scope = app.Services.CreateScope())
     await GameStoreDbContext.CreateAdminUser(serviceProvider);
 
     // Call the CreateMemberUser method to create the member user.
-    await GameStoreDbContext.CreateMemberUser(serviceProvider);
+    await GameStoreDbContext.DeleteTestMemberUser(serviceProvider);
 }
 
 // area route for admin panel
