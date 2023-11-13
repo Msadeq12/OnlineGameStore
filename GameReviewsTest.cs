@@ -85,7 +85,7 @@ public sealed class GameReviewsTest
         s_driver.FindElement(By.Id("Input_Password")).SendKeys("Test1$");
         s_driver.FindElement(By.Id("login-submit")).Click();
         s_driver.FindElement(By.LinkText("Reviews")).Click();
-        Assert.That(s_driver.FindElement(By.CssSelector("td:nth-child(2)")).Text, Is.EqualTo("TestMember"));
+        Assert.That(s_driver.FindElement(By.CssSelector("td:nth-child(3)")).Text, Is.EqualTo("TestMember"));
         s_driver.FindElement(By.CssSelector(".btn-primary")).Click();
         s_driver.FindElement(By.Id("logout")).Click();
         s_driver.FindElement(By.Id("login")).Click();
