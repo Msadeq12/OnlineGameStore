@@ -8,6 +8,8 @@ using PROG3050_HMJJ.Models.DataAccess;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using PROG3050_HMJJ.Models.Account;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Globalization;
 
 namespace PROG3050_HMJJ.Areas.Member.Controllers
 {
@@ -113,6 +115,7 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
             foreach (var key in ModelState.Keys)
             {
                 var value = ModelState[key];
+                
                 Console.WriteLine($"Key: {key}, Errors: {value.Errors.Count}, Value: {value.AttemptedValue}");
             }
             // Disable validation for unrelated fields
@@ -121,6 +124,13 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
             {
                 ModelState.Remove(field);
             }
+            //string fieldName = "Title";
+            //ModelState.ClearValidationState(fieldName);
+
+            //// Set the model value for the field to its current value (or updated one if needed)
+            //var currentValue = ModelState[fieldName]?.RawValue;
+            //var attemptedValue = ModelState[fieldName]?.AttemptedValue;
+            //ModelState.SetModelValue(fieldName, new ValueProviderResult(attemptedValue, CultureInfo.CurrentCulture));
             if (ModelState.IsValid)
             {
                 var review = new Reviews
@@ -128,6 +138,7 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                     Timestamp = DateTime.Now,
                     IsApproved = null,
                     UserId = model.NewReview.UserId,
+                    GameName = model.NewReview.GameName,
                     CommentText = model.NewReview.CommentText,
                     GameId = model.NewReview.GameId,
                     CommentId = model.NewReview.CommentId

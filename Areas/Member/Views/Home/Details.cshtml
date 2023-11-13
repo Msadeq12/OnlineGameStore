@@ -83,18 +83,21 @@
         }
     
     <!--Add the approved reviews here-->
-    @{
-        // Generate a new GUID and convert it to a string
-        string newCommentId = Guid.NewGuid().ToString();
-    }
+        @{
+            // Generate a new GUID and convert it to a string
+            string newCommentId = Guid.NewGuid().ToString();
+            string gametitle = Model.Title;
+        }
     
         <form asp-action="SubmitReview" method="post">
             <input type="hidden" asp-for="NewReview.GameId" />
             <input type="hidden" asp-for="NewReview.CommentId" value="@newCommentId"/>
+            <input type="hidden" asp-for="NewReview.GameName" value="@gametitle" />
             <input type="hidden" asp-for="NewReview.UserId" value="@ViewBag.CurrentUsername" />@* @UserManager.GetUserName(User) *@
             <div class="form-group">
                 <label asp-for="NewReview.CommentText">Leave a Comment</label>
                 <textarea asp-for="NewReview.CommentText" class="form-control" rows="3" placeholder="Leave your comment here"></textarea>
+                <span asp-validation-for="NewReview.CommentText"></span>
             </div>
 
             <button class="btn btn-success" type="submit">Submit your Comment</button>

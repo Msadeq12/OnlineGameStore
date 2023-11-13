@@ -2,19 +2,28 @@
 using PROG3050_HMJJ.Models;
 using PROG3050_HMJJ.Areas.Admin.Models;
 using System.Diagnostics;
+using PROG3050_HMJJ.Areas.Member.Models;
+using Microsoft.AspNetCore.Identity;
+using PROG3050_HMJJ.Models.Account;
+using PROG3050_HMJJ.Models.DataAccess;
 
 namespace PROG3050_HMJJ.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly HttpClient _client;
+        private HttpClient _client;
+        private readonly UserManager<User> _userManager;
 
-        public HomeController()
+
+        public HomeController(GameStoreDbContext context)
         {
+            _context = context;
             _client = new HttpClient();
         }
 
-      
+        private readonly GameStoreDbContext _context;
+
+
         public IActionResult Index()
         {
             string url = "https://localhost:7108/api/game";
@@ -71,10 +80,18 @@ namespace PROG3050_HMJJ.Controllers
 
             HttpResponseMessage response = _client.GetAsync(url).Result;
             GamesViewModel? game;
-
+            
             if (response.IsSuccessStatusCode)
             {
                 game = response.Content.ReadFromJsonAsync<GamesViewModel>().Result;
+                if (game != null)
+                {
+                    // Initialize the NewReview property with a new Reviews object
+                    game.NewReview = new Reviews() { GameId = game.ID };
+                    game.ApprovedReviews = _context.Reviews.Where(r => r.GameId == id && r.IsApproved == true)
+                                             .ToList();
+                    ViewBag.CurrentUsername = User?.Identity.Name ?? string.Empty;
+                }
             }
 
             else
@@ -94,7 +111,7 @@ namespace PROG3050_HMJJ.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new Areas.Member.Models.ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

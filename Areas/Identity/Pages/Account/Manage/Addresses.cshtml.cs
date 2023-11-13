@@ -178,13 +178,15 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             SelectRegions();
             SetRegionAndCodeLabels();
 
-            if (MailingAddresses.RegionsID != 0){
-                MailingRegionList.ElementAt(MailingAddresses.RegionsID).Selected = true;
-            }
-
-            if (ShippingAddresses.RegionsID != 0)
+            var mailingRegion = MailingRegionList.ElementAtOrDefault(MailingAddresses.RegionsID);
+            if (mailingRegion != null)
             {
-                ShippingRegionList.ElementAt(ShippingAddresses.RegionsID).Selected = true;
+                mailingRegion.Selected = true;
+            }
+            var shippingRegion = ShippingRegionList.ElementAtOrDefault(ShippingAddresses.RegionsID);
+            if (shippingRegion != null)
+            {
+                shippingRegion.Selected = true;
             }
 
             return Page();
@@ -198,14 +200,14 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             mailingRegions.Insert(0, new Regions { ID = 0, Name = "" });
             MailingRegionList = new SelectList(mailingRegions, "ID", "Name");
 
-            MailingRegionList.ElementAt(0).Selected = true;
+            MailingRegionList.ElementAtOrDefault(0).Selected = true;
 
             List<Regions> shippingRegions = _context.Regions.Where(r => r.CountriesID == Input.SelectedShippingCountryID).ToList();
 
             shippingRegions.Insert(0, new Regions { ID = 0, Name = "" });
             ShippingRegionList = new SelectList(shippingRegions, "ID", "Name");
 
-            ShippingRegionList.ElementAt(0).Selected = true;
+            ShippingRegionList.ElementAtOrDefault(0).Selected = true;
         }
 
         public void SetRegionAndCodeLabels()
@@ -262,16 +264,19 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
 
             if (addressType.Equals("shipping"))
             {
-                if (MailingAddresses.RegionsID != 0)
+                var mailingRegion = MailingRegionList.ElementAtOrDefault(MailingAddresses.RegionsID);
+                if (mailingRegion != null)
                 {
-                    MailingRegionList.ElementAt(MailingAddresses.RegionsID).Selected = true;
+                    mailingRegion.Selected = true;
                 }
+                
             }
             else if (addressType.Equals("mailing"))
             {
-                if (ShippingAddresses.RegionsID != 0)
+                var shippingRegion = ShippingRegionList.ElementAtOrDefault(ShippingAddresses.RegionsID);
+                if (shippingRegion != null)
                 {
-                    ShippingRegionList.ElementAt(ShippingAddresses.RegionsID).Selected = true;
+                    shippingRegion.Selected = true;
                 }
             }
 
@@ -296,14 +301,15 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             SetRegionAndCodeLabels();
             SelectRegions();
 
-            if (MailingAddresses.RegionsID != 0)
+            var mailingRegion = MailingRegionList.ElementAtOrDefault(MailingAddresses.RegionsID);
+            if (mailingRegion != null)
             {
-                MailingRegionList.ElementAt(MailingAddresses.RegionsID).Selected = true;
+                mailingRegion.Selected = true;
             }
-            
-            if (ShippingAddresses.RegionsID != 0)
+            var shippingRegion = ShippingRegionList.ElementAtOrDefault(ShippingAddresses.RegionsID);
+            if (shippingRegion != null)
             {
-                ShippingRegionList.ElementAt(ShippingAddresses.RegionsID).Selected = true;
+                shippingRegion.Selected = true;
             }
 
             return Page();
@@ -334,13 +340,15 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account.Manage
             SetRegionAndCodeLabels();
             SelectRegions();
 
-            if (MailingAddresses.RegionsID != 0)
+            var mailingRegion = MailingRegionList.ElementAtOrDefault(MailingAddresses.RegionsID);
+            if (mailingRegion != null)
             {
-                MailingRegionList.ElementAt(MailingAddresses.RegionsID).Selected = true;
+                mailingRegion.Selected = true;
             }
-            if (ShippingAddresses.RegionsID != 0)
+            var shippingRegion = ShippingRegionList.ElementAtOrDefault(ShippingAddresses.RegionsID);
+            if (shippingRegion != null)
             {
-                ShippingRegionList.ElementAt(ShippingAddresses.RegionsID).Selected = true;
+                shippingRegion.Selected = true;
             }
 
             if (!ModelState.IsValid)

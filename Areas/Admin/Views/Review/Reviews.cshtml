@@ -6,6 +6,7 @@
     <thead>
         <tr>
             <th>Comment</th>
+            <th>Game</th>
             <th>User</th>
             <th>Actions</th>
         </tr>
@@ -15,12 +16,13 @@
         {
             <tr>
                 <td>@review.CommentText</td>
+                <td>@review.GameName</td>
                 <td>@review.UserId</td>
                 <td>
                     <form method="post">
                         <input type="hidden" name="reviewId" value="@review.CommentId" />
                         <button type="submit" class="btn btn-primary" asp-action="ApproveReview">Approve</button>
-                        <button type="submit" class="btn btn-danger" asp-action="DisapproveReview">Disapprove</button>
+                        <button type="submit" class="btn btn-danger" asp-action="DisapproveReview">Reject</button>
                     </form>
                 </td>
             </tr>

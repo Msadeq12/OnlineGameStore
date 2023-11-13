@@ -29,7 +29,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Models
             using (SqlConnection connection = GetConnection())
             {
                 SqlCommand cmd = new SqlCommand("SELECT  ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS Sr_No,[FirstName],[LastName],[Gender],format(cast([DOB] as date), 'yyyy-MM-dd') As 'Date of Birth',[RecievePromotions] As 'Promotions' FROM [Profiles]" +
-                "WHERE FirstName IS NOT NULL AND LastName IS NOT NULL AND Gender IS NOT NULL AND DOB IS NOT NULL", connection);
+                "WHERE FirstName IS NOT NULL AND LastName IS NOT NULL", connection);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
