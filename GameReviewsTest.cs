@@ -65,7 +65,7 @@ public sealed class GameReviewsTest
     public static void memberAddsReviewThatGetsApprovedByAdmin()
     {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
-        s_driver.Manage().Window.Size = new System.Drawing.Size(1212, 1211);
+        s_driver.Manage().Window.Size = new System.Drawing.Size(1212, 1611);
         s_driver.FindElement(By.Id("login")).Click();
         s_driver.FindElement(By.Id("Input_UserName")).Click();
         s_driver.FindElement(By.Id("Input_UserName")).SendKeys("TestMember");
