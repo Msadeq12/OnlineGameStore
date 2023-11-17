@@ -29,8 +29,10 @@ public sealed class AddressesTest {
         s_driver.FindElement(By.Id("Input_Password")).Click();
         s_driver.FindElement(By.Id("Input_Password")).SendKeys("Test1$");
         s_driver.FindElement(By.Id("login-submit")).Click();
-        s_driver.FindElement(By.Id("manage")).Click();
-        s_driver.FindElement(By.Id("change-addresses")).Click();
+        //s_driver.FindElement(By.Id("manage")).Click();
+        s_driver.FindElement(By.CssSelector(".btn > span")).Click();
+        s_driver.FindElement(By.LinkText("Addresses")).Click();
+        //s_driver.FindElement(By.Id("change-addresses")).Click();
         s_driver.FindElement(By.Id("MailingAddresses_Line1")).Click();
         s_driver.FindElement(By.Id("MailingAddresses_Line2")).Click();
         s_driver.FindElement(By.Id("MailingAddresses_PostalCode")).Click();
@@ -57,8 +59,10 @@ public sealed class AddressesTest {
         s_driver.FindElement(By.Id("Input_Password")).Click();
         s_driver.FindElement(By.Id("Input_Password")).SendKeys("Test1$");
         s_driver.FindElement(By.Id("login-submit")).Click();
-        s_driver.FindElement(By.Id("manage")).Click();
-        s_driver.FindElement(By.Id("change-addresses")).Click();
+        //s_driver.FindElement(By.Id("manage")).Click();
+        s_driver.FindElement(By.CssSelector(".btn > span")).Click();
+        s_driver.FindElement(By.LinkText("Addresses")).Click();
+        //s_driver.FindElement(By.Id("change-addresses")).Click();
         s_driver.FindElement(By.Id("MailingAddresses_Line1")).Click();
         s_driver.FindElement(By.Id("MailingAddresses_Line1")).SendKeys("111 Test St");
         s_driver.FindElement(By.Id("MailingAddresses_Line2")).Click();
@@ -97,8 +101,10 @@ public sealed class AddressesTest {
         s_driver.FindElement(By.Id("Input_Password")).Click();
         s_driver.FindElement(By.Id("Input_Password")).SendKeys("Test1$");
         s_driver.FindElement(By.Id("login-submit")).Click();
-        s_driver.FindElement(By.Id("manage")).Click();
-        s_driver.FindElement(By.Id("change-addresses")).Click();
+        //s_driver.FindElement(By.Id("manage")).Click();
+        s_driver.FindElement(By.CssSelector(".btn > span")).Click();
+        s_driver.FindElement(By.LinkText("Addresses")).Click();
+        //s_driver.FindElement(By.Id("change-addresses")).Click();
         s_driver.FindElement(By.Id("Addresses_SameAddress")).Click();
         s_driver.FindElement(By.Id("ShippingAddresses_Line1")).Click();
         s_driver.FindElement(By.Id("ShippingAddresses_Line1")).SendKeys("222 Test St");

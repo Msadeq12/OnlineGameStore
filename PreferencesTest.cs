@@ -29,8 +29,8 @@ internal sealed class PreferencesTest {
     s_driver.FindElement(By.Id("Input_Password")).Click();
     s_driver.FindElement(By.Id("Input_Password")).SendKeys("Test1$");
     s_driver.FindElement(By.Id("login-submit")).Click();
-    s_driver.FindElement(By.Id("manage")).Click();
-    s_driver.FindElement(By.Id("change-preferences")).Click();
+    s_driver.FindElement(By.CssSelector(".btn > span")).Click();
+    s_driver.FindElement(By.LinkText("Preferences")).Click();
     {
       var elements = s_driver.FindElements(By.CssSelector(".form-group:nth-child(2) .item-container:nth-child(1)"));
       Assert.True(elements.Count == 0);
@@ -72,12 +72,13 @@ internal sealed class PreferencesTest {
     s_driver.FindElement(By.Id("Input_Password")).Click();
     s_driver.FindElement(By.Id("Input_Password")).SendKeys("Test1$");
     s_driver.FindElement(By.Id("login-submit")).Click();
-    s_driver.FindElement(By.Id("manage")).Click();
-    s_driver.FindElement(By.Id("change-preferences")).Click();
-    s_driver.FindElement(By.CssSelector(".form-group:nth-child(1) .item-container:nth-child(1) line:nth-child(2)")).Click();
+    s_driver.FindElement(By.CssSelector(".btn > span")).Click();
+    s_driver.FindElement(By.LinkText("Preferences")).Click();
+    //s_driver.FindElement(By.Id("change-preferences")).Click();
+    //s_driver.FindElement(By.CssSelector(".form-group:nth-child(1) .item-container:nth-child(1) line:nth-child(2)")).Click();
     s_driver.FindElement(By.CssSelector(".form-group:nth-child(1) .btn-container")).Click();
     s_driver.FindElement(By.CssSelector(".form-group:nth-child(1) .btn-container svg")).Click();
-    s_driver.FindElement(By.CssSelector(".form-group:nth-child(1) li:nth-child(4)")).Click();
+    s_driver.FindElement(By.CssSelector(".form-group:nth-child(1) li:last-child")).Click();
     s_driver.FindElement(By.CssSelector(".form-group:nth-child(2) .btn-container")).Click();
     s_driver.FindElement(By.CssSelector(".form-group:nth-child(2) .btn-container svg")).Click();
     s_driver.FindElement(By.CssSelector("li:nth-child(8)")).Click();

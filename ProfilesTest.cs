@@ -29,7 +29,9 @@ internal sealed class ProfilesTest {
     s_driver.FindElement(By.Id("Input_Password")).Click();
     s_driver.FindElement(By.Id("Input_Password")).SendKeys("Test1$");
     s_driver.FindElement(By.Id("login-submit")).Click();
-    s_driver.FindElement(By.Id("manage")).Click();
+    //s_driver.FindElement(By.Id("manage")).Click();
+    s_driver.FindElement(By.CssSelector(".btn > span")).Click();
+    s_driver.FindElement(By.LinkText("Profile")).Click();
     s_driver.FindElement(By.Id("Profile_FirstName")).Click();
     s_driver.FindElement(By.Id("Profile_FirstName")).SendKeys("John");
     s_driver.FindElement(By.Id("Profile_LastName")).Click();
@@ -58,7 +60,9 @@ internal sealed class ProfilesTest {
     s_driver.FindElement(By.Id("Input_Password")).Click();
     s_driver.FindElement(By.Id("Input_Password")).SendKeys("Test1$");
     s_driver.FindElement(By.Id("login-submit")).Click();
-    s_driver.FindElement(By.Id("manage")).Click();
+    //s_driver.FindElement(By.Id("manage")).Click();
+    s_driver.FindElement(By.CssSelector(".btn > span")).Click();
+    s_driver.FindElement(By.LinkText("Profile")).Click();
     s_driver.FindElement(By.Id("Profile_FirstName")).Click();
     s_driver.FindElement(By.Id("Profile_FirstName")).SendKeys("John");
     s_driver.FindElement(By.Id("Profile_LastName")).Click();
