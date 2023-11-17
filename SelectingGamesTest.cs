@@ -37,7 +37,8 @@ internal sealed class SelectingGamesTest {
   [Test, Order(2)]
   public static void MemberSearchesForAGameAndViewsDetails() {
     s_driver.Navigate().GoToUrl("https://localhost:7132/");
-    s_driver.Manage().Window.Size = new System.Drawing.Size(1612, 991);
+    // ToDo: if scroll related exeptions expand scope.
+    s_driver.Manage().Window.Size = new System.Drawing.Size(1612, 1800);
     s_driver.FindElement(By.Id("login")).Click();
     s_driver.FindElement(By.Id("Input_UserName")).Click();
     s_driver.FindElement(By.Id("Input_UserName")).SendKeys("TestMember");
