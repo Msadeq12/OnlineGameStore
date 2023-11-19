@@ -46,7 +46,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Models
 
 
         // ToDo: Integrate this
-        public int? TotalRating { get; set; }
+        public double? AverageRating { get; set; }
 
 
         public List<Ratings> Ratings { get; set; }

@@ -99,6 +99,8 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                     game.NewRating = new Ratings() { GameID = id };
                     game.Ratings = _context.Ratings.Where(r => r.GameID == id)
                                              .ToList();
+                    game.AverageRating = _context.Ratings.Where(r => r.GameID == id)
+                                             .Average(r => r.Value);
                     ViewBag.CurrentUsername = User?.Identity.Name ?? string.Empty;
                 }
             }
