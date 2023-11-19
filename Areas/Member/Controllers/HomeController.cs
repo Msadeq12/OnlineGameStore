@@ -219,7 +219,7 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                 }
                 // Save changes asynchronously
                 await _context.SaveChangesAsync();
-                TempData["RatingMessage"] = "Rating submitted successfully.";
+                TempData["RatingsMessage"] = "Rating submitted successfully.";
 
                 // Redirect to the game's details page after submission
                 return RedirectToAction("Details", "Home", new { area = "Member", id = rating.GameID });

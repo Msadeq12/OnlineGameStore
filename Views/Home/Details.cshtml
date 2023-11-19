@@ -162,3 +162,9 @@
         @TempData["ReviewMessage"]
     </div>
 }
+@if (TempData["RatingsMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["RatingsMessage"]
+    </div>
+}
