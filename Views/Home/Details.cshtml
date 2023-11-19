@@ -104,8 +104,49 @@
         </form>
     </div>
 </div>
+<div class="card card-outline-secondary my-4">
+    <div class="card-header">
+        Game Ratings
+    </div>
+    <div class="card-body">
+        @if (Model.Ratings.Any())
+        {
+            foreach (var rating in Model.Ratings)
+            {
+                <p>@rating.Value.ToString()</p>
+                <small class="text-muted">Posted by @rating.UserName</small>
+                <hr>
+                <!-- Optionally display more information about the rating -->
+            }
+        }
+        else
+        {
+            <p>There are no ratings yet. Be the first one to rate!</p>
+        }
+
+        <!--Add the approved ratings here-->
+
+        <form asp-action="SubmitRating" asp-area="Member" asp-controller="Home" method="post">
+            <input type="hidden" asp-for="NewRating.GameID" />
+            <input type="hidden" asp-for="NewRating.UserName" value="@ViewBag.CurrentUsername" />@* @UserManager.GetUserName(User) *@
+            <div class="form-group">
+                <label asp-for="NewRating.Value">Leave a Comment</label>
+                <select asp-for="NewRating.Value" class="form-control" rows="3" placeholder="Leave your comment here">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <span asp-validation-for="NewRating.Value"></span>
+            </div>
+
+            <button class="btn btn-success" type="submit">Submit your Rating</button>
+        </form>
+    </div>
+</div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |*@
     <a asp-action="Index">Back to List</a>
 </div>
 @if (TempData["ReviewMessage"] != null)

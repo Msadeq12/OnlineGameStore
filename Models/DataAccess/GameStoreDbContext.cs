@@ -240,6 +240,9 @@ namespace PROG3050_HMJJ.Models.DataAccess
         public DbSet<ShippingAddresses> ShippingAddresses { get; set; }
 
 
+        public DbSet<Ratings> Ratings { get; set; }
+
+
         public GameStoreDbContext(DbContextOptions<GameStoreDbContext> options) : base(options)
         {
         }
