@@ -12,7 +12,7 @@ using PROG3050_HMJJ.Models.DataAccess;
 namespace PROG3050_HMJJ.Migrations
 {
     [DbContext(typeof(GameStoreDbContext))]
-    [Migration("20231112231314_Init")]
+    [Migration("20231117182939_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -295,6 +295,7 @@ namespace PROG3050_HMJJ.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<int?>("AddressesID")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("City")
@@ -925,6 +926,7 @@ namespace PROG3050_HMJJ.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<int?>("AddressesID")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("City")
@@ -1189,7 +1191,9 @@ namespace PROG3050_HMJJ.Migrations
                 {
                     b.HasOne("PROG3050_HMJJ.Areas.Member.Models.Addresses", "Addresses")
                         .WithMany()
-                        .HasForeignKey("AddressesID");
+                        .HasForeignKey("AddressesID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PROG3050_HMJJ.Areas.Member.Models.Regions", "Regions")
                         .WithMany()
@@ -1282,7 +1286,9 @@ namespace PROG3050_HMJJ.Migrations
                 {
                     b.HasOne("PROG3050_HMJJ.Areas.Member.Models.Addresses", "Addresses")
                         .WithMany()
-                        .HasForeignKey("AddressesID");
+                        .HasForeignKey("AddressesID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PROG3050_HMJJ.Areas.Member.Models.Regions", "Regions")
                         .WithMany()

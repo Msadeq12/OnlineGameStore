@@ -28,9 +28,9 @@ builder.Services.AddTransient<IEmailSender>(provider =>
 {
     return new EmailSender(
         smtpServer: "sandbox.smtp.mailtrap.io",
-        smtpPort: 587,
-        smtpUsername: "12e948e8dfd69f", // MailHog doesn't require authentication
-        smtpPassword: "570529c4e4c0ed"
+        smtpPort: 587,                  // Mailtrap thavraniharshal07@gmail.com 12e948e8dfd69f, 570529c4e4c0ed
+        smtpUsername: "7b86f4686ecb5d", // Mail trap hthavrani3610@conestogac.on.ca 7b86f4686ecb5d, 0073ca91f744cb
+        smtpPassword: "0073ca91f744cb"
     );
 });
 builder.Services.AddRazorPages();

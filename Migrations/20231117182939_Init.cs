@@ -323,7 +323,7 @@ namespace PROG3050_HMJJ.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AddressesID = table.Column<int>(type: "int", nullable: true),
+                    AddressesID = table.Column<int>(type: "int", nullable: false),
                     RegionsID = table.Column<int>(type: "int", nullable: false),
                     Line1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Line2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -337,7 +337,8 @@ namespace PROG3050_HMJJ.Migrations
                         name: "FK_MailingAddresses_Addresses_AddressesID",
                         column: x => x.AddressesID,
                         principalTable: "Addresses",
-                        principalColumn: "ID");
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_MailingAddresses_Regions_RegionsID",
                         column: x => x.RegionsID,
@@ -352,7 +353,7 @@ namespace PROG3050_HMJJ.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AddressesID = table.Column<int>(type: "int", nullable: true),
+                    AddressesID = table.Column<int>(type: "int", nullable: false),
                     RegionsID = table.Column<int>(type: "int", nullable: false),
                     Line1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Line2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -366,7 +367,8 @@ namespace PROG3050_HMJJ.Migrations
                         name: "FK_ShippingAddresses_Addresses_AddressesID",
                         column: x => x.AddressesID,
                         principalTable: "Addresses",
-                        principalColumn: "ID");
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ShippingAddresses_Regions_RegionsID",
                         column: x => x.RegionsID,
