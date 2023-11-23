@@ -61,83 +61,98 @@
 <div class="row">
     <h1>Our Game Collection</h1>
 </div>
-    <div id="carouselExampleControls" class="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@Model[0].Title</h5>
-                        <p class="card-text">
-                            @Model[0].Description
-                        </p>
-                        <p class="card-text">
-                            @Model[0].Price.ToString("C")
-                        </p>
-                        <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[0].ID">Details</a>
-                    </div>
+
+<div id="carouselIndex" class="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@Model[0].Title</h5>
+                    <p class="card-text">
+                        @Model[0].Description
+                    </p>
+                    <p class="card-text">
+                        @Model[0].Price.ToString("C")
+                    </p>
+                    <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[0].ID">Details</a>
                 </div>
             </div>
-            @for (int i = 1; i <= Model.Count - 1; i++)
-            {
-                <div class="carousel-item">
-
-                    <div class="card">
-
-                        <div class="card-body">
-                            <h5 class="card-title">@Model[i].Title</h5>
-
-                            <p class="card-text">
-                                @Model[i].Description
-                            </p>
-
-                            <p class="card-text">
-                                @Model[i].Price.ToString("C")
-                            </p>
-
-                            <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[i].ID">Details</a>
-                        </div>
-
-                    </div>
-                </div>
-            }
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+        @for (int i = 1; i <= Model.Count - 1; i++)
+        {
+            <div class="carousel-item">
+
+                <div class="card">
+
+                    <div class="card-body">
+                        <h5 class="card-title">@Model[i].Title</h5>
+
+                        <p class="card-text">
+                            @Model[i].Description
+                        </p>
+
+                        <p class="card-text">
+                            @Model[i].Price.ToString("C")
+                        </p>
+
+                        <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[i].ID">Details</a>
+                    </div>
+
+                </div>
+            </div>
+        }
     </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndex" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselIndex" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+        
+</div>
+<div class="row">
+@await Component.InvokeAsync("GamesByGenre")
+</div>
+
+
+@* <div class="row">
+    @await Component.InvokeAsync("GamesByPlatform")
+</div> *@
                 
 
 @section Scripts {
 
     <script>
-        var multipleCardCarousel = document.querySelector(
-            "#carouselExampleControls"
-        );
+        // var multipleCardCarousel = document.querySelector(
+        //     "#carouselExampleControls"
+        // );
+        // if (window.matchMedia("(min-width: 768px)").matches) {
+        //     var carousel = new bootstrap.Carousel(multipleCardCarousel, {
+        //         interval: false,
+        //     });
+        var carouselIndex = document.querySelector("#carouselIndex");
         if (window.matchMedia("(min-width: 768px)").matches) {
-            var carousel = new bootstrap.Carousel(multipleCardCarousel, {
+            var carousel = new bootstrap.Carousel(carouselIndex, {
                 interval: false,
             });
             var carouselWidth = $(".carousel-inner")[0].scrollWidth;
             var cardWidth = $(".carousel-item").width();
             var scrollPosition = 0;
-            $("#carouselExampleControls .carousel-control-next").on("click", function () {
+            $("#carouselIndex .carousel-control-next").on("click", function () {
                 if (scrollPosition < carouselWidth - cardWidth * 4) {
                     scrollPosition += cardWidth;
-                    $("#carouselExampleControls .carousel-inner").animate(
+                    $("#carouselIndex .carousel-inner").animate(
                         { scrollLeft: scrollPosition },
                         600
                     );
                 }
             });
-            $("#carouselExampleControls .carousel-control-prev").on("click", function () {
+            $("#carouselIndex .carousel-control-prev").on("click", function () {
                 if (scrollPosition > 0) {
                     scrollPosition -= cardWidth;
-                    $("#carouselExampleControls .carousel-inner").animate(
+                    $("#carouselIndex .carousel-inner").animate(
                         { scrollLeft: scrollPosition },
                         600
                     );

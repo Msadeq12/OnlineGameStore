@@ -77,28 +77,27 @@
         {
             foreach (var review in Model.ApprovedReviews)
             {
-                <p>@review.CommentText</p>
-                <small class="text-muted">Posted by @review.UserId on @review.Timestamp.ToShortDateString()</small>
-                <hr>
-                <!-- Optionally display more information about the review -->
+                    <p>@review.CommentText</p>
+                    <small class="text-muted">Posted by @review.UserId on @review.Timestamp.ToShortDateString()</small>
+                    <hr>
+                    <!-- Optionally display more information about the review -->
             }
         }
         else
         {
             <p>There are no reviews yet. Be the first one to review!</p>
         }
-
-        <!--Add the approved reviews here-->
+    
+    <!--Add the approved reviews here-->
         @{
             // Generate a new GUID and convert it to a string
             string newCommentId = Guid.NewGuid().ToString();
-            string newRatingID = Guid.NewGuid().ToString();
             string gametitle = Model.Title;
         }
-
+    
         <form asp-action="SubmitReview" asp-area="Member" asp-controller="Home" method="post">
             <input type="hidden" asp-for="NewReview.GameId" />
-            <input type="hidden" asp-for="NewReview.CommentId" value="@newCommentId" />
+            <input type="hidden" asp-for="NewReview.CommentId" value="@newCommentId"/>
             <input type="hidden" asp-for="NewReview.GameName" value="@gametitle" />
             <input type="hidden" asp-for="NewReview.UserId" value="@ViewBag.CurrentUsername" />@* @UserManager.GetUserName(User) *@
             <div class="form-group">
@@ -135,10 +134,10 @@
 
         <form asp-action="SubmitRating" asp-area="Member" asp-controller="Home" method="post">
             <input type="hidden" asp-for="NewRating.GameID" />
-            <input type="hidden" asp-for="NewRating.UserName" value="@ViewBag.CurrentUsername" />@* @UserManager.GetUserName(User) *@
+            <input type="hidden" asp-for="NewRating.UserName" value="@ViewBag.CurrentUsername" />
             <div class="form-group">
                 <label asp-for="NewRating.Value">Leave a Comment</label>
-                <select asp-for="NewRating.Value" class="form-control" rows="3" placeholder="Leave your comment here">
+                <select asp-for="NewRating.Value" class="form-control" rows="3" placeholder="Rate The Game">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -150,9 +149,9 @@
 
             <button class="btn btn-success" type="submit">Submit your Rating</button>
         </form>
+
     </div>
 </div>
-
 <div>
     @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |*@
     <a asp-action="Index">Back to List</a>

@@ -1,0 +1,54 @@
+﻿@model List<PROG3050_HMJJ.Areas.Admin.Models.GamesViewModel>
+
+@{
+    ViewData["Title"] = "Game Recommendations";
+}
+
+<style>
+    .card {
+        margin: 10px;
+        box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
+        border: none;
+    }
+
+        .card .img-wrapper {
+            max-width: 100%;
+            height: 13em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card img {
+            max-height: 100%;
+        }
+</style>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="row">
+        <h3>No game recommendations to display. Please update your preferences.</h3>
+    </div>
+}
+else
+{
+    <div class="row">
+        <h1>Our Game Recommendations:</h1>
+        <div class="row g-2">
+            @foreach (var game in Model)
+            {
+                <div class="col-sm-12 col-md-6 col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@game.Title</h5>
+                            <p class="card-text">@game.GameGenre</p>
+                            <p class="card-text">@game.GamePlatform</p>
+                            <p class="card-text">Price: @game.Price.ToString("C")</p>
+                            <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@game.ID">Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

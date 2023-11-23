@@ -39,7 +39,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
                 pdfpage.Paragraphs.Add(heading);
                 Table table = new Table
                 {
-                    ColumnWidths = "10% 20% 20% 15% 15% 20%",
+                    ColumnWidths = "20% 20% 20% 20% 20%",
                     DefaultCellPadding = new MarginInfo(10, 5, 10, 5),
                     Border = new BorderInfo(BorderSide.All, .5f, Color.Black),
                     DefaultCellBorder = new BorderInfo(BorderSide.All, .2f, Color.Black)
@@ -75,7 +75,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
                 pdfpage.Paragraphs.Add(heading);
                 Table table = new Table
                 {
-                    ColumnWidths = "10% 20% 20% 15% 15% 20%",
+                    ColumnWidths = "20% 20% 20% 20% 20%",
                     DefaultCellPadding = new MarginInfo(10, 5, 10, 5),
                     Border = new BorderInfo(BorderSide.All, .5f, Color.Black),
                     DefaultCellBorder = new BorderInfo(BorderSide.All, .2f, Color.Black)
@@ -111,7 +111,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
                 pdfpage.Paragraphs.Add(heading);
                 Table table = new Table
                 {
-                    ColumnWidths = "10% 40% 40%",
+                    ColumnWidths = "50% 50%",
                     DefaultCellPadding = new MarginInfo(10, 5, 10, 5),
                     Border = new BorderInfo(BorderSide.All, .5f, Color.Black),
                     DefaultCellBorder = new BorderInfo(BorderSide.All, .2f, Color.Black)
@@ -146,7 +146,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
                 pdfpage.Paragraphs.Add(heading);
                 Table table = new Table
                 {
-                    ColumnWidths = "10% 40% 40%",
+                    ColumnWidths = "50% 50%",
                     DefaultCellPadding = new MarginInfo(10, 5, 10, 5),
                     Border = new BorderInfo(BorderSide.All, .5f, Color.Black),
                     DefaultCellBorder = new BorderInfo(BorderSide.All, .2f, Color.Black)
@@ -182,7 +182,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
                 pdfpage.Paragraphs.Add(heading);
                 Table table = new Table
                 {
-                    ColumnWidths = "10% 14% 15% 10% 15% 10% 15% 11%",
+                    ColumnWidths = "20% 19% 11% 13% 10% 16% 11%",
                     DefaultCellPadding = new MarginInfo(10, 5, 10, 5),
                     Border = new BorderInfo(BorderSide.All, .5f, Color.Black),
                     DefaultCellBorder = new BorderInfo(BorderSide.All, .2f, Color.Black)
@@ -217,7 +217,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
                 pdfpage.Paragraphs.Add(heading);
                 Table table = new Table
                 {
-                    ColumnWidths = "10% 14% 15% 10% 15% 10% 15% 11%",
+                    ColumnWidths = "20% 19% 11% 13% 10% 16% 11%",
                     DefaultCellPadding = new MarginInfo(10, 5, 10, 5),
                     Border = new BorderInfo(BorderSide.All, .5f, Color.Black),
                     DefaultCellBorder = new BorderInfo(BorderSide.All, .2f, Color.Black)
@@ -253,7 +253,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
                 pdfpage.Paragraphs.Add(heading);
                 Table table = new Table
                 {
-                    ColumnWidths = "10% 90%",
+                    ColumnWidths = "100%",
                     DefaultCellPadding = new MarginInfo(10, 5, 10, 5),
                     Border = new BorderInfo(BorderSide.All, .5f, Color.Black),
                     DefaultCellBorder = new BorderInfo(BorderSide.All, .2f, Color.Black)
@@ -288,7 +288,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
                 pdfpage.Paragraphs.Add(heading);
                 Table table = new Table
                 {
-                    ColumnWidths = "10% 90%",
+                    ColumnWidths = "100%",
                     DefaultCellPadding = new MarginInfo(10, 5, 10, 5),
                     Border = new BorderInfo(BorderSide.All, .5f, Color.Black),
                     DefaultCellBorder = new BorderInfo(BorderSide.All, .2f, Color.Black)

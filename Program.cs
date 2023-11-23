@@ -28,9 +28,9 @@ builder.Services.AddTransient<IEmailSender>(provider =>
 {
     return new EmailSender(
         smtpServer: "sandbox.smtp.mailtrap.io",
-        smtpPort: 587,
-        smtpUsername: "a843ed88b5de8e", // MailHog doesn't require authentication
-        smtpPassword: "a57ca674cb3a7b"
+        smtpPort: 587,                  // Mailtrap thavraniharshal07@gmail.com 12e948e8dfd69f, 570529c4e4c0ed
+        smtpUsername: "7b86f4686ecb5d", // Mail trap hthavrani3610@conestogac.on.ca 7b86f4686ecb5d, 0073ca91f744cb
+        smtpPassword: "0073ca91f744cb"
     );
 });
 builder.Services.AddRazorPages();
@@ -67,7 +67,7 @@ using (var scope = app.Services.CreateScope())
     await GameStoreDbContext.CreateAdminUser(serviceProvider);
 
     // Call the CreateMemberUser method to create the member user.
-    await GameStoreDbContext.CreateMemberUser(serviceProvider);
+    await GameStoreDbContext.DeleteTestMemberUser(serviceProvider);
 }
 
 // area route for admin panel
