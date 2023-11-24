@@ -13,7 +13,7 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
 {
     [Area("Member")]
     [Authorize(Roles = "Admin, Member")]
-    public class HomeController : Controller
+    public sealed class HomeController : Controller
     {
         private readonly HttpClient _client;
         private readonly UserManager<User> _userManager;
@@ -38,6 +38,14 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
             if (response.IsSuccessStatusCode)
             {
                 games = response.Content.ReadFromJsonAsync<List<GamesViewModel>>().Result;
+                if(games != null)
+                {
+                    foreach(var game in games)
+                    {
+                        game.AverageRating = _context.Ratings.Where(r => r.GameID == game.ID)
+                                             .Average(r => r.Value);
+                    }
+                }
             }
 
             else
@@ -67,6 +75,14 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
             if (searchResponse.IsSuccessStatusCode)
             {
                 games = searchResponse.Content.ReadFromJsonAsync<List<GamesViewModel>>().Result;
+                if (games != null)
+                {
+                    foreach (var game in games)
+                    {
+                        game.AverageRating = _context.Ratings.Where(r => r.GameID == game.ID)
+                                             .Average(r => r.Value);
+                    }
+                }
             }
 
             else
