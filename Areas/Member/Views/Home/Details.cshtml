@@ -135,10 +135,10 @@
 
         <form asp-action="SubmitRating" asp-area="Member" asp-controller="Home" method="post">
             <input type="hidden" asp-for="NewRating.GameID" />
-            <input type="hidden" asp-for="NewRating.UserName" value="@ViewBag.CurrentUsername" />@* @UserManager.GetUserName(User) *@
+            <input type="hidden" asp-for="NewRating.UserName" value="@ViewBag.CurrentUsername" />
             <div class="form-group">
-                <label asp-for="NewRating.Value">Leave a Comment</label>
-                <select asp-for="NewRating.Value" class="form-control" rows="3" placeholder="Leave your comment here">
+                <label asp-for="NewRating.Value">Enter Rating</label>
+                <select asp-for="NewRating.Value" class="form-control" rows="3">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
