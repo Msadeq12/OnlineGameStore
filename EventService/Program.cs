@@ -1,5 +1,9 @@
 using EventService.Models;
+using EventService.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using Microsoft.AspNetCore.Http.HttpResults;
+using System.ComponentModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,13 +38,34 @@ events.MapGet("/", async (EventServiceContext eventDB) =>
 
 //gets event by id
 events.MapGet("/{id}", async (int id, EventServiceContext eventDB) =>
-    await eventDB.Events.FindAsync(id) is Event eventById ? Results.Ok(eventById) : Results.NotFound()
+{
+    Event? eve = await eventDB.Events.FindAsync(id);
+
+    if(eve == null)
+    {
+        return Results.BadRequest();
+    }
+
+    return Results.Ok(eve);
+
+}
 );
 
 // adds event by POST
 events.MapPost("/", async (Event eve, EventServiceContext eventDB) =>
 {
-    eventDB.Events.Add(eve);
+    /*Event newEvent = new Event()
+    {
+        eventID = eve.Id,
+        Name = eve.Name,
+        Location = eve.Location,
+        Description = eve.Description,
+        StartDate = DateTime.Parse(eve.StartDate),
+        EndDate = DateTime.Parse(eve.EndDate)
+
+    };*/
+
+    await eventDB.Events.AddAsync(eve);
     await eventDB.SaveChangesAsync();
 
     return Results.Created<Event>($"/events/{eve.eventID}", eve);
@@ -63,7 +88,7 @@ events.MapDelete("/{id}", async (int id, EventServiceContext eventDB) =>
 events.MapPut("/{id}", async (int id, Event eve, EventServiceContext eventDB) =>
 {
     if (id != eve.eventID)
-    {
+    { 
         return Results.BadRequest();
     }
 

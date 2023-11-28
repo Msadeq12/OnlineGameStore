@@ -15,6 +15,8 @@ namespace GameService.Models
 
         public string? Publisher { get; set; }
 
+        //public string? OrderType { get; set; }
+
         public int? ReleaseYear { get; set; }
 
         public string? GameGenre { get; set; }

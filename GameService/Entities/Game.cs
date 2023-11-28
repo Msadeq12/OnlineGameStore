@@ -25,6 +25,8 @@ namespace GameService.Entities
 
         public string Publisher { get; set; }
 
+        //public string OrderType { get; set; }
+
         public int ReleaseYear { get; set; }
 
         public int PlatformID { get; set; }
