@@ -255,6 +255,10 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>Gets Details of the event you're registered for</returns>
         [HttpGet]
         public ViewResult GetEvents()
         {
@@ -289,6 +293,11 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
             return View(myEvents);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">Event ID</param>
+        /// <returns>Adds the Event to EventRegisteration table under the username</returns>
         [HttpPost]
         public async Task<IActionResult> RegisterEvent(int id)
         {
@@ -306,9 +315,6 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                 UserId = User.Identity.Name
             };
 
-            Console.WriteLine("Event Id: " + newRegistration.eventID);
-            //Console.WriteLine("User Id: " + user);
-
             await _context.EventRegistration.AddAsync(newRegistration);
             await _context.SaveChangesAsync();
 
@@ -317,6 +323,11 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">Event ID</param>
+        /// <returns>Removes event reference from the EventRegistration table</returns>
         [HttpPost]
         public IActionResult DeleteEvent(int id)
         {
