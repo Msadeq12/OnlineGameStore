@@ -302,8 +302,9 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
         public async Task<IActionResult> RegisterEvent(int id)
         {
             //var user = await _userManager.GetUserAsync(User);
+            var myRegistrations = _context.EventRegistration.Where(r => r.UserId == User.Identity.Name).ToList();
             
-            if(_context.EventRegistration.Any(r => r.eventID == id))
+            if(myRegistrations.Any(r => r.eventID == id))
             {
                 TempData["EventAlready"] = "Already registered to that event.";
                 return RedirectToAction("Index");
@@ -331,8 +332,10 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
         [HttpPost]
         public IActionResult DeleteEvent(int id)
         {
-            var registeration = _context.EventRegistration.Where(r => r.eventID == id);
+            var myRegistrations = _context.EventRegistration.Where(r => r.UserId == User.Identity.Name).ToList();
 
+            var registeration = myRegistrations.Where(r => r.eventID == id).FirstOrDefault();
+                       
             if (registeration == null)
             {
                 TempData["Cancelled"] = "Event not found";
