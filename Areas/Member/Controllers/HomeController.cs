@@ -7,7 +7,7 @@ using System.Diagnostics;
 using PROG3050_HMJJ.Models.DataAccess;
 using Microsoft.AspNetCore.Identity;
 using PROG3050_HMJJ.Models.Account;
-
+using System.Linq;
 
 namespace PROG3050_HMJJ.Areas.Member.Controllers
 {
@@ -254,7 +254,89 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                 return RedirectToAction("Details", "Home", new { area = "Member", id = model.NewRating.GameID });
             }
         }
-        
+
+        [HttpGet]
+        public ViewResult GetEvents()
+        {
+            var user = User.Identity.Name;
+            var registerations = _context.EventRegistration.Where(r => r.UserId == user).ToList();
+            var eventIDs = registerations.Select(r => r.eventID).ToList();
+
+            List<Event> myEvents = new List<Event>();
+
+            foreach(var id in eventIDs)
+            {
+                string url = $"https://localhost:7193/events/{id}";
+
+                HttpResponseMessage response = _client.GetAsync(url).Result;
+                Event? events;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    events = response.Content.ReadFromJsonAsync<Event>().Result;
+                }
+
+                else
+                {
+                    events = new Event();
+                }
+
+                myEvents.Add(events);
+            }
+
+            
+
+            return View(myEvents);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterEvent(int id)
+        {
+            //var user = await _userManager.GetUserAsync(User);
+            
+            if(_context.EventRegistration.Any(r => r.eventID == id))
+            {
+                TempData["EventAlready"] = "Already registered to that event.";
+                return RedirectToAction("Index");
+            }
+
+            EventRegister newRegistration = new()
+            {
+                eventID = id,
+                UserId = User.Identity.Name
+            };
+
+            Console.WriteLine("Event Id: " + newRegistration.eventID);
+            //Console.WriteLine("User Id: " + user);
+
+            await _context.EventRegistration.AddAsync(newRegistration);
+            await _context.SaveChangesAsync();
+
+            TempData["EventSaved"] = "Your Registration is complete!";
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public IActionResult DeleteEvent(int id)
+        {
+            var registeration = _context.EventRegistration.Where(r => r.eventID == id);
+
+            if (registeration == null)
+            {
+                TempData["Cancelled"] = "Event not found";
+                return RedirectToAction("GetEvents");
+            }
+
+            _context.EventRegistration.RemoveRange(registeration);
+            _context.SaveChanges();
+            TempData["Cancelled"] = "Registration has been cancelled";
+
+            return RedirectToAction("GetEvents");
+        }
+
+
+
 
         public IActionResult Privacy()
         {
