@@ -25,7 +25,9 @@ namespace GameService.Entities
 
         public string Publisher { get; set; }
 
-        //public string OrderType { get; set; }
+        public string OrderType { get; set; }
+
+        public bool isPurchased { get; set; } = false;
 
         public int ReleaseYear { get; set; }
 

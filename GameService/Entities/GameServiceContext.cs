@@ -40,10 +40,10 @@ namespace GameService.Entities
                 );
 
             modelBuilder.Entity<Game>().HasData(
-                new Game { gameID = 1, Title = "Heroes in Action", Description = "A game about heroes in action", Price = 10.99m, GenreID = 1, Publisher = "Petroglyph", ReleaseYear = 2005, PlatformID = 2 },
-                new Game { gameID = 2, Title = "Adventures in the Black Forest", Description = "A game about adventure in the forest", Price = 9.99m, GenreID = 2, Publisher = "Inc Mania", ReleaseYear = 2012, PlatformID = 3 },
-                new Game { gameID = 3, Title = "Escape the City", Description = "An RPG game in the city", Price = 8.99m, GenreID = 3, Publisher = "Kronos Studios", ReleaseYear = 2021, PlatformID = 4 },
-                new Game { gameID = 4, Title = "Heroes in Action", Description = "A game about heroes in action", Price = 10.99m, GenreID = 1, Publisher = "Petroglyph", ReleaseYear = 2005, PlatformID = 1 }
+                new Game { gameID = 1, Title = "Heroes in Action", Description = "A game about heroes in action", Price = 10.99m, GenreID = 1, OrderType = "Physical", isPurchased = false, Publisher = "Petroglyph", ReleaseYear = 2005, PlatformID = 2 },
+                new Game { gameID = 2, Title = "Adventures in the Black Forest", Description = "A game about adventure in the forest", Price = 9.99m, GenreID = 2, OrderType = "Digital", isPurchased = false, Publisher = "Inc Mania", ReleaseYear = 2012, PlatformID = 3 },
+                new Game { gameID = 3, Title = "Escape the City", Description = "An RPG game in the city", Price = 8.99m, GenreID = 3, OrderType = "Physical", Publisher = "Kronos Studios", isPurchased = false, ReleaseYear = 2021, PlatformID = 4 },
+                new Game { gameID = 4, Title = "Heroes in Action", Description = "A game about heroes in action", Price = 10.99m, GenreID = 1, OrderType = "Digital", isPurchased = false, Publisher = "Petroglyph", ReleaseYear = 2005, PlatformID = 1 }
                 );
 
             /*modelBuilder.Entity<GameDTO>().HasData(
