@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PROG3050_HMJJ.Models.Account;
 using PROG3050_HMJJ.Areas.Member.Models;
+using PROG3050_HMJJ.Areas.Admin.Models;
 using Microsoft.AspNetCore.Identity;
 
 
@@ -145,8 +146,9 @@ namespace PROG3050_HMJJ.Models.DataAccess
                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Reviews>()
-        .Property(r => r.CommentId)
-        .HasDefaultValueSql("NEWID()");
+            .Property(r => r.CommentId)
+            .HasDefaultValueSql("NEWID()");
+                
             #endregion
         }
 
@@ -241,6 +243,8 @@ namespace PROG3050_HMJJ.Models.DataAccess
 
 
         public DbSet<Ratings> Ratings { get; set; }
+
+        public DbSet<EventRegister> EventRegistration { get; set; }
 
 
         public GameStoreDbContext(DbContextOptions<GameStoreDbContext> options) : base(options)
