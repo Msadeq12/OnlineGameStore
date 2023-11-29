@@ -83,6 +83,11 @@
                     <p class="card-text">
                         @Model[0].Price.ToString("C")
                     </p>
+
+                    <p class="card-text">
+                        Format: @Model[0].OrderType
+                    </p>
+
                     <p class="card-text">
                         Rating: &nbsp;
                         @if (@Model[0].AverageRating != null)
@@ -154,6 +159,11 @@
                         <p class="card-text">
                             @Model[i].Price.ToString("C")
                         </p>
+
+                        <p class="card-text">
+                            Format: @Model[i].OrderType
+                        </p>
+
                         <p class="card-text">
                             Rating: &nbsp;
                             @if (@Model[i].AverageRating != null)
