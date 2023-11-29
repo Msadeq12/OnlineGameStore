@@ -139,7 +139,7 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                 Console.WriteLine($"Key: {key}, Errors: {value.Errors.Count}, Value: {value.AttemptedValue}");
             }
             // Disable validation for unrelated fields
-            var unrelatedFields = new[] { "Title", "GameGenre", "Publisher", "Description", "ReleaseYear", "GamePlatform", "CommentId", "UserId", "ApprovedReviews", "NewRating", "Ratings" };
+            var unrelatedFields = new[] { "Title", "GameGenre", "Publisher", "Description", "ReleaseYear", "OrderType", "GamePlatform", "CommentId", "UserId", "ApprovedReviews", "NewRating", "Ratings" };
             foreach (var field in unrelatedFields)
             {
                 ModelState.Remove(field);
@@ -198,7 +198,7 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                 Console.WriteLine($"Key: {key}, Errors: {value.Errors.Count}, Value: {value.AttemptedValue}");
             }
             // Disable validation for unrelated fields
-            var unrelatedFields = new[] { "Title", "Ratings", "GameGenre", "NewReview", "Publisher", "Description", "ReleaseYear", "GamePlatform", "ApprovedReviews" };
+            var unrelatedFields = new[] { "Title", "Ratings", "GameGenre", "NewReview", "Publisher", "OrderType", "Description", "ReleaseYear", "GamePlatform", "ApprovedReviews" };
             foreach (var field in unrelatedFields)
             {
                 ModelState.Remove(field);
