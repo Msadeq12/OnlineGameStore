@@ -5,7 +5,7 @@ using OpenQA.Selenium.Firefox;
 [TestFixture, Order(2)]
 internal sealed class LoginTest
 {
-    private static IWebDriver s_driver;
+    private static IWebDriver s_driver { get; set; }
 
 
     [SetUp]
@@ -33,7 +33,7 @@ internal sealed class LoginTest
         s_driver.FindElement(By.Id("Input_Password")).Click();
         s_driver.FindElement(By.Id("Input_Password")).SendKeys("Test1$");
         s_driver.FindElement(By.Id("login-submit")).Click();
-        Assert.That(s_driver.FindElement(By.CssSelector("h1")).Text, Is.EqualTo("Our Game Collection"));
+        Assert.That(s_driver.FindElement(By.CssSelector("#carouselIndex > h3:nth-child(1)")).Text, Is.EqualTo("Our Game Collection"));
     }
 
 

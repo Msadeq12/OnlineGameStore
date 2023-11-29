@@ -2,10 +2,10 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 
 
-[TestFixture, Order(10)]
-public sealed class GameReviewsTest
+[TestFixture, Order(11)]
+internal sealed class GameReviewsTest
 {
-    private static IWebDriver s_driver; //Todo: make static readonly
+    private static IWebDriver s_driver { get; set; }
 
 
     [SetUp]

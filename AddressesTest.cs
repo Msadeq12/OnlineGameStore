@@ -2,25 +2,25 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 
 
-[TestFixture, Order(11)]
-public sealed class AddressesTest {
-  private static IWebDriver s_driver;
+[TestFixture, Order(12)]
+internal sealed class AddressesTest {
+    private static IWebDriver s_driver { get; set; }
 
 
-  [SetUp]
-  public static void SetUp() {
+    [SetUp]
+    public static void SetUp() {
         s_driver = new FirefoxDriver(new FirefoxOptions { AcceptInsecureCertificates = true });
-  }
+    }
 
 
-  [TearDown]
-  protected static void TearDown() {
+    [TearDown]
+    protected static void TearDown() {
         s_driver.Quit();
-  }
+    }
 
 
-  [Test, Order(1)]
-  public static void memberEnterFaultyAddresses() {
+    [Test, Order(1)]
+    public static void memberEnterFaultyAddresses() {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
         s_driver.Manage().Window.Size = new System.Drawing.Size(1612, 1212);
         s_driver.FindElement(By.Id("login")).Click();
@@ -29,10 +29,8 @@ public sealed class AddressesTest {
         s_driver.FindElement(By.Id("Input_Password")).Click();
         s_driver.FindElement(By.Id("Input_Password")).SendKeys("Test1$");
         s_driver.FindElement(By.Id("login-submit")).Click();
-        //s_driver.FindElement(By.Id("manage")).Click();
         s_driver.FindElement(By.CssSelector(".btn > span")).Click();
         s_driver.FindElement(By.LinkText("Addresses")).Click();
-        //s_driver.FindElement(By.Id("change-addresses")).Click();
         s_driver.FindElement(By.Id("MailingAddresses_Line1")).Click();
         s_driver.FindElement(By.Id("MailingAddresses_Line2")).Click();
         s_driver.FindElement(By.Id("MailingAddresses_PostalCode")).Click();
@@ -59,10 +57,8 @@ public sealed class AddressesTest {
         s_driver.FindElement(By.Id("Input_Password")).Click();
         s_driver.FindElement(By.Id("Input_Password")).SendKeys("Test1$");
         s_driver.FindElement(By.Id("login-submit")).Click();
-        //s_driver.FindElement(By.Id("manage")).Click();
         s_driver.FindElement(By.CssSelector(".btn > span")).Click();
         s_driver.FindElement(By.LinkText("Addresses")).Click();
-        //s_driver.FindElement(By.Id("change-addresses")).Click();
         s_driver.FindElement(By.Id("MailingAddresses_Line1")).Click();
         s_driver.FindElement(By.Id("MailingAddresses_Line1")).SendKeys("111 Test St");
         s_driver.FindElement(By.Id("MailingAddresses_Line2")).Click();
@@ -101,10 +97,8 @@ public sealed class AddressesTest {
         s_driver.FindElement(By.Id("Input_Password")).Click();
         s_driver.FindElement(By.Id("Input_Password")).SendKeys("Test1$");
         s_driver.FindElement(By.Id("login-submit")).Click();
-        //s_driver.FindElement(By.Id("manage")).Click();
         s_driver.FindElement(By.CssSelector(".btn > span")).Click();
         s_driver.FindElement(By.LinkText("Addresses")).Click();
-        //s_driver.FindElement(By.Id("change-addresses")).Click();
         s_driver.FindElement(By.Id("Addresses_SameAddress")).Click();
         s_driver.FindElement(By.Id("ShippingAddresses_Line1")).Click();
         s_driver.FindElement(By.Id("ShippingAddresses_Line1")).SendKeys("222 Test St");

@@ -3,9 +3,9 @@ using OpenQA.Selenium.Firefox;
 
 
 [TestFixture, Order(5)]
-public sealed class GameRecommendationsNotBlankTest
+internal sealed class GameRecommendationsNotBlankTest
 {
-    private static IWebDriver s_driver;
+    private static IWebDriver s_driver { get; set; }
 
 
     [SetUp]
@@ -33,6 +33,6 @@ public sealed class GameRecommendationsNotBlankTest
         s_driver.FindElement(By.Id("Input_Password")).Click();
         s_driver.FindElement(By.Id("Input_Password")).SendKeys("Test1$");
         s_driver.FindElement(By.Id("login-submit")).Click();
-        Assert.That(s_driver.FindElement(By.CssSelector("div.row:nth-child(5) > div:nth-child(2) > h1:nth-child(1)")).Text, Is.EqualTo("Our Game Recommendations:"));
+        Assert.That(s_driver.FindElement(By.CssSelector("div.row:nth-child(4) > div:nth-child(2) > h1:nth-child(1)")).Text, Is.EqualTo("Our Game Recommendations:"));
     }
 }
