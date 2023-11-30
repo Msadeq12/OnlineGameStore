@@ -36,6 +36,8 @@ namespace GameService.Controllers
                     Description = game.Description,
                     Price = game.Price,
                     Publisher = game.Publisher,
+                    OrderType = game.OrderType,
+                    isPurchased = game.isPurchased,
                     ReleaseYear = game.ReleaseYear,
                     GameGenre = _context.Genres.FirstOrDefault(g => g.GenreID == game.GenreID)?.GenreName,
                     GamePlatform = _context.Platforms.FirstOrDefault(p => p.PlatformID == game.PlatformID)?.Name
@@ -83,6 +85,8 @@ namespace GameService.Controllers
                 Description = game.Description,
                 Price = game.Price,
                 Publisher = game.Publisher,
+                OrderType = game.OrderType,
+                isPurchased = game.isPurchased,
                 ReleaseYear = game.ReleaseYear,
                 GameGenre = _context.Genres.FirstOrDefault(g => g.GenreID == game.GenreID)?.GenreName,
                 GamePlatform = _context.Platforms.FirstOrDefault(p => p.PlatformID == game.PlatformID)?.Name
@@ -120,6 +124,8 @@ namespace GameService.Controllers
                         Description = game.Description,
                         Price = game.Price,
                         Publisher = game.Publisher,
+                        OrderType = game.OrderType,
+                        isPurchased = game.isPurchased,
                         ReleaseYear = game.ReleaseYear,
                         GameGenre = _context.Genres.FirstOrDefault(g => g.GenreID == game.GenreID)?.GenreName,
                         GamePlatform = _context.Platforms.FirstOrDefault(p => p.PlatformID == game.PlatformID)?.Name
@@ -159,6 +165,8 @@ namespace GameService.Controllers
                     Description = game.Description,
                     Price = game.Price,
                     Publisher = game.Publisher,
+                    OrderType = game.OrderType,
+                    isPurchased = game.isPurchased,
                     ReleaseYear = game.ReleaseYear,
                     GameGenre = _context.Genres.FirstOrDefault(g => g.GenreID == game.GenreID)?.GenreName,
                     GamePlatform = _context.Platforms.FirstOrDefault(p => p.PlatformID == game.PlatformID)?.Name
@@ -278,6 +286,8 @@ namespace GameService.Controllers
                 Description = game.Description,
                 Price = game.Price.Value,
                 Publisher = game.Publisher,
+                OrderType = game.OrderType,
+                isPurchased = game.isPurchased,
                 ReleaseYear = game.ReleaseYear.Value,
                 GenreID = _context.Genres.FirstOrDefault(g => g.GenreName == game.GameGenre)?.GenreID ?? 0,
                 PlatformID = _context.Platforms.FirstOrDefault(p => p.Name == game.GamePlatform)?.PlatformID ?? 0
@@ -306,6 +316,8 @@ namespace GameService.Controllers
                 Description = game.Description,
                 Price = game.Price.Value,
                 Publisher = game.Publisher,
+                OrderType = game.OrderType,
+                isPurchased = game.isPurchased,
                 ReleaseYear = game.ReleaseYear.Value,
                 GenreID = _context.Genres.FirstOrDefault(g => g.GenreName == game.GameGenre)?.GenreID ?? 0,
                 PlatformID = _context.Platforms.FirstOrDefault(p => p.Name == game.GamePlatform)?.PlatformID ?? 0
