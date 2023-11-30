@@ -7,7 +7,7 @@ using System.Diagnostics;
 using PROG3050_HMJJ.Models.DataAccess;
 using Microsoft.AspNetCore.Identity;
 using PROG3050_HMJJ.Models.Account;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace PROG3050_HMJJ.Areas.Member.Controllers
 {
@@ -20,10 +20,11 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
         private readonly GameStoreDbContext _context;
 
 
-        public HomeController(GameStoreDbContext context)
+        public HomeController(GameStoreDbContext context, UserManager<User> manger)
         {
             _context = context;
             _client = new HttpClient();
+            _userManager = manger;
         }
 
 
@@ -102,6 +103,10 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                     game.AverageRating = _context.Ratings.Where(r => r.GameID == id)
                                              .Average(r => r.Value);
                     ViewBag.CurrentUsername = User?.Identity.Name ?? string.Empty;
+
+                    bool inWishList = IsInWishList(id).Result;
+
+                    ViewBag.InWishList = inWishList;
                 }
             }
             else
@@ -238,7 +243,38 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                 return RedirectToAction("Details", "Home", new { area = "Member", id = model.NewRating.GameID });
             }
         }
-        
+
+
+        public async Task<bool> IsInWishList(int gameID)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                WishLists wishList = await _context.WishLists.Include(w => w.WishListItems).Where(w => w.User.Id == user.Id).FirstOrDefaultAsync();
+
+                if (wishList != null)
+                {
+                    WishListItems item = wishList.WishListItems.SingleOrDefault(wi => wi.GameID == gameID);
+                    if (item != null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         public IActionResult Privacy()
         {
