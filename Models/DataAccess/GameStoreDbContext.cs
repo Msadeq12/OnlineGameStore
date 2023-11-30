@@ -145,6 +145,17 @@ namespace PROG3050_HMJJ.Models.DataAccess
                .WithOne(a => a.Addresses)
                .OnDelete(DeleteBehavior.Cascade);
 
+
+            builder.Entity<WishLists>()
+                .HasOne(u => u.User)
+                .WithOne(w => w.WishLists)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<WishListItems>()
+                .HasOne(wi => wi.WishLists)
+                .WithMany(w => w.WishListItems)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<Reviews>()
             .Property(r => r.CommentId)
             .HasDefaultValueSql("NEWID()");
@@ -245,6 +256,12 @@ namespace PROG3050_HMJJ.Models.DataAccess
         public DbSet<Ratings> Ratings { get; set; }
 
         public DbSet<EventRegister> EventRegistration { get; set; }
+
+
+        public DbSet<WishLists> WishLists { get; set; }
+
+
+        public DbSet<WishListItems> WishListItems { get; set; }
 
 
         public GameStoreDbContext(DbContextOptions<GameStoreDbContext> options) : base(options)
