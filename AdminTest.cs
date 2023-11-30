@@ -51,6 +51,11 @@ internal sealed class AdminTest {
         s_driver.FindElement(By.CssSelector("option:nth-child(8)")).Click();
         s_driver.FindElement(By.Id("Publisher")).Click();
         s_driver.FindElement(By.Id("Publisher")).SendKeys("NPC Productions");
+        s_driver.FindElement(By.Id("OrderType")).Click();
+        {
+            var dropdown = s_driver.FindElement(By.Id("OrderType"));
+            dropdown.FindElement(By.XPath("//option[. = 'Digital']")).Click();
+        }
         s_driver.FindElement(By.Id("ReleaseYear")).Click();
         s_driver.FindElement(By.Id("ReleaseYear")).SendKeys("2023");
         s_driver.FindElement(By.CssSelector(".btn-primary")).Click();
@@ -84,7 +89,5 @@ internal sealed class AdminTest {
         s_driver.FindElement(By.Id("EndDate")).SendKeys("002024-11-06T00:00");
         s_driver.FindElement(By.CssSelector(".btn-primary")).Click();
         Assert.That(s_driver.FindElement(By.CssSelector("tr:last-child > td:nth-child(1)")).Text, Is.EqualTo("Drawing Test Event"));
-        //s_driver.FindElement(By.CssSelector("tr:last-child a:nth-child(2)")).Click(); ToDo: Clean up only after member registers
-        //s_driver.FindElement(By.CssSelector(".btn-danger")).Click();
     }
 }
