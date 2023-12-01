@@ -107,11 +107,11 @@
     </dl>
     @if(ViewBag.InWishList == true)
     {
-        <a asp-area="Member" asp-controller="WishList" asp-action="RemoveFromWishList" asp-route-gameID="@Model.ID">Remove from Wish List</a>
+        <a asp-area="Member" asp-controller="WishList" asp-action="RemoveFromWishList" asp-route-gameID="@Model.ID" asp-route-page="Details" class="btn btn-danger">Remove from Wish List</a>
     }
     else
     {
-        <a asp-area="Member" asp-controller="WishList" asp-action="AddToWishList" asp-route-gameID="@Model.ID">Add to Wish List</a>
+        <a asp-area="Member" asp-controller="WishList" asp-action="AddToWishList" asp-route-gameID="@Model.ID" class="btn btn-success">Add to Wish List</a>
     }
 </div>
 <div class="card card-outline-secondary my-4">
