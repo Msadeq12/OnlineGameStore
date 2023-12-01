@@ -9,7 +9,7 @@ internal sealed class EventsTest {
 
     [SetUp]
     public static void SetUp() {
-        s_driver = new FirefoxDriver();
+        s_driver = new FirefoxDriver(new FirefoxOptions { AcceptInsecureCertificates = true });
     }
 
 

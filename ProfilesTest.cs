@@ -29,7 +29,6 @@ internal sealed class ProfilesTest {
         s_driver.FindElement(By.Id("Input_Password")).Click();
         s_driver.FindElement(By.Id("Input_Password")).SendKeys("Test1$");
         s_driver.FindElement(By.Id("login-submit")).Click();
-        //s_driver.FindElement(By.Id("manage")).Click();
         s_driver.FindElement(By.CssSelector(".btn > span")).Click();
         s_driver.FindElement(By.LinkText("Profile")).Click();
         s_driver.FindElement(By.Id("Profile_FirstName")).Click();
@@ -43,7 +42,7 @@ internal sealed class ProfilesTest {
         }
         s_driver.FindElement(By.CssSelector("option:nth-child(2)")).Click();
         s_driver.FindElement(By.Id("Profile_DOB")).Click();
-        s_driver.FindElement(By.Id("Profile_DOB")).SendKeys("2023-11-30");
+        s_driver.FindElement(By.Id("Profile_DOB")).SendKeys("2024-01-02");
         s_driver.FindElement(By.CssSelector(".btn-primary")).Click();
         s_driver.FindElement(By.CssSelector(".col")).Click();
         Assert.That(s_driver.FindElement(By.CssSelector(".text-danger")).Text, Is.EqualTo("Birth date must be a valid date that\'s in the past."));
@@ -60,7 +59,6 @@ internal sealed class ProfilesTest {
         s_driver.FindElement(By.Id("Input_Password")).Click();
         s_driver.FindElement(By.Id("Input_Password")).SendKeys("Test1$");
         s_driver.FindElement(By.Id("login-submit")).Click();
-        //s_driver.FindElement(By.Id("manage")).Click();
         s_driver.FindElement(By.CssSelector(".btn > span")).Click();
         s_driver.FindElement(By.LinkText("Profile")).Click();
         s_driver.FindElement(By.Id("Profile_FirstName")).Click();
@@ -77,7 +75,6 @@ internal sealed class ProfilesTest {
         s_driver.FindElement(By.Id("Profile_DOB")).SendKeys("1982-09-22");
         s_driver.FindElement(By.Id("Profile_RecievePromotions")).Click();
         s_driver.FindElement(By.CssSelector(".btn-primary")).Click();
-        // s_driver.FindElement(By.CssSelector(".alert")).Click();
         Assert.That(s_driver.FindElement(By.CssSelector(".alert")).Text, Is.EqualTo("Your profile has been updated"));
     }
 }
