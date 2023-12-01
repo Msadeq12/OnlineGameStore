@@ -1,4 +1,5 @@
 ﻿using PROG3050_HMJJ.Areas.Member.Models;
+using PROG3050_HMJJ.Services;
 using System.ComponentModel.DataAnnotations;
 
 namespace PROG3050_HMJJ.Areas.Admin.Models
@@ -13,8 +14,10 @@ namespace PROG3050_HMJJ.Areas.Admin.Models
         [Required]
         public string Description { get; set; }
         [Required]
+        [EventFutureDate(ErrorMessage = "Event Date cannot be in the past")]
         public DateTime StartDate { get; set; }
         [Required]
+        [EventFutureDate(ErrorMessage = "Event Date cannot be in the past")]
         public DateTime EndDate { get; set; }
 
     }

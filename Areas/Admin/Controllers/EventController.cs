@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using PROG3050_HMJJ.Areas.Admin.Models;
 
 namespace PROG3050_HMJJ.Areas.Admin.Controllers
@@ -33,6 +34,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
             else
             {
                 events = null;
+
             }
             
 
@@ -48,15 +50,18 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Add(Event eves)
         {
-            string url = "https://localhost:7193/events";
-
-            HttpResponseMessage response = client.PostAsJsonAsync(url, eves).Result;
-
-            if (response.IsSuccessStatusCode)
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("Index");
-            }
+                string url = "https://localhost:7193/events";
 
+                HttpResponseMessage response = client.PostAsJsonAsync(url, eves).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            
             return View();
         }
 
