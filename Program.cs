@@ -13,7 +13,11 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<GameStoreDbContext>(options => 
 options.UseSqlServer(builder.Configuration.GetConnectionString("GameStoreCNN")));
-
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set your desired session timeout
+});
 builder.Services.AddDefaultIdentity<User>(options => {
     //Register The Account and Validate the email
     options.SignIn.RequireConfirmedAccount = true;
@@ -54,7 +58,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthentication();;
-
+app.UseSession();
 app.UseAuthorization();
 app.MapRazorPages();
 

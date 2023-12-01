@@ -1,7 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using PROG3050_HMJJ.Models.Account;
+@using PROG3050_HMJJ.Areas.Member.Models;
+@using PROG3050_HMJJ.Services;
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,11 +16,15 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/bootstrap.min.css" asp-append-version="true">
     <link rel="stylesheet" href="~/PROG3050_HMJJ.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-mzrmE5iVoWN6kDzQ5w5b53v5m8t6z5bE5S5+5C5F5O5I5D5Y5P5m5R5l5N5F5T5Z5u5f5j5E5I5U5E5=" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
     <header>
+        @{
+            // Retrieve cart items from session
+            var cart = Context.Session.GetObjectFromJson<List<CartItem>>("cart") ?? new List<CartItem>();
+            var cartCount = cart.Sum(item => item.Quantity);
+        }
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-navbarcolor border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a href="@Url.Action("Index", "Home")">
@@ -55,6 +62,16 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-white" asp-area="Member" asp-controller="WishList" asp-action="WishList">Wish List</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="Member" asp-controller="Home" asp-action="Checkout">
+                                        <span class="fa fa-shopping-cart text-white">
+                                            @if (cartCount > 0)
+                                            {
+                                                @cartCount
+                                            }
+                                        </span>
+                                    </a>
+                                </li>
                             }
                             else
                             {
@@ -72,6 +89,16 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-white" asp-area="Member" asp-controller="Home" asp-action="GetEvents">Your Events</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="Member" asp-controller="Home" asp-action="Checkout">
+                                        <span class="fa fa-shopping-cart text-white">
+                                            @if (cartCount > 0)
+                                            {
+                                                @cartCount
+                                            }
+                                        </span>
+                                    </a>
                                 </li>
                             }
                         }
