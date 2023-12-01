@@ -36,7 +36,7 @@ internal sealed class GameReviewsTest
         s_driver.FindElement(By.CssSelector(".carousel-item:nth-child(2) .btn")).Click();
         s_driver.FindElement(By.Id("NewReview_CommentText")).Click();
         s_driver.FindElement(By.Id("NewReview_CommentText")).SendKeys("Test Comment");
-        s_driver.FindElement(By.CssSelector(".btn-success")).Click();
+        s_driver.FindElement(By.CssSelector("button.btn:nth-child(6)")).Click();
         Assert.That(s_driver.FindElement(By.CssSelector(".alert")).Text, Is.EqualTo("Review submitted successfully, will be shown once approved by an admin."));
         s_driver.FindElement(By.Id("logout")).Click();
         s_driver.FindElement(By.Id("login")).Click();
@@ -75,7 +75,7 @@ internal sealed class GameReviewsTest
         s_driver.FindElement(By.LinkText("Details")).Click();
         s_driver.FindElement(By.Id("NewReview_CommentText")).Click();
         s_driver.FindElement(By.Id("NewReview_CommentText")).SendKeys("Test Comment");
-        s_driver.FindElement(By.CssSelector(".btn-success")).Click();
+        s_driver.FindElement(By.CssSelector("button.btn:nth-child(6)")).Click();
         Assert.That(s_driver.FindElement(By.CssSelector(".alert")).Text, Is.EqualTo("Review submitted successfully, will be shown once approved by an admin."));
         s_driver.FindElement(By.Id("logout")).Click();
         s_driver.FindElement(By.Id("login")).Click();
