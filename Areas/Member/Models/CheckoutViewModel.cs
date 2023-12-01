@@ -4,6 +4,6 @@
     {
         public List<CartItem>? CartItems { get; set; }
         public PaymentInfo PaymentInfo { get; set; }
-        public int GrandTotal { get; set; }
+        public decimal GrandTotal { get; set; }
     }
 }

@@ -9,8 +9,8 @@ namespace PROG3050_HMJJ.Areas.Member.Models
         public int GameId { get; set; }
         public string GameName { get; set; }
         public int Quantity { get; set; }
-        public int UnitPrice { get; set; }
-        public int TotalPrice { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal TotalPrice { get; set; }
         public DateTime OrderDate { get; set; }
         public string OrderType { get; set; }
         public bool IsPurchased { get; set; }
