@@ -11,22 +11,25 @@ using Microsoft.AspNetCore.Http;
 using PROG3050_HMJJ.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Linq;
+
 
 namespace PROG3050_HMJJ.Areas.Member.Controllers
 {
     [Area("Member")]
     [Authorize(Roles = "Admin, Member")]
-    public class HomeController : Controller
+    public sealed class HomeController : Controller
     {
         private readonly HttpClient _client;
         private readonly UserManager<User> _userManager;
         private readonly GameStoreDbContext _context;
 
 
-        public HomeController(GameStoreDbContext context)
+        public HomeController(GameStoreDbContext context, UserManager<User> manger)
         {
             _context = context;
             _client = new HttpClient();
+            _userManager = manger;
         }
 
 
@@ -41,6 +44,14 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
             if (response.IsSuccessStatusCode)
             {
                 games = response.Content.ReadFromJsonAsync<List<GamesViewModel>>().Result;
+                if(games != null)
+                {
+                    foreach(var game in games)
+                    {
+                        game.AverageRating = _context.Ratings.Where(r => r.GameID == game.ID)
+                                             .Average(r => r.Value);
+                    }
+                }
             }
 
             else
@@ -70,6 +81,14 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
             if (searchResponse.IsSuccessStatusCode)
             {
                 games = searchResponse.Content.ReadFromJsonAsync<List<GamesViewModel>>().Result;
+                if (games != null)
+                {
+                    foreach (var game in games)
+                    {
+                        game.AverageRating = _context.Ratings.Where(r => r.GameID == game.ID)
+                                             .Average(r => r.Value);
+                    }
+                }
             }
 
             else
@@ -105,6 +124,10 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                     game.AverageRating = _context.Ratings.Where(r => r.GameID == id)
                                              .Average(r => r.Value);
                     ViewBag.CurrentUsername = User?.Identity.Name ?? string.Empty;
+
+                    bool inWishList = IsInWishList(id).Result;
+
+                    ViewBag.InWishList = inWishList;
                 }
             }
             else
@@ -126,7 +149,7 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                 Console.WriteLine($"Key: {key}, Errors: {value.Errors.Count}, Value: {value.AttemptedValue}");
             }
             // Disable validation for unrelated fields
-            var unrelatedFields = new[] { "Title", "GameGenre", "Publisher", "Description", "ReleaseYear", "GamePlatform", "CommentId", "UserId", "ApprovedReviews", "NewRating", "Ratings" };
+            var unrelatedFields = new[] { "Title", "GameGenre", "Publisher", "Description", "ReleaseYear", "OrderType", "GamePlatform", "CommentId", "UserId", "ApprovedReviews", "NewRating", "Ratings" };
             foreach (var field in unrelatedFields)
             {
                 ModelState.Remove(field);
@@ -185,7 +208,7 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                 Console.WriteLine($"Key: {key}, Errors: {value.Errors.Count}, Value: {value.AttemptedValue}");
             }
             // Disable validation for unrelated fields
-            var unrelatedFields = new[] { "Title", "Ratings", "GameGenre", "NewReview", "Publisher", "Description", "ReleaseYear", "GamePlatform", "ApprovedReviews" };
+            var unrelatedFields = new[] { "Title", "Ratings", "GameGenre", "NewReview", "Publisher", "OrderType", "Description", "ReleaseYear", "GamePlatform", "ApprovedReviews" };
             foreach (var field in unrelatedFields)
             {
                 ModelState.Remove(field);
@@ -241,7 +264,132 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                 return RedirectToAction("Details", "Home", new { area = "Member", id = model.NewRating.GameID });
             }
         }
-        
+
+
+        public async Task<bool> IsInWishList(int gameID)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                WishLists wishList = await _context.WishLists.Include(w => w.WishListItems).Where(w => w.User.Id == user.Id).FirstOrDefaultAsync();
+
+                if (wishList != null)
+                {
+                    WishListItems item = wishList.WishListItems.SingleOrDefault(wi => wi.GameID == gameID);
+                    if (item != null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>Gets Details of the event you're registered for</returns>
+        [HttpGet]
+        public ViewResult GetEvents()
+        {
+            var user = User.Identity.Name;
+            var registerations = _context.EventRegistration.Where(r => r.UserId == user).ToList();
+            var eventIDs = registerations.Select(r => r.eventID).ToList();
+
+            List<Event> myEvents = new List<Event>();
+
+            foreach(var id in eventIDs)
+            {
+                string url = $"https://localhost:7193/events/{id}";
+
+                HttpResponseMessage response = _client.GetAsync(url).Result;
+                Event? events;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    events = response.Content.ReadFromJsonAsync<Event>().Result;
+                }
+                else
+                {
+                    events = new Event();
+                }
+
+                myEvents.Add(events);
+            }
+            
+            return View(myEvents);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">Event ID</param>
+        /// <returns>Adds the Event to EventRegisteration table under the username</returns>
+        [HttpPost]
+        public async Task<IActionResult> RegisterEvent(int id)
+        {
+            //var user = await _userManager.GetUserAsync(User);
+            var myRegistrations = _context.EventRegistration.Where(r => r.UserId == User.Identity.Name).ToList();
+            
+            if(myRegistrations.Any(r => r.eventID == id))
+            {
+                TempData["EventAlready"] = "Already registered to that event.";
+                return RedirectToAction("Index");
+            }
+
+            EventRegister newRegistration = new()
+            {
+                eventID = id,
+                UserId = User.Identity.Name
+            };
+
+            await _context.EventRegistration.AddAsync(newRegistration);
+            await _context.SaveChangesAsync();
+
+            TempData["EventSaved"] = "Your Registration is complete!";
+
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">Event ID</param>
+        /// <returns>Removes event reference from the EventRegistration table</returns>
+        [HttpPost]
+        public IActionResult DeleteEvent(int id)
+        {
+            var myRegistrations = _context.EventRegistration.Where(r => r.UserId == User.Identity.Name).ToList();
+
+            var registeration = myRegistrations.Where(r => r.eventID == id).FirstOrDefault();
+                       
+            if (registeration == null)
+            {
+                TempData["Cancelled"] = "Event not found";
+                return RedirectToAction("GetEvents");
+            }
+
+            _context.EventRegistration.RemoveRange(registeration);
+            _context.SaveChanges();
+            TempData["Cancelled"] = "Registration has been cancelled";
+
+            return RedirectToAction("GetEvents");
+        }
+
 
         public IActionResult Privacy()
         {

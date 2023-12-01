@@ -43,18 +43,34 @@
 .card img {
     max-height: 100%;
 }
-
-
 </style>
 
+@if (TempData["EventSaved"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["EventSaved"]
+    </div>
+}
+
+@if (TempData["EventAlready"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["EventAlready"]
+    </div>   
+}
+
 <div class="row">
-    
     <form method="get" asp-action="Search">
         <label for="searchString">Search for games:</label>
         <input type="search" name="searchString"/>
 
         <input type="submit" />  
     </form>
+</div>
+
+
+
+<div class="row justify-content-between mt-3 pt-4">
     
 </div>
 
@@ -102,37 +118,187 @@
                 </div>
             </div>
         }
+    
+    <div class="col-4 pt-4">
+        <h3 class="text-center">Our Events</h3>
+        @await Component.InvokeAsync("EventsList")
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndex" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselIndex" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-        
+
+    <div id="carouselIndex" class="carousel col-8 pt-4">
+        <h3 class="text-center">Our Game Collection</h3>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model[0].Title</h5>
+                        <p class="card-text">
+                            @Model[0].Description
+                        </p>
+                        <p class="card-text">
+                            @Model[0].Price.ToString("C")
+                        </p>
+
+                        <p class="card-text">
+                            Format: @Model[0].OrderType
+                        </p>
+
+                        <p class="card-text">
+                            Rating: &nbsp;
+                            @if (@Model[0].AverageRating != null)
+                            {
+                                @switch (Math.Round((double)@Model[0].AverageRating + 0.05))
+                                {
+                                    case 5:
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        break;
+                                    case 4:
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        break;
+                                    case 3:
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        break;
+                                    case 2:
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        break;
+                                    case 1:
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        break;
+                                    default:
+                                        <span>N/A</span>
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                <span>N/A</span>
+                            }
+                        </p>
+                        <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[0].ID">Details</a>
+                    </div>
+                </div>
+            </div>
+            @for (int i = 1; i <= Model.Count - 1; i++)
+            {
+                <div class="carousel-item">
+
+                    <div class="card">
+
+                        <div class="card-body">
+                            <h5 class="card-title">@Model[i].Title</h5>
+
+                            <p class="card-text">
+                                @Model[i].Description
+                            </p>
+
+                            <p class="card-text">
+                                @Model[i].Price.ToString("C")
+                            </p>
+
+                            <p class="card-text">
+                                Format: @Model[i].OrderType
+                            </p>
+
+                            <p class="card-text">
+                                Rating: &nbsp;
+                                @if (@Model[i].AverageRating != null)
+                                {
+                                    @switch (Math.Round((double)@Model[i].AverageRating + 0.05))
+                                    {
+                                        case 5:
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            break;
+                                        case 4:
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            break;
+                                        case 3:
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            break;
+                                        case 2:
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            break;
+                                        case 1:
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            break;
+                                        default:
+                                            <span>N/A</span>
+                                            break;
+                                    }
+                                }
+                                else
+                                {
+                                    <span>N/A</span>
+                                }
+                            </p>
+
+                            <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[i].ID">Details</a>
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndex" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselIndex" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+
+    </div>
+
 </div>
+
+
+
+
 <div class="row">
-@await Component.InvokeAsync("GamesByGenre")
+    @await Component.InvokeAsync("GamesByGenre")
 </div>
-
-
-@* <div class="row">
-    @await Component.InvokeAsync("GamesByPlatform")
-</div> *@
-                
-
+        
 @section Scripts {
-
     <script>
-        // var multipleCardCarousel = document.querySelector(
-        //     "#carouselExampleControls"
-        // );
-        // if (window.matchMedia("(min-width: 768px)").matches) {
-        //     var carousel = new bootstrap.Carousel(multipleCardCarousel, {
-        //         interval: false,
-        //     });
         var carouselIndex = document.querySelector("#carouselIndex");
         if (window.matchMedia("(min-width: 768px)").matches) {
             var carousel = new bootstrap.Carousel(carouselIndex, {
