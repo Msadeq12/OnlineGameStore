@@ -72,52 +72,6 @@
 
 <div class="row justify-content-between mt-3 pt-4">
     
-</div>
-
-<div class="row">
-    <h1>Our Game Collection</h1>
-</div>
-
-<div id="carouselIndex" class="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">@Model[0].Title</h5>
-                    <p class="card-text">
-                        @Model[0].Description
-                    </p>
-                    <p class="card-text">
-                        @Model[0].Price.ToString("C")
-                    </p>
-                    <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[0].ID">Details</a>&nbsp;
-                    <a asp-action="AddToCart" asp-controller="Home" class="btn btn-success" asp-route-id="@Model[0].ID">Add to Cart</a>
-                </div>
-            </div>
-        </div>
-        @for (int i = 1; i <= Model.Count - 1; i++)
-        {
-            <div class="carousel-item">
-
-                <div class="card">
-
-                    <div class="card-body">
-                        <h5 class="card-title">@Model[i].Title</h5>
-
-                        <p class="card-text">
-                            @Model[i].Description
-                        </p>
-
-                        <p class="card-text">
-                            @Model[i].Price.ToString("C")
-                        </p>
-                        <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[i].ID">Details</a>&nbsp;
-                        <a asp-action="AddToCart" asp-controller="Home" class="btn btn-success" asp-route-id="@Model[i].ID">Add to Cart</a>
-                    </div>
-
-                </div>
-            </div>
-        }
     
     <div class="col-4 pt-4">
         <h3 class="text-center">Our Events</h3>

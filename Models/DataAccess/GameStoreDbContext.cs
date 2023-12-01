@@ -255,8 +255,6 @@ namespace PROG3050_HMJJ.Models.DataAccess
 
         public DbSet<Ratings> Ratings { get; set; }
 
-        public DbSet<Invoice> Invoices { get; set; }
-        public DbSet<Order> Orders { get; set; }
         public DbSet<EventRegister> EventRegistration { get; set; }
 
 
