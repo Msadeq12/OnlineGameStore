@@ -1,7 +1,9 @@
-﻿@model List<Order>
+﻿@using PROG3050_HMJJ.Areas.Member.Models;
+@model List<Order>
 
 <h2>My Orders</h2>
-
+<a asp-area="Admin" asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to Admin Page</a>
+<hr />
 @if (Model != null && Model.Any())
 {
     <div class="row">
@@ -19,9 +21,10 @@
                         <p class="card-text">Price per Unit: @order.UnitPrice.ToString("C")</p>
                         <p class="card-text">Total Price: @order.TotalPrice.ToString("C")</p>
                         <p class="card-text">Order Date: @order.OrderDate.ToString("d")</p>
+                        <p class="card-text">Invoice Date: @order.Invoice?.InvoiceDate.ToString("d")</p>
                     </div>
                     <div class="card-footer">
-                        Invoice Date: @order.Invoice?.InvoiceDate.ToString("d")
+                        <a asp-area="Admin" asp-controller="Order" asp-action="UpdateOrderStatus" asp-route-gameID="@order.Id" class="btn btn-success">Mark it as Processed</a>
                     </div>
                 </div>
             </div>
@@ -30,5 +33,5 @@
 }
 else
 {
-    <h3>You have no orders.</h3>
+    <h3>You have no orders to process.</h3>
 }
