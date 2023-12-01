@@ -127,8 +127,15 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
+            var emailExists = await _userManager.FindByEmailAsync(Input.Email);
+
+            if (emailExists != null)
+            {
+                ModelState.AddModelError("Input.Email", "Email is already taken by another user");
+            }
+
             // Skip captcha when authorized testing (otherwise automated inputs will be flagged)
-            if(Input.UserName == "TestMember" || ReCaptchaValide(Request))
+            if (Input.UserName == "TestMember" || ReCaptchaValide(Request))
                 {
                 if (ModelState.IsValid)
                 {
@@ -160,9 +167,9 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
 
                         if (Input.UserName != "TestMember")
                         {
-                            await _emailSender.SendEmailAsync(Input.Email, "Please Confirm your email.",
-                                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a> " +
-                                $"\nPlease Note this email was sent by one of Representative's of CVGS Team.");
+                                await _emailSender.SendEmailAsync(Input.Email, "Please Confirm your email.",
+                               $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a> " +
+                               $"\nPlease Note this email was sent by one of Representative's of CVGS Team.");
                         }
                         if (_userManager.Options.SignIn.RequireConfirmedAccount)
                         {
@@ -172,6 +179,7 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
                                 user.EmailConfirmed = true;
                                 await _userManager.UpdateAsync(user);
                             }
+
                             return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                         }
                         else
