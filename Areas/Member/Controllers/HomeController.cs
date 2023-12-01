@@ -430,7 +430,7 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
             {
                 GameId = game.ID,
                 GameName = game.Title,
-                Price = (int)game.Price,
+                Price = game.Price,
                 Quantity = qty,
                 OrderType = game.OrderType, // Set the OrderType from the game details
                 IsPurchased = false // Initially, the game is not purchased

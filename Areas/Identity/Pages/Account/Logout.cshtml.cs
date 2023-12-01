@@ -26,6 +26,8 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
+            // Clear the session cart
+            HttpContext.Session.Remove("cart");
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)

@@ -239,6 +239,8 @@ namespace PROG3050_HMJJ.Areas.Identity.Pages.Account
                 if (result.Succeeded)
 
                 {
+                    // Clear the session cart
+                    HttpContext.Session.Remove("cart");
 
                     var user = _userManager.Users.Where(u => u.UserName == Input.UserName).FirstOrDefault();
 
