@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using PROG3050_HMJJ.Models.Account;
 using PROG3050_HMJJ.Areas.Member.Models;
-using PROG3050_HMJJ.Areas.Admin.Models;
 using Microsoft.AspNetCore.Identity;
 
 
@@ -145,21 +144,9 @@ namespace PROG3050_HMJJ.Models.DataAccess
                .WithOne(a => a.Addresses)
                .OnDelete(DeleteBehavior.Cascade);
 
-
-            builder.Entity<WishLists>()
-                .HasOne(u => u.User)
-                .WithOne(w => w.WishLists)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<WishListItems>()
-                .HasOne(wi => wi.WishLists)
-                .WithMany(w => w.WishListItems)
-                .OnDelete(DeleteBehavior.Cascade);
-
             builder.Entity<Reviews>()
-            .Property(r => r.CommentId)
-            .HasDefaultValueSql("NEWID()");
-                
+        .Property(r => r.CommentId)
+        .HasDefaultValueSql("NEWID()");
             #endregion
         }
 
@@ -262,6 +249,8 @@ namespace PROG3050_HMJJ.Models.DataAccess
 
 
         public DbSet<WishListItems> WishListItems { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
 
         public GameStoreDbContext(DbContextOptions<GameStoreDbContext> options) : base(options)

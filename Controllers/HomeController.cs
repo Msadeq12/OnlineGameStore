@@ -5,6 +5,7 @@ using PROG3050_HMJJ.Areas.Member.Models;
 using Microsoft.AspNetCore.Identity;
 using PROG3050_HMJJ.Models.Account;
 using PROG3050_HMJJ.Models.DataAccess;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace PROG3050_HMJJ.Controllers
@@ -39,14 +40,6 @@ namespace PROG3050_HMJJ.Controllers
             if (response.IsSuccessStatusCode)
             {
                 games = response.Content.ReadFromJsonAsync<List<GamesViewModel>>().Result;
-                if (games != null)
-                {
-                    foreach (var game in games)
-                    {
-                        game.AverageRating = _context.Ratings.Where(r => r.GameID == game.ID)
-                                             .Average(r => r.Value);
-                    }
-                }
             }
             else
             {
@@ -80,14 +73,6 @@ namespace PROG3050_HMJJ.Controllers
             if (searchResponse.IsSuccessStatusCode)
             {
                 games = searchResponse.Content.ReadFromJsonAsync<List<GamesViewModel>>().Result;
-                if (games != null)
-                {
-                    foreach (var game in games)
-                    {
-                        game.AverageRating = _context.Ratings.Where(r => r.GameID == game.ID)
-                                             .Average(r => r.Value);
-                    }
-                }
             }
             else
             {
@@ -118,14 +103,30 @@ namespace PROG3050_HMJJ.Controllers
                 {
                     // Initialize the NewReview property with a new Reviews object
                     game.NewReview = new Reviews() { GameId = game.ID };
+                    game.NewRating = new Ratings() { GameID = game.ID };
                     game.ApprovedReviews = _context.Reviews.Where(r => r.GameId == id && r.IsApproved == true)
                                              .ToList();
-                    game.NewRating = new Ratings() { GameID = game.ID };
-                    game.Ratings = _context.Ratings.Where(r => r.GameID == id)
-                                            .ToList();
-                    game.AverageRating = _context.Ratings.Where(r => r.GameID == id)
-                                             .Average(r => r.Value);
-                    ViewBag.CurrentUsername = User?.Identity.Name ?? string.Empty;
+                    var currentUser = User?.Identity;
+                    ViewBag.CurrentUsername = currentUser.Name ?? string.Empty;
+
+                    //ToDo: get review for current user + extra???
+                    /*var userRating = _context.Ratings
+                      .Include(a => a.User)
+                      .Where(a => a.User.UserName == currentUser.Name)
+                      .Where(g => g.GameID == id)
+                      .ToList();*/
+
+
+                    game.Ratings = _context.Ratings
+                      .Where(g => g.GameID == id)
+                      .ToList();
+
+
+                   /* var totalRating = _context.Ratings
+                      .Where(g => g.GameID == id)
+                      .Sum(r => r.Value);*/
+
+                    /*ViewBag.TotalRating = totalRating;*/
                 }
             }
             else
