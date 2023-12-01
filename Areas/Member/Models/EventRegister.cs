@@ -12,9 +12,6 @@ namespace PROG3050_HMJJ.Areas.Member.Models
 
         public string? UserId { get; set; }
 
-        public int eventID { get; set; }
-
-        public List<Event>? MyEvents { get; set; } 
-
+        public int eventID { get; set; } 
     }
 }
