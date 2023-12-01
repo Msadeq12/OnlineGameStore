@@ -20,7 +20,7 @@ internal sealed class AddressesTest {
 
 
     [Test, Order(1)]
-    public static void memberEnterFaultyAddresses() {
+    public static void MemberEnterFaultyAddresses() {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
         s_driver.Manage().Window.Size = new System.Drawing.Size(1612, 1212);
         s_driver.FindElement(By.Id("login")).Click();
@@ -48,7 +48,7 @@ internal sealed class AddressesTest {
 
 
     [Test, Order(2)]
-    public static void memberAddAddresses() {
+    public static void MemberAddAddresses() {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
         s_driver.Manage().Window.Size = new System.Drawing.Size(1212, 1212);
         s_driver.FindElement(By.Id("login")).Click();
@@ -87,7 +87,7 @@ internal sealed class AddressesTest {
 
 
     [Test, Order(3)]
-    public static void memberEditAddresses()
+    public static void MemberEditAddresses()
     {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
         s_driver.Manage().Window.Size = new System.Drawing.Size(1612, 1212);

@@ -20,7 +20,7 @@ internal sealed class RatingsTest {
 
 
     [Test, Order(3)]
-    public static void memberEditGameRating() {
+    public static void MemberEditGameRating() {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
         s_driver.Manage().Window.Size = new System.Drawing.Size(1012, 1620);
         s_driver.FindElement(By.Id("login")).Click();
@@ -43,7 +43,7 @@ internal sealed class RatingsTest {
 
 
     [Test, Order(2)]
-    public static void memberAddGameRating() {
+    public static void MemberAddGameRating() {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
         s_driver.Manage().Window.Size = new System.Drawing.Size(1012, 1620);
         s_driver.FindElement(By.Id("login")).Click();
@@ -69,7 +69,7 @@ internal sealed class RatingsTest {
     
 
     [Test, Order(1)]
-    public static void ensureUnauthenticatedUserCannotRateGame() {
+    public static void EnsureUnauthenticatedUserCannotRateGame() {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
         s_driver.Manage().Window.Size = new System.Drawing.Size(1012, 1620);
         s_driver.FindElement(By.CssSelector(".carousel-item:nth-child(3) .btn")).Click();

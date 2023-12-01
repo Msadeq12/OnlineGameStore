@@ -23,7 +23,7 @@ internal sealed class LoginTest
 
 
     [Test, Order(1)]
-    public static void memberLogsInSuccessfully()
+    public static void MemberLogsInSuccessfully()
     {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
         s_driver.Manage().Window.Size = new System.Drawing.Size(1212, 691);
@@ -38,7 +38,7 @@ internal sealed class LoginTest
 
 
     [Test, Order(2)]
-    public static void memberIsLockedOutDueToUnsuccessfullLogin()
+    public static void MemberIsLockedOutDueToUnsuccessfullLogin()
     {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
         s_driver.Manage().Window.Size = new System.Drawing.Size(1212, 691);

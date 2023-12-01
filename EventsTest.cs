@@ -20,9 +20,9 @@ internal sealed class EventsTest {
 
 
     [Test, Order(2)]
-    public static void memberTriesRegisteringForSameEventTwice() {
+    public static void MemberTriesRegisteringForSameEventTwice() {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
-        s_driver.Manage().Window.Size = new System.Drawing.Size(1012, 1200);
+        s_driver.Manage().Window.Size = new System.Drawing.Size(1012, 1600);
         s_driver.FindElement(By.Id("login")).Click();
         s_driver.FindElement(By.Id("Input_UserName")).Click();
         s_driver.FindElement(By.Id("Input_UserName")).SendKeys("TestMember");
@@ -35,9 +35,9 @@ internal sealed class EventsTest {
 
 
     [Test, Order(1)]
-    public static void memberRegisterInEvent() {
+    public static void MemberRegisterInEvent() {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
-        s_driver.Manage().Window.Size = new System.Drawing.Size(1012, 1200);
+        s_driver.Manage().Window.Size = new System.Drawing.Size(1012, 1600);
         s_driver.FindElement(By.Id("login")).Click();
         s_driver.FindElement(By.Id("Input_UserName")).Click();
         s_driver.FindElement(By.Id("Input_UserName")).SendKeys("TestMember");
@@ -52,9 +52,9 @@ internal sealed class EventsTest {
 
 
     [Test, Order(3)]
-    public static void memberWithdrawalsFromEvent() {
+    public static void MemberWithdrawalsFromEvent() {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
-        s_driver.Manage().Window.Size = new System.Drawing.Size(1012, 1200);
+        s_driver.Manage().Window.Size = new System.Drawing.Size(1012, 1600);
         s_driver.FindElement(By.Id("login")).Click();
         s_driver.FindElement(By.Id("Input_UserName")).Click();
         s_driver.FindElement(By.Id("Input_UserName")).SendKeys("TestMember");

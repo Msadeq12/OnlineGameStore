@@ -21,7 +21,7 @@ internal sealed class GameRecommendationsBlankTest
 
 
     [Test, Order(1)]
-    public static void memberDoesNotSpecifyPreferencesForGameRecommendations()
+    public static void MemberDoesNotSpecifyPreferencesForGameRecommendations()
     {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
         s_driver.Manage().Window.Size = new System.Drawing.Size(1212, 691);

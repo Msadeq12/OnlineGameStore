@@ -23,7 +23,7 @@ internal sealed class GameReviewsTest
 
 
     [Test, Order(1)]
-    public static void memberAddsReviewThatGetsRegectedByAdmin()
+    public static void MemberAddsReviewThatGetsRegectedByAdmin()
     {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
         s_driver.Manage().Window.Size = new System.Drawing.Size(1212, 1211);
@@ -62,7 +62,7 @@ internal sealed class GameReviewsTest
 
 
     [Test, Order(2)]
-    public static void memberAddsReviewThatGetsApprovedByAdmin()
+    public static void MemberAddsReviewThatGetsApprovedByAdmin()
     {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
         s_driver.Manage().Window.Size = new System.Drawing.Size(1212, 1611);

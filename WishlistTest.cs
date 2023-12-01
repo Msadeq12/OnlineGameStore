@@ -20,7 +20,7 @@ public sealed class WishlistTest {
 
 
     [Test, Order(1)]
-    public static void memberAddsWishlistItem() {
+    public static void MemberAddsWishlistItem() {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
         s_driver.Manage().Window.Size = new System.Drawing.Size(1012, 691);
         s_driver.FindElement(By.Id("login")).Click();
@@ -38,7 +38,7 @@ public sealed class WishlistTest {
 
 
     [Test, Order(2)]
-    public static void memberRemovesWishlistItem() {
+    public static void MemberRemovesWishlistItem() {
         s_driver.Navigate().GoToUrl("https://localhost:7132/");
         s_driver.Manage().Window.Size = new System.Drawing.Size(1012, 691);
         s_driver.FindElement(By.Id("login")).Click();
