@@ -7,7 +7,10 @@ using System.Diagnostics;
 using PROG3050_HMJJ.Models.DataAccess;
 using Microsoft.AspNetCore.Identity;
 using PROG3050_HMJJ.Models.Account;
+using Microsoft.AspNetCore.Http;
+using PROG3050_HMJJ.Services;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Linq;
 
 
@@ -398,5 +401,183 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        //[HttpGet]
+        //public IActionResult AddToCart()
+        //{
+        //    // Redirect to the Index action of the current controller
+        //    return RedirectToAction("Index");
+        //}
+        //
+        public ActionResult AddToCart(int id, int qty)
+        {
+                string url = $"https://localhost:7108/api/game/{id}";
+                HttpResponseMessage response = _client.GetAsync(url).Result;
+                GamesViewModel game;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    game = response.Content.ReadFromJsonAsync<GamesViewModel>().Result;
+                }
+                else
+                {
+                    // Handle the error appropriately
+                    return View("Error");
+                }
+                qty = 1;
+                CartItem cartItem = new CartItem
+                {
+                    GameId = game.ID,
+                    GameName = game.Title,
+                    Price = (int)game.Price,
+                    Quantity = qty
+                };
+
+                List<CartItem> cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("cart") ?? new List<CartItem>();
+                var existingItem = cart.Find(x => x.GameId == id);
+
+                if (existingItem != null)
+                {
+                    existingItem.Quantity += qty;
+                }
+                else
+                {
+                    cart.Add(cartItem);
+                }
+
+            HttpContext.Session.SetObjectAsJson("cart", cart);
+
+            return RedirectToAction("Index", "Home", new { area = "Member"});
+        }
+
+        [HttpGet]
+        public IActionResult Checkout()
+        {
+            var cartItems = HttpContext.Session.GetObjectFromJson<List<CartItem>>("cart") ?? new List<CartItem>();
+            var grandTotal = cartItems.Sum(item => item.TotalPrice);
+
+            var viewModel = new CheckoutViewModel
+            {
+                CartItems = cartItems,
+                PaymentInfo = new PaymentInfo(), // Initialize empty payment info
+                GrandTotal = grandTotal
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Checkout(CheckoutViewModel viewModel)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                var cartItems = HttpContext.Session.GetObjectFromJson<List<CartItem>>("cart");
+                if (cartItems != null && cartItems.Any())
+                {
+                    // Create and save the invoice
+                    var invoice = new Invoice
+                    {
+                        UserId = User?.Identity.Name ?? string.Empty, // Or however you get the user ID
+                        InvoiceDate = DateTime.Now,
+                        Bill = cartItems.Sum(item => item.TotalPrice),
+                        PaymentMethod = "Card"
+                    };
+                    _context.Invoices.Add(invoice);
+                    await _context.SaveChangesAsync();
+
+                    // Create and save each order
+                    foreach (var item in cartItems)
+                    {
+                        var order = new Order
+                        {
+                            GameId = item.GameId,
+                            GameName = item.GameName,
+                            Quantity = item.Quantity,
+                            UnitPrice = item.Price,
+                            TotalPrice = item.TotalPrice,
+                            OrderDate = DateTime.Now,
+                            InvoiceId = invoice.Id // Use the Invoice Id
+                        };
+
+                        _context.Orders.Add(order);
+                    }
+                    await _context.SaveChangesAsync();
+
+                    // Clear the session cart
+                    HttpContext.Session.Remove("cart");
+
+                    var confirmationViewModel = new OrderConfirmationViewModel
+                    {
+                        InvoiceDetails = invoice,
+                        OrderItems = await _context.Orders
+                                       .Where(o => o.InvoiceId == invoice.Id)
+                                       .ToListAsync()
+                    };
+
+                    // Use TempData or a similar mechanism to pass data to the redirection target
+                    TempData["OrderConfirmation"] = JsonConvert.SerializeObject(confirmationViewModel);
+
+
+                    // Redirect to an order confirmation page
+                    return RedirectToAction("OrderConfirmation");
+                }
+            }
+            else
+            {
+                viewModel.CartItems = HttpContext.Session.GetObjectFromJson<List<CartItem>>("cart") ?? new List<CartItem>();
+                viewModel.GrandTotal = viewModel.CartItems.Sum(item => item.TotalPrice);
+            }
+
+            // If model state is not valid, or cart is empty, return to the same view
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public IActionResult OrderConfirmation()
+        {
+            if (TempData["OrderConfirmation"] is string serializedConfirmationViewModel)
+            {
+                var viewModel = JsonConvert.DeserializeObject<OrderConfirmationViewModel>(serializedConfirmationViewModel);
+                return View(viewModel);
+            }
+
+            // Redirect to a different page or show an error if the order details are not available
+            return RedirectToAction("Index"); // or return View("Error");
+        }
+
+        [HttpPost]
+        public IActionResult RemoveFromCart(int gameId)
+        {
+            var cartItems = HttpContext.Session.GetObjectFromJson<List<CartItem>>("cart") ?? new List<CartItem>();
+
+            var itemToUpdate = cartItems.FirstOrDefault(item => item.GameId == gameId);
+            if (itemToUpdate != null)
+            {
+                itemToUpdate.Quantity -= 1;
+                if (itemToUpdate.Quantity <= 0)
+                {
+                    cartItems.Remove(itemToUpdate);
+                }
+
+                HttpContext.Session.SetObjectAsJson("cart", cartItems);
+            }
+
+            return RedirectToAction("Checkout");
+        }
+
+        public async Task<IActionResult> OrderDetail()
+        {
+            var userId = User?.Identity.Name ?? string.Empty; 
+
+            var userOrders = await _context.Orders
+                                           .Include(o => o.Invoice) // Include the Invoice in the query
+                                           .Where(o => o.Invoice.UserId == userId)
+                                           .ToListAsync();
+
+            return View(userOrders);
+        }
+
+
     }
 }
