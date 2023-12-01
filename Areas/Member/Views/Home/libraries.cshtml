@@ -1,7 +1,8 @@
 ﻿@model List<Order>
 
-<h2>My Orders</h2>
-
+<h2>My Game Library</h2>
+<a asp-area="Member" asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to Home Page</a>
+<hr />
 @if (Model != null && Model.Any())
 {
     <div class="row">
@@ -13,15 +14,11 @@
                         Game Name: @order.GameName
                     </div>
                     <div class="card-body">
-                        <p class="card-text">Quantity: @order.Quantity</p>
                         <p class="card-text">Format: @order.OrderType</p>
-                        <p class="card-text">Status: @order.Status</p>
-                        <p class="card-text">Price per Unit: @order.UnitPrice.ToString("C")</p>
-                        <p class="card-text">Total Price: @order.TotalPrice.ToString("C")</p>
-                        <p class="card-text">Order Date: @order.OrderDate.ToString("d")</p>
+                        <p class="card-text">Date Added: @order.OrderDate.ToString("d")</p>
                     </div>
                     <div class="card-footer">
-                        Invoice Date: @order.Invoice?.InvoiceDate.ToString("d")
+                        <a asp-area="Member" asp-controller="Home" asp-action="DownloadGame" asp-route-gameID="@order.Id" class="btn btn-success">Download</a>
                     </div>
                 </div>
             </div>

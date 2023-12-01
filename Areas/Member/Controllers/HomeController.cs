@@ -13,7 +13,7 @@ using System.Linq;
 using PROG3050_HMJJ.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-
+using System.Text;
 
 namespace PROG3050_HMJJ.Areas.Member.Controllers
 {
@@ -431,7 +431,9 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                 GameId = game.ID,
                 GameName = game.Title,
                 Price = (int)game.Price,
-                Quantity = qty
+                Quantity = qty,
+                OrderType = game.OrderType, // Set the OrderType from the game details
+                IsPurchased = false // Initially, the game is not purchased
             };
 
             List<CartItem> cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("cart") ?? new List<CartItem>();
@@ -490,6 +492,7 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                     // Create and save each order
                     foreach (var item in cartItems)
                     {
+                        
                         var order = new Order
                         {
                             GameId = item.GameId,
@@ -498,6 +501,9 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                             UnitPrice = item.Price,
                             TotalPrice = item.TotalPrice,
                             OrderDate = DateTime.Now,
+                            OrderType = item.OrderType,
+                            Status = item.OrderType == "Physical" ? "Now Processing" : "Processed",
+                            IsPurchased = true,
                             InvoiceId = invoice.Id // Use the Invoice Id
                         };
 
@@ -577,6 +583,40 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                                            .ToListAsync();
 
             return View(userOrders);
+        }
+
+        public async Task<IActionResult> libraries()
+        {
+            var userId = User?.Identity.Name ?? string.Empty;
+
+            var userOrders = await _context.Orders
+                                           .Include(o => o.Invoice) // Include the Invoice in the query
+                                           .Where(o => o.Invoice.UserId == userId)
+                                           .Where(o => o.OrderType== "Digital")
+                                           .ToListAsync();
+
+            return View(userOrders);
+        }
+
+        public async Task<IActionResult> DownloadGame(int gameID)
+        {
+            // Fetch the game details based on gameId
+            var game = await _context.Orders.FindAsync(gameID);
+            if (game == null)
+            {
+                return NotFound(); // Or handle the case where the game isn't found
+            }
+
+            // Generate the content for the text file
+            string fileContent = $"Game Name: {game.GameName}\nFormat: {game.OrderType}\nPrice: {game.TotalPrice}";
+
+            // Convert the string content to a byte array
+            var byteArray = Encoding.UTF8.GetBytes(fileContent);
+
+            // Set the file name dynamically based on the game name
+            var fileName = $"{game.GameName}.txt";
+
+            return File(byteArray, "text/plain", fileName);
         }
     }
 }
