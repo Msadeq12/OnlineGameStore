@@ -12,53 +12,17 @@
 <div>
     <hr />
     <dl class="row">
+ @*        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ID)
+        </dt> *@
+        @* <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ID)
+        </dd> *@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title) 
-            @if (Model.AverageRating != null)
-            {
-                <span>&nbsp;&#40;@Html.DisplayFor(model => model.AverageRating)&#41;&nbsp;</span>
-                @switch (Math.Round((double)Model.AverageRating + 0.05))
-                {
-                    case 5:
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        break;
-                    case 4:
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        break;
-                    case 3:
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        break;
-                    case 2:
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        break;
-                    case 1:
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        break;
-                }
-            }
+            @Html.DisplayFor(model => model.Title)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
@@ -78,14 +42,6 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Publisher)
         </dd>
-
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.OrderType)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.OrderType)
-        </dd>
-
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ReleaseYear)
         </dt>
@@ -104,15 +60,13 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.GamePlatform)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AverageRating)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AverageRating)
+        </dd>
     </dl>
-    @if(ViewBag.InWishList == true)
-    {
-        <a asp-area="Member" asp-controller="WishList" asp-action="RemoveFromWishList" asp-route-gameID="@Model.ID" asp-route-page="Details" class="btn btn-danger">Remove from Wish List</a>
-    }
-    else
-    {
-        <a asp-area="Member" asp-controller="WishList" asp-action="AddToWishList" asp-route-gameID="@Model.ID" class="btn btn-success">Add to Wish List</a>
-    }
 </div>
 <div class="card card-outline-secondary my-4">
     <div class="card-header">
@@ -166,45 +120,7 @@
         {
             foreach (var rating in Model.Ratings)
             {
-                switch (rating.Value)
-                {
-                    case 5:
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        break;
-                    case 4:
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        break;
-                    case 3:
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        break;
-                    case 2:
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        break;
-                    case 1:
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        break;
-                }
-                <br />
+                <p>@rating.Value.ToString()</p>
                 <small class="text-muted">Posted by @rating.UserName</small>
                 <hr>
                 <!-- Optionally display more information about the rating -->
@@ -217,26 +133,21 @@
 
         <!--Add the approved ratings here-->
 
-        <form asp-action="SubmitRating" class="star-rating" asp-area="Member" asp-controller="Home" method="post">
+        <form asp-action="SubmitRating" asp-area="Member" asp-controller="Home" method="post">
             <input type="hidden" asp-for="NewRating.GameID" />
-            <input type="hidden" asp-for="NewRating.UserName" value="@ViewBag.CurrentUsername" />
-            <p>Enter Rating: </p>
+            <input type="hidden" asp-for="NewRating.UserName" value="@ViewBag.CurrentUsername" />@* @UserManager.GetUserName(User) *@
             <div class="form-group">
-                <input asp-for="NewRating.Value" class="radio-input" type="radio" id="star5" value="5" />
-                <label asp-for="NewRating.Value" class="radio-label" for="star5" title="5 stars">5 stars</label>
-
-                <input asp-for="NewRating.Value" class="radio-input" type="radio" id="star4" value="4" />
-                <label asp-for="NewRating.Value" class="radio-label" for="star4" title="4 stars">4 stars</label>
-
-                <input asp-for="NewRating.Value" class="radio-input" type="radio" id="star3" value="3" />
-                <label asp-for="NewRating.Value" class="radio-label" for="star3" title="3 stars">3 stars</label>
-
-                <input asp-for="NewRating.Value" class="radio-input" type="radio" id="star2" value="2" />
-                <label asp-for="NewRating.Value" class="radio-label" for="star2" title="2 stars">2 stars</label>
-
-                <input asp-for="NewRating.Value" class="radio-input" type="radio" id="star1" name="star-input" value="1" />
-                <label asp-for ="NewRating.Value" class="radio-label" for="star1" title="1 star">1 star</label>
+                <label asp-for="NewRating.Value">Leave a Comment</label>
+                <select asp-for="NewRating.Value" class="form-control" rows="3" placeholder="Leave your comment here">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <span asp-validation-for="NewRating.Value"></span>
             </div>
+
             <button class="btn btn-success" type="submit">Submit your Rating</button>
         </form>
     </div>

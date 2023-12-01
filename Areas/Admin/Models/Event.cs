@@ -1,5 +1,4 @@
-﻿using PROG3050_HMJJ.Areas.Member.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PROG3050_HMJJ.Areas.Admin.Models
 {
@@ -13,9 +12,6 @@ namespace PROG3050_HMJJ.Areas.Admin.Models
         [Required]
         public string Description { get; set; }
         [Required]
-        public DateTime StartDate { get; set; }
-        [Required]
-        public DateTime EndDate { get; set; }
-
+        public DateTime Date { get; set; }
     }
 }

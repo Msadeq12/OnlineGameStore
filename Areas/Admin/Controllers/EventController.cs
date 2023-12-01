@@ -8,7 +8,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class EventController : Controller
     {
-        private readonly HttpClient client;
+        HttpClient client;
 
         public EventController()
         {
@@ -122,7 +122,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Delete")]
-        public IActionResult DeleteEvent (int id)
+        public IActionResult DeleteGame (int id)
         {
             string url = $"https://localhost:7193/events/{id}";
 

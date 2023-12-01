@@ -35,12 +35,6 @@ namespace PROG3050_HMJJ.Areas.Admin.Models
         [Required]
         public string? GamePlatform { get; set; }
 
-        [Required]
-        [Display(Name = "Format")]
-        public string? OrderType { get; set; }
-
-        public bool isPurchased { get; set; } 
-
 
         public Reviews NewReview { get; set; }
 

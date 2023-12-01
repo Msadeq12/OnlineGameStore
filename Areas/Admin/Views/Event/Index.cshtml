@@ -1,9 +1,7 @@
 ﻿@model IEnumerable<PROG3050_HMJJ.Areas.Admin.Models.Event>
-@using System.Globalization
 
 @{
     ViewData["Title"] = "Events";
-    
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -25,10 +23,10 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartDate)
+                @Html.DisplayNameFor(model => model.Date.Date)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EndDate)
+                @Html.DisplayNameFor(model => model.Date.TimeOfDay)
             </th>
             <th></th>
         </tr>
@@ -54,12 +52,11 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
+                @Html.DisplayFor(modelItem => item.Date.Date)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
+                @Html.DisplayFor(modelItem => item.Date.TimeOfDay)
             </td>
-
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.eventID }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.eventID })

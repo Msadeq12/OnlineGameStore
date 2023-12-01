@@ -18,8 +18,5 @@ namespace PROG3050_HMJJ.Models.Account
 
 
         public Addresses? Addresses { get; set; }
-
-
-        public WishLists? WishLists { get; set; }
     }
 }
