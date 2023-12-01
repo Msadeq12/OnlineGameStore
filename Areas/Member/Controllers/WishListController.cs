@@ -73,6 +73,8 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
                 }
             }
 
+            ViewBag.UserName = user.UserName;
+
             return View(wishList);
         }
 
@@ -98,7 +100,7 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
         }
 
 
-        public async Task<IActionResult> RemoveFromWishList(int gameID)
+        public async Task<IActionResult> RemoveFromWishList(int gameID, string page)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -109,7 +111,14 @@ namespace PROG3050_HMJJ.Areas.Member.Controllers
             _context.WishListItems.Remove(item);
             _context.SaveChanges();
 
-            return RedirectToAction("Details", "Home", new { area = "Member", id = gameID });
+            if (page.Equals("Details"))
+            {
+                return RedirectToAction("Details", "Home", new { area = "Member", id = gameID });
+            }
+            else
+            {
+                return RedirectToAction("WishList", "WishList");
+            }
         }
     }
 }
