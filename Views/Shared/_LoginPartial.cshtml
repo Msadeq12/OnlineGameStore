@@ -16,8 +16,6 @@
                         <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                     </svg>
                     <span>@UserManager.GetUserName(User)</span>
-                    
-
                 </button>
                 <ul class="dropdown-menu dropdown-menu-light">
                     <li><a id="manage" asp-area="Identity" asp-page="/Account/Manage/Profile" class="nav-link text-white">Profile</a></li>
@@ -25,6 +23,7 @@
                     <li><a id="manage" asp-area="Identity" asp-page="/Account/Manage/ChangePassword" class="nav-link text-white">Change Password</a></li>
                     <li><a id="manage" asp-area="Identity" asp-page="/Account/Manage/Preferences" class="nav-link text-white">Preferences</a></li>
                     <li><a id="manage" asp-area="Identity" asp-page="/Account/Manage/Addresses" class="nav-link text-white">Addresses</a></li>
+                    <li><a id="manage" asp-area="Member" asp-controller="Home" asp-action="OrderDetail" class="nav-link text-white">My Orders</a></li>
                 </ul>
             </div>
 

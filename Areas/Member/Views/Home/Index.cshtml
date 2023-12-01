@@ -74,7 +74,8 @@
                     <p class="card-text">
                         @Model[0].Price.ToString("C")
                     </p>
-                    <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[0].ID">Details</a>
+                    <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[0].ID">Details</a>&nbsp;
+                    <a asp-action="AddToCart" asp-controller="Home" class="btn btn-success" asp-route-id="@Model[0].ID">Add to Cart</a>
                 </div>
             </div>
         </div>
@@ -94,8 +95,8 @@
                         <p class="card-text">
                             @Model[i].Price.ToString("C")
                         </p>
-
-                        <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[i].ID">Details</a>
+                        <a asp-action="Details" asp-controller="Home" class="btn btn-primary" asp-route-id="@Model[i].ID">Details</a>&nbsp;
+                        <a asp-action="AddToCart" asp-controller="Home" class="btn btn-success" asp-route-id="@Model[i].ID">Add to Cart</a>
                     </div>
 
                 </div>
