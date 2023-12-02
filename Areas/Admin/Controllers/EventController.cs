@@ -102,6 +102,11 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Event eves)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
             string url = $"https://localhost:7193/events/{id}";
 
             HttpResponseMessage response = client.PutAsJsonAsync(url, eves).Result;
