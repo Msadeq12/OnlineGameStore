@@ -11,7 +11,7 @@ namespace PROG3050_HMJJ.Services
             {
                 DateTime dateToCheck = (DateTime)value;
 
-                if (dateToCheck >= DateTime.Now)
+                if (dateToCheck >= DateTime.UtcNow)
                 {
                     return ValidationResult.Success;
                 }

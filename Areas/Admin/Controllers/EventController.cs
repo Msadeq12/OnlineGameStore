@@ -50,6 +50,19 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Add(Event eves)
         {
+            foreach (var key in ModelState.Keys)
+            {
+                var value = ModelState[key];
+
+                Console.WriteLine($"Key: {key}, Errors: {value.Errors.Count}, Value: {value.AttemptedValue}");
+            }
+
+            var unrelatedFields = new[] { "eventID" };
+            foreach (var field in unrelatedFields)
+            {
+                ModelState.Remove(field);
+            }
+
             if (ModelState.IsValid)
             {
                 string url = "https://localhost:7193/events";
