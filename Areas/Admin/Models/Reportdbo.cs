@@ -28,7 +28,7 @@ namespace PROG3050_HMJJ.Areas.Admin.Models
         {
             using (SqlConnection connection = GetConnection())
             {
-                SqlCommand cmd = new SqlCommand("SELECT [FirstName],[LastName],[Date of Birth],[Gender],CASE WHEN [FirstName] IS NULL AND [LastName] IS NULL THEN NULL ELSE [Promotions] END AS 'Promotions' FROM ( SELECT [FirstName],[LastName],FORMAT(CAST([DOB] AS date), 'yyyy-MM-dd') AS 'Date of Birth',[Gender],[RecievePromotions] AS 'Promotions' FROM [Profiles] WHERE FirstName IS NOT NULL AND LastName IS NOT NULL UNION ALL SELECT NULL AS 'FirstName', NULL AS 'LastName', NULL AS 'Date of Birth', 'Total Count' AS 'Gender', CAST(COUNT(*) AS VARCHAR) AS 'Promotions' FROM [Profiles]) AS SubQuery", connection);
+                SqlCommand cmd = new SqlCommand("SELECT [FirstName],[LastName],[Date of Birth],[Gender],CASE WHEN [FirstName] IS NULL AND [LastName] IS NULL THEN NULL ELSE [Promotions] END AS 'Promotions' FROM ( SELECT [FirstName],[LastName],FORMAT(CAST([DOB] AS date), 'yyyy-MM-dd') AS 'Date of Birth',[Gender],[RecievePromotions] AS 'Promotions' FROM [Profiles] WHERE FirstName IS NOT NULL AND LastName IS NOT NULL UNION ALL SELECT 'Total Count' AS 'FirstName',CAST(COUNT(*) AS VARCHAR) AS 'LastName', NULL AS 'Date of Birth', NULL AS 'Gender', NULL AS 'Promotions' FROM [Profiles]) AS SubQuery", connection);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
@@ -64,6 +64,17 @@ namespace PROG3050_HMJJ.Areas.Admin.Models
             using (SqlConnection connection = GetConnection2())
             {
                 SqlCommand cmd = new SqlCommand("SELECT [Title] FROM [Games].[dbo].[Games] UNION ALL SELECT '**--Total Count of CVGS Games is ' + CAST(COUNT(*) AS VARCHAR) AS 'Title' FROM [Games].[dbo].[Games]", connection);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+                return dt;
+            }
+        }
+        public DataTable GetSalesrecord()
+        {
+            using (SqlConnection connection = GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand("SELECT O.[GameName]AS 'Game',O.[Quantity] AS 'QTY',CONCAT('$', O.[UnitPrice]) AS Price,CONCAT('$', O.[TotalPrice]) AS Total,FORMAT(CAST(O.[OrderDate] AS date), 'yyyy-MM-dd')AS'Date',O.[OrderType] AS 'Type',O.[Status],I.[UserId] AS Customer,CONCAT('$', I.[Bill]) AS Bill FROM [CVGS].[dbo].[Orders] O INNER JOIN [CVGS].[dbo].[Invoices] I ON O.[InvoiceId] = I.[Id] UNION ALL SELECT 'Total Count' AS 'Game', CAST(COUNT(*) AS VARCHAR) AS Qty,NULL AS Price,NULL AS Total,NULL AS Date,NULL AS Type,NULL AS Status,NULL AS Customer,NULL AS Bill FROM [CVGS].[dbo].[Orders];", connection);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);

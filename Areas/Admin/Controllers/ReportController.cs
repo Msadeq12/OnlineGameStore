@@ -308,5 +308,74 @@ namespace PROG3050_HMJJ.Areas.Admin.Controllers
                 }
             }
         }
+        public IActionResult ViewSalesList()
+        {
+            using (var connection = _reportdbo.GetConnection())
+            {
+                var document = new Document
+                {
+                    PageInfo = new PageInfo { Margin = new MarginInfo(28, 28, 28, 40) }
+                };
+                var pdfpage = document.Pages.Add();
+                TextFragment heading = new TextFragment("CVGS Sales Report");
+                heading.TextState.FontSize = 16;
+                heading.TextState.FontStyle = FontStyles.Bold;
+                pdfpage.Paragraphs.Add(heading);
+                Table table = new Table
+                {
+                    ColumnWidths = "11% 8% 10% 10% 14% 13% 13% 12% 11%",
+                    DefaultCellPadding = new MarginInfo(10, 5, 10, 5),
+                    Border = new BorderInfo(BorderSide.All, .5f, Color.Black),
+                    DefaultCellBorder = new BorderInfo(BorderSide.All, .2f, Color.Black)
+                };
+                DataTable dt = _reportdbo.GetSalesrecord();
+                table.ImportDataTable(dt, true, 0, 0);
+                document.Pages[1].Paragraphs.Add(table);
+
+                using (var streamout = new MemoryStream())
+                {
+                    document.Save(streamout);
+
+                    // Set the Content-Disposition header to open the PDF in a new window or tab
+                    Response.Headers["Content-Disposition"] = "inline; filename=CVGS_Sales_Report.pdf";
+
+                    return File(streamout.ToArray(), "application/pdf");
+                }
+            }
+        }
+        public IActionResult GetSalesList()
+        {
+            using (var connection = _reportdbo.GetConnection())
+            {
+                var document = new Document
+                {
+                    PageInfo = new PageInfo { Margin = new MarginInfo(28, 28, 28, 40) }
+                };
+                var pdfpage = document.Pages.Add();
+                TextFragment heading = new TextFragment("CVGS Sales Report");
+                heading.TextState.FontSize = 16;
+                heading.TextState.FontStyle = FontStyles.Bold;
+                pdfpage.Paragraphs.Add(heading);
+                Table table = new Table
+                {
+                    ColumnWidths = "11% 8% 10% 10% 14% 13% 13% 12% 11%",
+                    DefaultCellPadding = new MarginInfo(10, 5, 10, 5),
+                    Border = new BorderInfo(BorderSide.All, .5f, Color.Black),
+                    DefaultCellBorder = new BorderInfo(BorderSide.All, .2f, Color.Black)
+                };
+                DataTable dt = _reportdbo.GetSalesrecord();
+                table.ImportDataTable(dt, true, 0, 0);
+                document.Pages[1].Paragraphs.Add(table);
+
+                using (var streamout = new MemoryStream())
+                {
+                    document.Save(streamout);
+                    return new FileContentResult(streamout.ToArray(), "application/pdf")
+                    {
+                        FileDownloadName = "CVGS_Sales_Report.pdf"
+                    };
+                }
+            }
+        }
     }
 }
