@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameService", "GameStore\Ga
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventService", "EventService\EventService.csproj", "{648BA8A1-A79B-4146-965C-85792EB571BF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PROG3050-HMJJ.Tests", "PROG3050-HMJJ-tests\PROG3050-HMJJ.Tests.csproj", "{74B5AB02-E17A-4166-AE64-59D1F09B610B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PROG3050-HMJJ.Tests", "PROG3050-HMJJ-tests\PROG3050-HMJJ.Tests.csproj", "{ED4AC99F-9493-4D37-AB79-691AE4ED6BC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{648BA8A1-A79B-4146-965C-85792EB571BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{648BA8A1-A79B-4146-965C-85792EB571BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{648BA8A1-A79B-4146-965C-85792EB571BF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74B5AB02-E17A-4166-AE64-59D1F09B610B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74B5AB02-E17A-4166-AE64-59D1F09B610B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74B5AB02-E17A-4166-AE64-59D1F09B610B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74B5AB02-E17A-4166-AE64-59D1F09B610B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED4AC99F-9493-4D37-AB79-691AE4ED6BC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED4AC99F-9493-4D37-AB79-691AE4ED6BC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED4AC99F-9493-4D37-AB79-691AE4ED6BC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED4AC99F-9493-4D37-AB79-691AE4ED6BC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
