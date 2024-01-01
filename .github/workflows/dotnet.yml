@@ -23,6 +23,6 @@ jobs:
     - name: Build and Run Selenium tests
       run:
         dotnet build --no-restore
-        selenium --browser=firefox --start
+        selenium --start
         dotnet test /testcontainer:firefox
         selenium --stop
