@@ -22,7 +22,11 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
-    - name: Run
-      run: dotnet run --no-build
+    - name: Run GameService API project
+      run: dotnet run --no-build --project D:\a\OnlineGameStore\OnlineGameStore\GameStore\GameStore.csproj
+    - name: Run EventService API project
+      run: dotnet run --no-build --project D:\a\OnlineGameStore\OnlineGameStore\EventService\EventService.csproj
+    - name: Run GameStore main project
+      run: dotnet run --no-build --project D:\a\OnlineGameStore\OnlineGameStore\PROG3050-HMJJ\PROG3050-HMJJ.csproj
     - name: Test
       run: dotnet test --no-build --verbosity normal
