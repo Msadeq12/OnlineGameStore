@@ -23,7 +23,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Run GameService API project
-      run: dotnet run --no-build --project D:\a\OnlineGameStore\OnlineGameStore\GameStore\GameStore.csproj
+      run: dotnet run --no-build --project D:\a\OnlineGameStore\OnlineGameStore\GameStore\GameService.csproj
     - name: Run EventService API project
       run: dotnet run --no-build --project D:\a\OnlineGameStore\OnlineGameStore\EventService\EventService.csproj
     - name: Run GameStore main project
