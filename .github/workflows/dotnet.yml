@@ -20,7 +20,7 @@ jobs:
         dotnet-version: 7.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build and Run Selenium tests
-      run:
-        dotnet build --no-restore --project D:\a\OnlineGameStore\OnlineGameStore\EventService\EventService.csproj --project D:\a\OnlineGameStore\OnlineGameStore\GameStore\GameService.csproj --project D:\a\OnlineGameStore\OnlineGameStore\PROG3050-HMJJ\PROG3050-HMJJ.csproj 
-        dotnet test /testcontainer:firefox --start
+    - name: Build project
+      run: dotnet build --no-restore
+    - name: Run Selenium tests
+      run: dotnet test /testcontainer:firefox --start
