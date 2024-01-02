@@ -22,5 +22,5 @@ jobs:
       run: dotnet restore
     - name: Build project
       run: dotnet build --no-restore
-    - name: Run Selenium tests
-      run: dotnet test /testcontainer:firefox --start
+    - name: Run tests
+      run: dotnet test --port 7132
