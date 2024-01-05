@@ -22,9 +22,5 @@ jobs:
       run: dotnet restore
     - name: Build project
       run: dotnet build --no-restore
-    - name: Run project and tests
-      run: 
-        dotnet run --no-build --project D:\a\OnlineGameStore\OnlineGameStore\EventService\EventService.csproj - &&
-        dotnet run --no-build --project D:\a\OnlineGameStore\OnlineGameStore\GameStore\GameService.csproj &&
-        dotnet run --no-build --project D:\a\OnlineGameStore\OnlineGameStore\PROG3050-HMJJ\PROG3050-HMJJ.csproj &&
-        dotnet test --no-build --verbosity normal
+    - name: Run tests
+      run: dotnet test --no-restore --verbosity normal
