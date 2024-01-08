@@ -11,9 +11,9 @@ jobs:
   GameService:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions\checkout@v3
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions\setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
@@ -25,9 +25,9 @@ jobs:
   EventService:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions\checkout@v3
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions\setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
     - name: Restore dependencies
@@ -39,9 +39,9 @@ jobs:
   Main:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions\checkout@v3
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions\setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
     - name: Restore dependencies
@@ -57,7 +57,7 @@ jobs:
       - EventService
       - Main
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions\checkout@v3
     - name: Setup .NET
       uses: actions\setup-dotnet@v3
       with:
