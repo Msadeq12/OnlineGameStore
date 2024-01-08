@@ -8,10 +8,22 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
-
+  GameService:
     runs-on: windows-latest
-
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore --project D:\a\OnlineGameStore\OnlineGameStore\GameStore\GameService.csproj
+    - name: Build project
+      run: dotnet build --no-restore --project D:\a\OnlineGameStore\OnlineGameStore\GameStore\GameService.csproj
+    - name: Run GameService API project
+      run: dotnet run --no-build --no-restore --project D:\a\OnlineGameStore\OnlineGameStore\GameStore\GameService.csproj
+  EventService:
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -19,8 +31,41 @@ jobs:
       with:
         dotnet-version: 7.0.x
     - name: Restore dependencies
+      run: dotnet restore --project D:\a\OnlineGameStore\OnlineGameStore\EventService\EventService.csproj
+    - name: Build project
+      run: dotnet build --no-restore --project D:\a\OnlineGameStore\OnlineGameStore\EventService\EventService.csproj
+    - name: Run EventService API project
+      run: dotnet run --no-build --no-restore --project D:\a\OnlineGameStore\OnlineGameStore\EventService\EventService.csproj
+  Main:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Restore dependencies
+      run: dotnet restore --project D:\a\OnlineGameStore\OnlineGameStore\PROG3050-HMJJ\PROG3050-HMJJ.csproj
+    - name: Build project
+      run: dotnet build --no-restore --project D:\a\OnlineGameStore\OnlineGameStore\PROG3050-HMJJ\PROG3050-HMJJ.csproj
+    - name: Run Main Application
+      run: dotnet run --no-build --no-restore --project D:\a\OnlineGameStore\OnlineGameStore\PROG3050-HMJJ\PROG3050-HMJJ.csproj
+  Tests:
+    runs-on: windows-latest
+    needs:
+      - GameService
+      - EventService
+      - Main
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions\setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Restore dependencies
       run: dotnet restore
     - name: Build project
       run: dotnet build --no-restore
-    - name: Run tests
+    - name: Run Tests
       run: dotnet test --no-restore --verbosity normal
+  
