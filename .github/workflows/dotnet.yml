@@ -21,7 +21,7 @@ jobs:
     - name: Build project
       run: dotnet build D:\a\OnlineGameStore\OnlineGameStore\GameStore\GameService.csproj --no-restore
     - name: Run GameService API project
-      run: dotnet run D:\a\OnlineGameStore\OnlineGameStore\GameStore\GameService.csproj --no-build --no-restore
+      run: dotnet run --project D:\a\OnlineGameStore\OnlineGameStore\GameStore\GameService.csproj --no-build --no-restore
   EventService:
     runs-on: windows-latest
     steps:
@@ -35,7 +35,7 @@ jobs:
     - name: Build project
       run: dotnet build D:\a\OnlineGameStore\OnlineGameStore\EventService\EventService.csproj --no-restore
     - name: Run EventService API project
-      run: dotnet run D:\a\OnlineGameStore\OnlineGameStore\EventService\EventService.csproj --no-build --no-restore
+      run: dotnet run --project D:\a\OnlineGameStore\OnlineGameStore\EventService\EventService.csproj --no-build --no-restore
   Main:
     runs-on: windows-latest
     steps:
@@ -49,7 +49,7 @@ jobs:
     - name: Build project
       run: dotnet build D:\a\OnlineGameStore\OnlineGameStore\PROG3050-HMJJ\PROG3050-HMJJ.csproj --no-restore
     - name: Run Main Application
-      run: dotnet run D:\a\OnlineGameStore\OnlineGameStore\PROG3050-HMJJ\PROG3050-HMJJ.csproj --no-build --no-restore
+      run: dotnet run --project D:\a\OnlineGameStore\OnlineGameStore\PROG3050-HMJJ\PROG3050-HMJJ.csproj --no-build --no-restore
   Tests:
     runs-on: windows-latest
     needs:
